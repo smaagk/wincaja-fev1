@@ -1,40 +1,36 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { useDispatch } from "react-redux";
-import { useHistory } from 'react-router-dom'
+import React from 'react';
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
-import useCustomFetch from "../../custom-hooks/useCustomFetch";
-import CustomSnackBar from "../ui-components/custom-snackbar";
-import { makeStyles } from "@material-ui/core/styles";
-import Button from "../ui-components/button";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import InputLabel from "@material-ui/core/InputLabel";
-import FormControl from "@material-ui/core/FormControl";
-import Visibility from "@material-ui/icons/Visibility";
-import VisibilityOff from "@material-ui/icons/VisibilityOff";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import IconButton from "@material-ui/core/IconButton";
+import useCustomFetch from '../../custom-hooks/useCustomFetch';
+import CustomSnackBar from '../ui-components/custom-snackbar';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '../ui-components/button';
+import Paper from '@material-ui/core/Paper';
+import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import IconButton from '@material-ui/core/IconButton';
 
-import useStyles from "./logincss";
+import useStyles from './logincss';
 
 function Login() {
-  let history = useHistory()
+  let history = useHistory();
   const dispatch = useDispatch();
   const classes = useStyles();
   const [values, setValues] = useState({
-    idUsuario: "",
-    password: "",
-    showPassword: false
+    idUsuario: '',
+    password: '',
+    showPassword: false,
   });
   const [method, setMethod] = useState(null);
   const [url, setUrl] = useState(null);
-  const [auth_values, auth_loading, auth_error] = useCustomFetch(
-    url,
-    method,
-    values
-  );
+  const [auth_values, auth_loading, auth_error] = useCustomFetch(url, values);
 
   const [snackStatus, setSnackStatus] = useState(null);
   const setStatusAlert = (msg, severity) =>
@@ -44,20 +40,19 @@ function Login() {
     if (!auth_loading && url !== null) {
       if (auth_values.success) {
         dispatch({
-          type: "LOGIN",
-          payload: auth_values
+          type: 'LOGIN',
+          payload: auth_values,
         });
-        setStatusAlert("Acceso autorizado", "success");
-        history.push("/productos")
-        
+        setStatusAlert('Acceso autorizado', 'success');
+        history.push('/productos');
       } else {
-        setStatusAlert(auth_values.error, "error");
+        setStatusAlert(auth_values.error, 'error');
       }
       setUrl(null);
     }
   }, [url, auth_loading]);
 
-  const handleInpuChange = event => {
+  const handleInpuChange = (event) => {
     setValues({ ...values, [event.target.name]: event.target.value });
   };
 
@@ -65,14 +60,14 @@ function Login() {
     setValues({ ...values, showPassword: !values.showPassword });
   };
 
-  const handleMouseDownPassword = event => {
+  const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
 
-  const handleSubmit = async event => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    setMethod("POST");
-    setUrl("http://localhost:3000/api/authenticate");
+    setMethod('POST');
+    setUrl('http://localhost:3000/api/authenticate');
   };
 
   return (
@@ -91,7 +86,7 @@ function Login() {
           </InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
-            type={values.showPassword ? "text" : "password"}
+            type={values.showPassword ? 'text' : 'password'}
             value={values.password}
             name="password"
             onChange={handleInpuChange}
