@@ -5,9 +5,7 @@ import { useHistory } from 'react-router-dom';
 
 import useCustomFetch from '../../custom-hooks/useCustomFetch';
 import CustomSnackBar from '../ui-components/custom-snackbar';
-import { makeStyles } from '@material-ui/core/styles';
 import Button from '../ui-components/button';
-import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -16,9 +14,8 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
-
 import useStyles from './logincss';
-
+import { setStatusAlert } from '../../utils/snackbar.utils';
 function Login() {
   let history = useHistory();
   const dispatch = useDispatch();
@@ -33,8 +30,6 @@ function Login() {
   const [auth_values, auth_loading, auth_error] = useCustomFetch(url, values);
 
   const [snackStatus, setSnackStatus] = useState(null);
-  const setStatusAlert = (msg, severity) =>
-    setSnackStatus({ msg, severity, date: new Date() });
 
   useEffect(() => {
     if (!auth_loading && url !== null) {
@@ -43,10 +38,10 @@ function Login() {
           type: 'LOGIN',
           payload: auth_values,
         });
-        setStatusAlert('Acceso autorizado', 'success');
+        setSnackStatus(setStatusAlert('Acceso autorizado', 'success'));
         history.push('/productos');
       } else {
-        setStatusAlert(auth_values.error, 'error');
+        setSnackStatus(setStatusAlert(auth_values.error, 'error'));
       }
       setUrl(null);
     }
@@ -71,46 +66,46 @@ function Login() {
   };
 
   return (
-    <div className={classes.container}>
-      <Paper className={classes.loginContainer} elevation={3}>
-        <TextField
-          className={classes.inputLogin}
-          label="Usuario"
+    <>
+      <TextField
+        className={classes.inputLogin}
+        label="Usuario"
+        onChange={handleInpuChange}
+        name="idUsuario"
+        variant="outlined"
+      ></TextField>
+      <FormControl className={classes.inputLogin} variant="outlined">
+        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+        <OutlinedInput
+          id="outlined-adornment-password"
+          type={values.showPassword ? 'text' : 'password'}
+          value={values.password}
+          name="password"
           onChange={handleInpuChange}
-          name="idUsuario"
-          variant="outlined"
-        ></TextField>
-        <FormControl className={classes.inputLogin} variant="outlined">
-          <InputLabel htmlFor="outlined-adornment-password">
-            Password
-          </InputLabel>
-          <OutlinedInput
-            id="outlined-adornment-password"
-            type={values.showPassword ? 'text' : 'password'}
-            value={values.password}
-            name="password"
-            onChange={handleInpuChange}
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            }
-            labelWidth={70}
-          />
-        </FormControl>
-        <Button title="Acceder" onClick={handleSubmit}></Button>
-      </Paper>
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+                edge="end"
+              >
+                {values.showPassword ? <Visibility /> : <VisibilityOff />}
+              </IconButton>
+            </InputAdornment>
+          }
+          labelWidth={70}
+        />
+      </FormControl>
+      <Button
+        title="Acceder"
+        onClick={handleSubmit}
+        color={'deepOrange'}
+      ></Button>
       {snackStatus ? (
         <CustomSnackBar key={snackStatus.date} status={snackStatus} />
       ) : null}
-    </div>
+    </>
   );
 }
 

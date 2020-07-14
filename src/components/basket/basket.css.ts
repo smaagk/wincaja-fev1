@@ -4,7 +4,7 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
   items: {
     display: 'flex',
     flexDirection: 'column',
-    maxWidth: 700,
+    maxWidth: 900,
   },
   title: {
     textAlign: 'start',
@@ -13,7 +13,8 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
     width: '70%',
     margin: 'auto',
     display: 'flex',
-    flexDirection: 'column',
+    justifyContent : 'space-evenly',
+    flexDirection: 'column-reverse',
     [breakpoints.up('md')]: {
       flexDirection: 'row',
     },
@@ -23,6 +24,7 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
     [breakpoints.up('md')]: {
       marginTop: 65,
       marginLeft: 20,
+      maxHeight:200
     },
   },
   subtotal: {
@@ -31,7 +33,8 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
     justifyContent: 'center',
     color: '#1aad3b',
     fontWeight: 600,
-    fontSize: 25
+    fontSize: 25,
+    
   },
 }));
 

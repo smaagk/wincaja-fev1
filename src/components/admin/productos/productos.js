@@ -14,7 +14,6 @@ import { useState, useEffect } from 'react';
 import useGetFetchData from '../../../custom-hooks/useGetFetchData';
 import useCustomFetch from '../../../custom-hooks/useCustomFetch';
 import ImageProductComponent from '../../ui-components/image-product/image-product';
-import * as _ from 'lodash';
 
 const columns = [
   { id: 'articulo', label: 'Articulo', minWidth: 170 },
@@ -34,7 +33,6 @@ const useStyles = makeStyles({
 
 export default function Productos() {
   const apiUrl = 'http://localhost:3000/api';
-  const updateProductUrl = 'http://localhost:3000/api/articulos';
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
@@ -47,6 +45,7 @@ export default function Productos() {
     `${apiUrl}/articulos`,
     params
   );
+  // eslint-disable-next-line no-unused-vars
   const [productUpdated, productUpdatedLoading] = useCustomFetch(
     `${apiUrl}/articulo_online`,
     productSelected

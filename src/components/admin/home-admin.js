@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, NavLink, Link } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
  import { MenuList, MenuItem } from '@material-ui/core';
 
 import Home from '../home';
@@ -22,8 +22,6 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import {
   HeaderMockUp,
   NavHeaderMockUp,
-  NavContentMockUp,
-  ContentMockUp,
   FooterMockUp,
 } from '@mui-treasury/mockup/layout';
 
@@ -33,8 +31,6 @@ const SidebarTrigger = getSidebarTrigger(styled);
 const SidebarContent = getSidebarContent(styled);
 const CollapseBtn = getCollapseBtn(styled);
 const Content = getContent(styled);
-const InsetContainer = getInsetContainer(styled);
-const InsetSidebar = getInsetSidebar(styled);
 const InsetFooter = getInsetFooter(styled);
 
 const scheme = Layout();
