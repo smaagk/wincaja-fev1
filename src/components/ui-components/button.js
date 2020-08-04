@@ -28,5 +28,5 @@ function MyButton(props) {
     </div>
   );
 }
-
+export const CustomButton = MyButton;
 export default MyButton;

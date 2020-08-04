@@ -11,9 +11,10 @@ const useForm = (
   const [values, setValues] = useState(initialValues);
   const [errors, setErrors] = useState(initialValues);
   const [isDirty, setDirty] = useState(initialValues);
+  const [isSubmmiting, setSubmmiting] = useState(false);
 
   const handleChange = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> 
   ) => {
     const { name, value } = event.target;
     setValues({ ...values, [name]: value });
@@ -22,13 +23,36 @@ const useForm = (
 
   const handleSubmmit = (event: React.MouseEvent) => {
     event.preventDefault();
+    setSubmmiting(true);
+    setErrors(validateSchema(values));
+    let allDirty = {};
+    const dirt = new Promise((resolve, reject) => {
+      Object.keys(isDirty).forEach((name, index) => {
+        allDirty = { ...allDirty, [name]: true };
+        if (index === Object.entries(isDirty).length - 1) resolve();
+      });
+    });
 
-    if (!Object.values(errors).every((item: any) => item.isValid)) {
-      return callback();
+    dirt.then(() => {
+      setDirty(allDirty)
+    });
+  };
+
+  const resetForm = ()=>{
+    setValues(initialValues);
+    setDirty(initialValues)
+  }
+
+  useEffect(() => {
+    if (
+      Object.values(errors).every((item: any) => item.isValid) &&
+      isSubmmiting === true
+    ) {
+      return callback(); 
     }
 
-    return false;
-  };
+    setSubmmiting(false);
+  }, [errors]);
 
   useEffect(() => {
     if (firstRender.current) {
@@ -44,6 +68,7 @@ const useForm = (
     isDirty,
     handleChange,
     handleSubmmit,
+    resetForm
   };
 };
 

@@ -13,13 +13,13 @@ export const ColorlibConnector = withStyles({
   active: {
     '& $line': {
       backgroundImage:
-        'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
+        'linear-gradient( 95deg,rgb(57, 91, 211) 0%, rgb(50, 121, 162) 50%, rgb(35, 155, 213) 100%)',
     },
   },
   completed: {
     '& $line': {
       backgroundImage:
-        'linear-gradient( 95deg,rgb(242,113,33) 0%,rgb(233,64,87) 50%,rgb(138,35,135) 100%)',
+        'linear-gradient( 95deg,rgb(57, 91, 211) 0%, rgb(50, 121, 162) 50%, rgb(35, 155, 213) 100%)',
     },
   },
   line: {
@@ -41,22 +41,25 @@ export const useColorlibStepIconStyles = makeStyles({
     borderRadius: '50%',
     justifyContent: 'center',
     alignItems: 'center',
+    
   },
   active: {
     backgroundImage:
-      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+      'linear-gradient( 136deg, rgb(57, 91, 211) 0%, rgb(50, 121, 162) 50%, rgb(35, 155, 213) 100%)',
     boxShadow: '0 4px 10px 0 rgba(0,0,0,.25)',
-  },
+  }, 
   completed: {
     backgroundImage:
-      'linear-gradient( 136deg, rgb(242,113,33) 0%, rgb(233,64,87) 50%, rgb(138,35,135) 100%)',
+      'linear-gradient( 136deg, rgb(57, 91, 211) 0%, rgb(50, 121, 162) 50%, rgb(35, 155, 213) 100%)',
   },
 });
 
 export const useStyles = makeStyles((theme: Theme) =>
 createStyles({
   root: {
-    width: '100%',
+    paddingTop: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
   },
   button: {
     marginRight: theme.spacing(1),

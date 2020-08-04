@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { TextField } from '@material-ui/core';
 import { PasswordInputComponent, ValidationAdornment } from '../ui-components';
 import useStyles from './register.styles';
@@ -9,6 +9,9 @@ import validateSchema, {
   IRegister,
   IRegisterErrors,
 } from './validate-register';
+import useCustomFetch from '../../custom-hooks/useCustomFetch';
+import { setStatusAlert, StatusAlert } from '../../utils/snackbar.utils';
+import CustomSnackBar from '../ui-components/custom-snackbar';
 
 function RegisterComponent() {
   const firstRender = useRef(true);
@@ -34,13 +37,51 @@ function RegisterComponent() {
       passwordConfirmation: '',
       nombre: '',
       apellidop: '',
+      apellidom: '',
+      rfc: '',
     },
     validateSchema,
     submmitRegister
   );
+  
+  const [valuesRegister, setValuesRegister] = useState({})
+  const [url, setUrl] : any = useState(null);
+  const [register, registerLoading, registerError] : any = useCustomFetch(
+    url,
+    valuesRegister
+  );
 
-  function submmitRegister(){
-    console.log("registrando")
+  const [snackStatus, setSnackStatus] : [StatusAlert | null , Function] = useState(null);
+
+  useEffect(() => {
+    if (!registerLoading && url !== null) {
+      if (register.success) {
+        setSnackStatus(setStatusAlert('Te has registrado con exito', 'success'));
+      } else {
+        setSnackStatus(setStatusAlert(register.error, 'error'));
+      }
+      setUrl(null);
+    }
+  }, [url, registerLoading]);
+
+  function submmitRegister() {
+    setValuesRegister({
+      client: {
+        nombre: values.nombre,
+        apellido1: values.apellidop,
+        apellido2: values.apellidom,
+        rfc: values.rfc,
+        email: values.email,
+      },
+      user: {
+        idUsuario: values.email,
+        passwordHash: values.password,
+      },
+      addresses: [],
+    })
+
+    setUrl('http://localhost:5001/api/user')
+  
   }
 
   useEffect(() => {
@@ -125,13 +166,15 @@ function RegisterComponent() {
       <TextField
         className={classes.input}
         label="Apellido materno"
-        name="appellidom"
+        name="apellidom"
+        onChange={handleChange}
         variant="outlined"
       ></TextField>
       <TextField
         className={classes.input}
         label="RFC"
         name="rfc"
+        onChange={handleChange}
         variant="outlined"
       ></TextField>
       <Button
@@ -141,6 +184,9 @@ function RegisterComponent() {
         whiteSpace="break-spaces"
         onClick={handleSubmmit}
       ></Button>
+      {snackStatus ? (
+        <CustomSnackBar key={new Date().getMilliseconds()} status={snackStatus} />
+      ) : null}
     </>
   );
 }

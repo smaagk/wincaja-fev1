@@ -31,7 +31,7 @@ function useGetFetchData(url, params) {
 
   useEffect(() => {
     setLoading(true);
-    if (url !== null) {
+    if (url !== null && params !== null) {
       customFetch(url, params);
     }
   }, [params]);

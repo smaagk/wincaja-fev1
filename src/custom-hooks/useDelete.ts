@@ -2,17 +2,18 @@
 import { useState, useEffect } from 'react';
 import * as _ from 'lodash'
 import { useSelector } from 'react-redux';
+import { RootState } from '../store';
 
-function useCustomFetch(url, data) {
+function useDeleteFetch(url: string, data: any) {
 	const [values, setValues] = useState(null);
 	const [error, setError] = useState(null);
-	const [loading, setLoading] = useState(null);
-	const token = useSelector((state) => state.auth.token);
+	const [loading, setLoading] = useState(false);
+	const token = useSelector((state: RootState) => state.auth.token);
 
-	async function customFetch(url, data) {
+	async function customFetch(url: string, data: any) {
 		try {
 			let response = await fetch(url, {
-				method: 'POST',
+				method: 'DELETE',
 				headers: {
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${token}`,
@@ -40,4 +41,4 @@ function useCustomFetch(url, data) {
 	return [values, loading, error];
 }
 
-export default useCustomFetch;
+export default useDeleteFetch;

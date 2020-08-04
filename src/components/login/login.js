@@ -62,7 +62,7 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setMethod('POST');
-    setUrl('http://localhost:3000/api/authenticate');
+    setUrl('http://localhost:5001/api/authenticate');
   };
 
   return (
