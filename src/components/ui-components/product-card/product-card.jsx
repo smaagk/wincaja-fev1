@@ -15,6 +15,8 @@ import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import noimage from '../../../static/noimage.png';
 import useStyles from './product-card.css';
 import { useDispatch, useSelector } from 'react-redux';
+import Avatar from '@material-ui/core/Avatar';
+import { arrayBufferToBase64 } from '../../../utils/arrrayToBuffer';
 
 function ProductCard(props) {
   const store = useSelector((state) => state.cart);
@@ -31,14 +33,24 @@ function ProductCard(props) {
     price: 1234,
   });
 
+  const [imgSrc, setImgSrc] = useState('');
+
   useEffect(() => {
+    console.log(props.data);
     setDataProduct({
-      articulo: `${props.data.img}${props.data.name}`,
+      articulo: `${props.data.name}`,
       img: props.data.img,
       name: props.data.name,
       description: props.data.description,
       price: props.data.price,
     });
+
+    const image =
+      props.data.img !== null
+        ? 'data:image/png;base64,' +
+          arrayBufferToBase64(props.data.img.Body.data)
+        : noimage;
+    setImgSrc(image);
   }, []);
 
   function handleAddProduct() {
@@ -62,7 +74,7 @@ function ProductCard(props) {
       <CardMedia
         // component={'img'} // add this line to use <img />
         classes={wideCardMediaStyles}
-        image={dataProduct.img}
+        image={imgSrc}
       >
         <div className={cardStyles.chip}>
           <Chip
@@ -83,7 +95,7 @@ function ProductCard(props) {
         />
       </CardContent>
       <Box px={3} pb={3}>
-        <Button title="Añadir al carrito" onClick={handleAddProduct}></Button>
+        <Button title="Añadir al carrito" onClick={handleAddProduct} color='deepGreen'></Button>
       </Box>
     </Card>
   );

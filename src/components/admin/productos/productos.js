@@ -32,7 +32,7 @@ const useStyles = makeStyles({
 });
 
 export default function Productos() {
-  const apiUrl = 'http://localhost:3000/api';
+  const apiUrl = 'http://localhost:5001/api';
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
@@ -70,7 +70,7 @@ export default function Productos() {
 
   const setOnlineEnabled = (products) => {
     const productsOnline = products
-      .filter((product) => product.esBoleto)
+      .filter((product) => product.tipo5)
       .map((product) => product.articulo);
     setSelected(productsOnline);
   };

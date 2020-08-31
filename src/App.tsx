@@ -6,11 +6,10 @@ import AuthAdmin from './guards/auth-guard';
 import './App.css';
 import ProductCard from './components/ui-components/product-card/product-card';
 import Home from './components/home';
-import Basket from './components/basket/basket'
-import PaymentComponent from './components/payment/payment.component'
-import BuyProcessComponent from './components/buy-process/buy-process'
-
-
+import Basket from './components/basket/basket';
+import PaymentComponent from './components/payment/payment.component';
+import BuyProcessComponent from './components/buy-process/buy-process';
+import Catalog from './components/catalog/catalog';
 
 function App() {
   return (
@@ -19,7 +18,7 @@ function App() {
         <Route path="/" component={Home} exact />
         <AuthAdmin path="/admin" component={HomeAdmin} />
         <Route path="/login" component={Login} exact />
-        <Route path="/test_component" component={BuyProcessComponent}  />
+        <Route path="/catalogo" component={Catalog} />
       </div>
     </BrowserRouter>
   );

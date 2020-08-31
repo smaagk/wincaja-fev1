@@ -12,18 +12,15 @@ import {
   MenuItem,
   Button,
 } from '@material-ui/core';
-import { CustomButton } from '../../ui-components';
 import {
   AccordionStyles,
   AccordionSummaryStyles,
   AddAddressStyles,
 } from './add-address.styles';
 
-import estados from './data/estados.json';
 import useForm from '../../../custom-hooks/useForm';
 import validateSchema, { IAddress } from './validate-address';
 import { StatusAlert, setStatusAlert } from '../../../utils/snackbar.utils';
-import useCustomFetch from '../../../custom-hooks/useCustomFetch';
 import CustomSnackBar from '../../ui-components/custom-snackbar';
 import { useDispatch } from 'react-redux';
 import useFetch from '../../../custom-hooks/useFetch';
