@@ -36,7 +36,7 @@ function ProductCard(props) {
   const [imgSrc, setImgSrc] = useState('');
 
   useEffect(() => {
-    console.log(props.data);
+    
     setDataProduct({
       articulo: `${props.data.name}`,
       img: props.data.img,

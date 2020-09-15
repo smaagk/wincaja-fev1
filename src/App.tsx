@@ -19,6 +19,7 @@ function App() {
         <AuthAdmin path="/admin" component={HomeAdmin} />
         <Route path="/login" component={Login} exact />
         <Route path="/catalogo" component={Catalog} />
+        <Route path="/basket" component={BuyProcessComponent} />
       </div>
     </BrowserRouter>
   );

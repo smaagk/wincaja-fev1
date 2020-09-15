@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, FC, useEffect } from 'react';
 import {
   Box,
@@ -10,10 +11,12 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import useStyles from './item.css';
 import { formatCurrency } from '../../../utils/currency';
 import { useDispatch } from 'react-redux';
+import { arrayBufferToBase64 } from 'utils/arrrayToBuffer';
+import noimage from '../../../static/noimage.png';
 
 export type ItemI = {
   articulo?: string;
-  img?: string;
+  img: any;
   price: number;
   description?: string;
   quantity: number;
@@ -26,6 +29,16 @@ const Item: FC<ItemI> = (data: ItemI) => {
   const [price, setPrice] = useState(formatCurrency(data.price));
   const [counter, setCounter] = useState(data.quantity);
   const [totalProduct, setTotalProduct] = useState('');
+  const [imgSrc, setImgSrc] = useState('');
+
+  useEffect(() => {
+    const image =
+      data.img !== null
+        ? 'data:image/png;base64,' +
+          arrayBufferToBase64(data.img.Body.data)
+        : noimage;
+    setImgSrc(image);
+  },[])
 
   useEffect(() => {
     setTotalProduct(formatCurrency(counter * data.price));
@@ -57,7 +70,7 @@ const Item: FC<ItemI> = (data: ItemI) => {
   return (
     <Card elevation={3} className={itemStyles.root}>
       <Box className={itemStyles.itemContainer} component="div" m={1}>
-        <CardMedia className={itemStyles.image} image={data.img}></CardMedia>
+        <CardMedia className={itemStyles.image} image={imgSrc}></CardMedia>
         <p className={`${itemStyles.marginItem} ${itemStyles.name}`}>{data.name}</p>
         <Box
           className={`${itemStyles.marginItem} ${itemStyles.price}`}
