@@ -43,21 +43,11 @@ export default function CustomizedSteppers() {
       payload: step,
     });
   };
-  const handleNext = () => {
-    dispatch({
-      type: 'NEXT',
-    });
-  };
-
-  const handleBack = () => {
-    dispatch({
-      type: 'BACK',
-    });
-  };
-
+  
   return (
     <div className={classes.root}>
       <Stepper
+        className={classes.stepper}
         alternativeLabel
         nonLinear
         activeStep={activeStep.step}

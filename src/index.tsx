@@ -4,11 +4,10 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { createStore } from 'redux';
-import authReducer from './store/authReducer';
-import cartReducer from './store/cartReducer';
 import { Provider } from 'react-redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { combineReducers } from 'redux'
+import { SnackbarProvider } from 'notistack';
+
 
 import { loadState, saveState } from './store/localStorage';
 import { rootReducer } from './store/index'
@@ -18,9 +17,12 @@ const store = createStore(rootReducer, persistedStore, composeWithDevTools());
 store.subscribe( () => {
   saveState(store.getState())
 })
+
 ReactDOM.render(
 	<Provider store={store}>
-		<App />
+		<SnackbarProvider maxSnack={3}>
+			<App />
+		</SnackbarProvider>
 	</Provider>,
 	document.getElementById('root')
 );

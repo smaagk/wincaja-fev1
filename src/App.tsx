@@ -10,16 +10,18 @@ import Basket from './components/basket/basket';
 import PaymentComponent from './components/payment/payment.component';
 import BuyProcessComponent from './components/buy-process/buy-process';
 import Catalog from './components/catalog/catalog';
+import MenuComponent from 'components/menu/menu';
+import { SearchInputComponent } from 'components/ui-components/search-input/search-input.component';
 
 function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <Route path="/" component={Home} exact />
+        <Route path="/" component={Catalog} exact />
         <AuthAdmin path="/admin" component={HomeAdmin} />
         <Route path="/login" component={Login} exact />
-        <Route path="/catalogo" component={Catalog} />
-        <Route path="/basket" component={BuyProcessComponent} />
+        <Route path="/tienda" component={Catalog} />
+        <Route path="/debug" component={BuyProcessComponent} />
       </div>
     </BrowserRouter>
   );

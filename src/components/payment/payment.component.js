@@ -1,176 +1,371 @@
 import 'react-credit-cards/es/styles-compiled.css';
 import React, { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import useFetchOpenPay from '../../custom-hooks/useFetchOpenPay';
 import cx from 'clsx';
 import { Card, TextField } from '@material-ui/core';
 import Button from '../ui-components/button';
+import PaymentOption from '../ui-components/payment-options/payment-options';
 import { useBlogTextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/blog';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import Cards from 'react-credit-cards';
 import ValidationAdornment from './validation-adornment';
-import { validateCVC, validateName } from './payment-validations';
+import { validateData } from './payment-validations';
 import { useStyles } from './payment-styles';
-import cardValidator from 'card-validator';
+import { errorSnackbar, successSnackbar } from '../../utils/snackbar.utils';
+import { useSnackbar } from 'notistack';
+import { creditCardConstants } from '../../constants/app.constants';
+import useCustomFetch from 'custom-hooks/useCustomFetch';
+import useFetch from 'custom-hooks/useFetch';
 
 const cardDataInitialState = {
-  cvc: {
-    value: '',
-    isValid: undefined,
-  },
-  expiry: {
-    value: '',
-    isValid: undefined,
-  },
-  focused: {
-    value: undefined,
-  },
-  name: {
-    value: '',
-    isValid: undefined,
-  },
-  number: {
-    value: '',
-    isValid: undefined,
-  },
+    cvc: {
+        value: '',
+        isValid: undefined,
+    },
+    expiry: {
+        value: '',
+        isMonthValid: undefined,
+        isYearValid: undefined,
+    },
+    focused: {
+        value: undefined,
+    },
+    name: {
+        value: '',
+        isValid: undefined,
+    },
+    number: {
+        value: '',
+        isValid: undefined,
+    },
 };
+const { REACT_APP_API_URL, REACT_APP_MERCHANT_ID, REACT_APP_APIOPENPAY } = process.env;
+
 export const PaymentCardComponent = React.memo(function PaymentCard() {
-  const styles = useStyles();
-  const { button: buttonStyles } = useBlogTextInfoContentStyles();
-  const shadowStyles = useOverShadowStyles();
-  const [cardData, setCardData] = useState(cardDataInitialState);
-  const [validDate, setValidDate] = useState({ month: '', year: '' });
+    const dispatch = useDispatch();
+    const { metodoPago } = useSelector((state) => state.payment);
+    const address = useSelector((state) => state.address);
+    const { cart } = useSelector((state) => state.cart);
+    const styles = useStyles();
+    const { button: buttonStyles } = useBlogTextInfoContentStyles();
+    const shadowStyles = useOverShadowStyles();
+    const [cardData, setCardData] = useState(cardDataInitialState);
+    const [cardDataValid, setCardDataValid] = useState(false);
+    const [validDate, setValidDate] = useState({ month: '', year: '' });
+    const [apiOpenPayURL, setApiOpenPayURL] = useState(null);
+    const apiOpenPay = `${REACT_APP_APIOPENPAY}${REACT_APP_MERCHANT_ID}/tokens`;
+    const [cardDataToken, setCardDataToken] = useState(null);
+    const [tokenResponse, tokenLoading, tokenError] = useFetchOpenPay(
+        apiOpenPayURL,
+        cardDataToken
+    );
 
-  function handleInputFocus(e) {
-    setCardData({ ...cardData, focused: { value: e.target.name } });
-  }
+    const [shoppingCartInfo, setShoppingCartInfo] = useState(null);
+    const [payment, paymentLoading, paymentError] = useCustomFetch(
+        `${REACT_APP_API_URL}/api/payment`,
+        shoppingCartInfo
+    );
+    const [startPayment, setStartPayment] = useState(false);
+    const [preorden, setPreorden] = useState({});
+    const [
+        preordenCreated,
+        preordenCreatedLoading,
+        preordenCreatedError,
+    ] = useFetch(`${REACT_APP_API_URL}/preorden`, 'POST', preorden);
 
-  function handleInput(e) {
-    const field = e.target;
-    setCardData({
-      ...cardData,
-      [e.target.name]: {
-        isValid: validateData(field.name, field.value),
-        value: String(e.target.value),
-      },
-    });
-  }
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  function validateData(type, value) {
-    if (type === 'cvc') {
-      return validateCVC(value);
+    function handleInputFocus(e) {
+        setCardData({ ...cardData, focused: { value: e.target.name } });
     }
 
-    if (type === 'name') {
-      return validateName(value);
+    function handleInput(e) {
+        const field = e.target;
+        setCardData({
+            ...cardData,
+            [e.target.name]: {
+                isValid: validateData(field.name, field.value),
+                value: String(e.target.value),
+            },
+        });
     }
 
-    if(type === 'number'){
-      const creditCard = cardValidator.number(value);
-      return creditCard.isValid
-    }
-  }
-
-  function isValidAndTouched(field) {
-    return !cardData[field].isValid && cardData[field].value !== '';
-  }
-
-  function handleInputExpiry(e) {
-    if (e.target.name === 'month') {
-      setValidDate({ ...validDate, month: e.target.value });
+    function isValidAndTouched(field) {
+        return !cardData[field].isValid && cardData[field].value !== '';
     }
 
-    if (e.target.name === 'year') {
-      setValidDate({ ...validDate, year: e.target.value });
+    function handleInputExpiry(e) {
+        const field = e.target;
+        if (e.target.name === 'month') {
+            setValidDate({ ...validDate, month: e.target.value });
+            setCardData({
+                ...cardData,
+                expiry: {
+                    ...cardData.expiry,
+                    isMonthValid: validateData(field.name, field.value),
+                },
+            });
+        }
+
+        if (e.target.name === 'year') {
+            setValidDate({ ...validDate, year: e.target.value });
+
+            setCardData({
+                ...cardData,
+                expiry: {
+                    ...cardData.expiry,
+                    isYearValid: validateData(field.name, field.value),
+                },
+            });
+        }
     }
-  }
 
-  useEffect(() => {
-    setCardData({
-      ...cardData,
-      expiry: {...cardData.expiry, value: `${validDate.month}/${validDate.year}`},
-    });
-  }, [validDate]);
+    function checkValidDataCard(cardData) {
+        if (
+            cardData.cvc.isValid &&
+            cardData.name.isValid &&
+            cardData.number.isValid &&
+            cardData.expiry.isMonthValid &&
+            cardData.expiry.isYearValid
+        ) {
+            setCardDataValid(true);
+            return true;
+        }
+        return false;
+    }
+    const [deviceDataId, setDeviceDataId] = useState(null);
 
-  return (
-    <Card className={cx(styles.root, shadowStyles.root)}>
-      <div className={styles.media}>
-        <Cards
-          cvc={cardData.cvc.value}
-          expiry={cardData.expiry.value}
-          focused={cardData.focused.value}
-          name={cardData.name.value}
-          locale={{ valid: 'Válida hasta' }}
-          placeholders={{ name: 'Nombre del titular' }}
-          number={cardData.number.value}
-        />
-      </div>
-      <div className={styles.payment}>
-        <form className={styles.formPayment} noValidate autoComplete="off">
-          <TextField
-            label="Nombre del titular"
-            name="name"
-            onChange={handleInput}
-            onFocus={handleInputFocus}
-            InputProps={{
-              endAdornment: (
-                <ValidationAdornment status={cardData.name.isValid} />
-              ),
-            }}
-            error={isValidAndTouched('name')}
-            variant="outlined"
-          />
-          <TextField
-            label="Numero de la tarjeta"
-            name="number"
-            onChange={handleInput}
-            onFocus={handleInputFocus}
-            variant="outlined"
-            InputProps={{
-              endAdornment: (
-                <ValidationAdornment status={cardData.number.isValid} />
-              ),
-            }}
-            error={isValidAndTouched('number')}
-          />
+    //Se inicializa las credenciales de open pay al iniciar el componente
+    useEffect(() => {
+        window.OpenPay.setId(MERCHANT_ID);
+        window.OpenPay.setApiKey('pk_180216fa25694b768c2c4c3e4fd63863');
+        window.OpenPay.setSandboxMode(true);
+        setDeviceDataId(window.OpenPay.deviceData.setup('paymentForm'));
+    }, []);
 
-          <div className={styles.formBox}>
-            <TextField
-              label="Mes"
-              name="month"
-              onFocus={handleInputFocus}
-              onChange={handleInputExpiry}
-              variant="outlined"
-            />
-            <TextField
-              label="Año"
-              name="year"
-              onFocus={handleInputFocus}
-              onChange={handleInputExpiry}
-              variant="outlined"
-            />
-            <TextField
-              onFocus={handleInputFocus}
-              onChange={handleInput}
-              label="CVC"
-              name="cvc"
-              variant="outlined"
-              type="number"
-              InputProps={{
-                endAdornment: (
-                  <ValidationAdornment status={cardData.cvc.isValid} />
-                ),
-              }}
-              error={isValidAndTouched('cvc')}
-            />
-          </div>
-          <Button
-            className={buttonStyles}
-            title="Proceder al pago"
-            color="deepGreen"
-          ></Button>
-        </form>
-      </div>
-    </Card>
-  );
+    useEffect(() => {
+        dispatch({ type: 'SETDEVICE', payload: deviceDataId });
+    }, [deviceDataId, dispatch]);
+
+    useEffect(() => {
+        if (!tokenLoading) {
+            dispatch({ type: 'SETSOURCEID', payload: tokenResponse });
+        }
+    }, [tokenLoading, tokenResponse, dispatch]);
+
+    useEffect(() => {
+        setCardData({
+            ...cardData,
+            expiry: {
+                ...cardData.expiry,
+                value: `${validDate.month}/${validDate.year}`,
+            },
+        });
+    }, [validDate]);
+
+    useEffect(() => {
+        if (cardDataValid) {
+            setCardDataToken({
+                card_number: cardData.number.value,
+                holder_name: cardData.name.value,
+                expiration_month: validDate.month,
+                expiration_year: validDate.year,
+                cvv2: cardData.cvc.value,
+            });
+            setApiOpenPayURL(apiOpenPay);
+        }
+    }, [cardDataValid]);
+
+    useEffect(() => {
+        if (tokenResponse !== null && startPayment) {
+            console.log(tokenResponse);
+            const articulos = cart.map((val) => {
+                return { articulo: val.articulo, quantity: val.quantity };
+            });
+
+            setShoppingCartInfo({
+                charge: {
+                    source_id: tokenResponse.id,
+                    device_session_id: deviceDataId,
+                },
+                alias: address.addressKey,
+                articulos,
+            });
+
+            setStartPayment(false);
+            setApiOpenPayURL(null);
+        }
+    }, [tokenLoading, startPayment]);
+
+    useEffect(() => {
+        if (!preordenCreatedLoading && preordenCreated) {
+            if (preordenCreated.success === true) {
+                enqueueSnackbar(
+                    'Pedido finalizado, por favor revisa en tu correo la confirmación del pedido',
+                    successSnackbar
+                );
+            }
+        }
+    }, [preordenCreatedLoading]);
+
+    function makeOrder() {
+        if (checkValidDataCard(cardData)) {
+            setStartPayment(true);
+        } else {
+            enqueueSnackbar(creditCardConstants.INCOMPLETEDATA, errorSnackbar);
+        }
+    }
+
+    function makePreOrder() {
+        if (metodoPago === '' || metodoPago === undefined) {
+            enqueueSnackbar(
+                creditCardConstants.METODOPAGONOELECCIONADO,
+                errorSnackbar
+            );
+        } else if (
+            address.addressKey === '' ||
+            address.addressKey === undefined
+        ) {
+            enqueueSnackbar(creditCardConstants.NOADDRESS, errorSnackbar);
+        } else {
+            const articulos = cart.map((val) => {
+                return { articulo: val.articulo, quantity: val.quantity };
+            });
+            const preorder = {
+                alias: address.addressKey,
+                metodoPago,
+                articulos,
+            };
+
+            setPreorden(preorder);
+        }
+    }
+
+    return (
+        <>
+            <PaymentOption />
+            {metodoPago === 'Linea' ? (
+                <Card className={cx(styles.root, shadowStyles.root)}>
+                    <div className={styles.media}>
+                        <Cards
+                            cvc={cardData.cvc.value}
+                            expiry={cardData.expiry.value}
+                            focused={cardData.focused.value}
+                            name={cardData.name.value}
+                            locale={{ valid: 'Válida hasta' }}
+                            placeholders={{ name: 'Nombre del titular' }}
+                            number={cardData.number.value}
+                        />
+                    </div>
+                    <div className={styles.payment}>
+                        <form
+                            id="paymentForm"
+                            className={styles.formPayment}
+                            noValidate
+                            autoComplete="off"
+                        >
+                            <TextField
+                                label="Nombre del titular"
+                                name="name"
+                                onChange={handleInput}
+                                onFocus={handleInputFocus}
+                                InputProps={{
+                                    endAdornment: (
+                                        <ValidationAdornment
+                                            status={cardData.name.isValid}
+                                        />
+                                    ),
+                                }}
+                                error={isValidAndTouched('name')}
+                                variant="outlined"
+                            />
+                            <TextField
+                                label="Numero de la tarjeta"
+                                name="number"
+                                onChange={handleInput}
+                                onFocus={handleInputFocus}
+                                variant="outlined"
+                                autoComplete="cc-number"
+                                InputProps={{
+                                    endAdornment: (
+                                        <ValidationAdornment
+                                            status={cardData.number.isValid}
+                                        />
+                                    ),
+                                }}
+                                error={isValidAndTouched('number')}
+                            />
+
+                            <div className={styles.formBox}>
+                                <TextField
+                                    label="Mes"
+                                    name="month"
+                                    onFocus={handleInputFocus}
+                                    onChange={handleInputExpiry}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <ValidationAdornment
+                                                status={
+                                                    cardData.expiry.isMonthValid
+                                                }
+                                            />
+                                        ),
+                                    }}
+                                    variant="outlined"
+                                />
+                                <TextField
+                                    label="Año"
+                                    name="year"
+                                    onFocus={handleInputFocus}
+                                    onChange={handleInputExpiry}
+                                    InputProps={{
+                                        endAdornment: (
+                                            <ValidationAdornment
+                                                status={
+                                                    cardData.expiry.isYearValid
+                                                }
+                                            />
+                                        ),
+                                    }}
+                                    variant="outlined"
+                                />
+                                <TextField
+                                    onFocus={handleInputFocus}
+                                    onChange={handleInput}
+                                    label="CVC"
+                                    name="cvc"
+                                    variant="outlined"
+                                    type="number"
+                                    InputProps={{
+                                        endAdornment: (
+                                            <ValidationAdornment
+                                                status={cardData.cvc.isValid}
+                                            />
+                                        ),
+                                    }}
+                                    error={isValidAndTouched('cvc')}
+                                />
+                            </div>
+                            <Button
+                                className={buttonStyles}
+                                title="Proceder al pago"
+                                color="deepGreen"
+                                onClick={makeOrder}
+                            ></Button>
+                        </form>
+                    </div>
+                </Card>
+            ) : (
+                <Button
+                    className={buttonStyles}
+                    title="Finalizar pedido"
+                    color="deepGreen"
+                    onClick={makePreOrder}
+                ></Button>
+            )}
+        </>
+    );
 });
 
 export default PaymentCardComponent;

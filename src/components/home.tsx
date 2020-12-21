@@ -2,9 +2,13 @@ import React, { useState, useEffect } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import TablePagination from '@material-ui/core/TablePagination';
-
 import ProductCard from './ui-components/product-card/product-card';
 import useGetFetchData from '../custom-hooks/useGetFetchData';
+import useDebounce from '../custom-hooks/useDebounce';
+
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
+import { CircularProgress } from '@material-ui/core';
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -15,14 +19,17 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
+const { REACT_APP_API_URL } = process.env;
+
 function Home() {
     const classes = useStyles();
-    const apiUrl = 'http://localhost:5001/api';
+    const { searchValue } = useSelector((state: RootState) => state.search);
+    const debouncedSearchTerm = useDebounce(searchValue, 1000);
     const [params, setParams] = useState({});
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(20);
     const [productsData, productsLoading]: any = useGetFetchData(
-        `${apiUrl}/articulos`,
+        `${REACT_APP_API_URL}/articulos`,
         params
     );
     const [dataProduct, setDataProduct] = useState([]);
@@ -32,7 +39,7 @@ function Home() {
         newPage: number
     ) => {
         setPage(newPage);
-        setParams({...params, currentPage: newPage})
+        setParams({ ...params, currentPage: newPage });
     };
 
     const handleChangeRowsPerPage = (
@@ -43,7 +50,7 @@ function Home() {
     };
 
     useEffect(() => {
-        if (!productsLoading && apiUrl !== null) {
+        if (!productsLoading && REACT_APP_API_URL !== null) {
             if (productsData.success) {
                 console.log(productsData);
                 setDataProduct(mapProducts(productsData.rows));
@@ -51,10 +58,15 @@ function Home() {
         }
     }, [productsLoading]);
 
+    useEffect(() => {
+        setParams({ ...params, phrase: debouncedSearchTerm });
+    }, [debouncedSearchTerm]);
+
     function mapProducts(products: any) {
         return products.map((product: any) => {
             return {
-                name: product.articulo,
+                articulo: product.articulo,
+                name: product.nombre,
                 description: product.descripcion,
                 img: product.img,
                 price: Math.random() * 1000,
@@ -64,20 +76,29 @@ function Home() {
 
     return (
         <div className={classes.container}>
-            {dataProduct.map((data: any) => {
-                return (
-                    <ProductCard key={`${data.img}${data.name}`} data={data} />
-                );
-            })}
-            <br/>
-            <TablePagination
-                component="div"
-                count={100}
-                page={page}
-                onChangePage={handleChangePage}
-                rowsPerPage={rowsPerPage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
+            {dataProduct.length > 0 ? (
+                <>
+                    {dataProduct.map((data: any) => {
+                        return (
+                            <ProductCard
+                                key={`${data.img}${data.name}`}
+                                data={data}
+                            />
+                        );
+                    })}
+                    <br />
+                    <TablePagination
+                        component="div"
+                        count={100}
+                        page={page}
+                        onChangePage={handleChangePage}
+                        rowsPerPage={rowsPerPage}
+                        onChangeRowsPerPage={handleChangeRowsPerPage}
+                    />
+                </>
+            ) : (
+                <CircularProgress />
+            )}
         </div>
     );
 }

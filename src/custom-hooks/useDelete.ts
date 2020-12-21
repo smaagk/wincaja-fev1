@@ -34,6 +34,7 @@ function useDeleteFetch(url: string, data: any) {
 	useEffect(() => {
 		setLoading(true);
 		if (url !== null && !_.isEmpty(data)) {
+			console.log(data)
 			customFetch(url, data);
 		}
 	}, [url,data]);

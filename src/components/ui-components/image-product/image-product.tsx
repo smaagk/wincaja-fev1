@@ -15,6 +15,8 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
+const { REACT_APP_API_URL } = process.env;
+
 
 type ImageType = {
   imgUrl?: any;
@@ -25,7 +27,6 @@ const ImageProductComponent: FC<ImageType> = ({
   imgUrl,
   articulo,
 }: ImageType) => {
-  const apiUrl = 'http://localhost:3000/api';
   const classes = useStyles();
   const [isOpen, setIsOpen] = useState(false);
   const [dataImage, setDataImage] = useState([]);
@@ -34,7 +35,7 @@ const ImageProductComponent: FC<ImageType> = ({
     image_upload,
     image_upload_loading,
     image_upload_error,
-  ] = useUploadFile(`${apiUrl}/upload-image`, dataImage, articulo);
+  ] = useUploadFile(`${REACT_APP_API_URL}/upload-image`, dataImage, articulo);
 
   useEffect(() => {
     console.log(articulo);

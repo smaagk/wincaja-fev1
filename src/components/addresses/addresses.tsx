@@ -9,16 +9,17 @@ import useGetFetchData from '../../custom-hooks/useGetFetchData';
 import { IAddress } from './addAddressComponent/validate-address';
 import useDeleteFetch from '../../custom-hooks/useDelete';
 import * as _ from 'lodash';
+
 const AddressStyles = makeStyles({
   container: {
     maxWidth: 520,
     margin: 'auto',
   },
 });
+const { REACT_APP_API_URL } = process.env;
 
 function AddressesComponent() {
   const styles = AddressStyles();
-  const apiUrl = 'http://localhost:5001/api';
   const dispatch = useDispatch();
   const isAuthenticated: boolean = useSelector(
     (state: RootState) => state.auth.isAuthenticated
@@ -29,12 +30,12 @@ function AddressesComponent() {
   );
   const [paramsAddress, setParamsAddress]: any = useState(null);
   let [_addresses, addressesLoading]: any = useGetFetchData(
-    `${apiUrl}/direcciones`,
+    `${REACT_APP_API_URL}/direcciones`,
     paramsAddress
   );
   const [addressToDelete, setAddressToDelete] = useState({ alias: '' });
   const [deletedAddress, deleteAddressLoading]: any = useDeleteFetch(
-    `${apiUrl}/direcciones`,
+    `${REACT_APP_API_URL}/direcciones`,
     addressToDelete
   );
 
@@ -75,6 +76,7 @@ function AddressesComponent() {
     if (addresses !== undefined) {
       return (
         <div className={styles.container}>
+          <AddAddressComponent />
           {addresses.map((address: IAddress) => {
             return (
               <Address
@@ -85,7 +87,6 @@ function AddressesComponent() {
               />
             );
           })}
-          <AddAddressComponent />
         </div>
       );
     } else {

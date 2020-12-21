@@ -42,15 +42,11 @@ function useFetch(
   }
 
   useEffect(() => {
-    const abortController = new AbortController();
+
     setLoading(true);
     if (url !== null && method !== null && !_.isEmpty(data)) {
       Fetch(url, method, data);
     }
-
-    return function cleanup() {
-      abortController.abort();
-    };
   }, [url, method, data]);
 
   return [values, loading, error];

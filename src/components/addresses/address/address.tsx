@@ -6,6 +6,8 @@ import { AddressInfo } from 'net';
 import TitleComponent from '../../ui-components/title/title';
 import useGetFetchData from '../../../custom-hooks/useGetFetchData';
 import { IAddress } from '../addAddressComponent/validate-address';
+import { useSelector } from 'react-redux';
+import { RootState } from 'store';
 
 export interface AddressComponent {
   handleDelete?: (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => void;
@@ -15,9 +17,19 @@ export interface AddressComponent {
 
 function Address({ handleDelete, address, onClick }: AddressComponent) {
   const styles = useAddressStyles();
+  const [activeAddress, setActiveAddress] = useState(false);
+  const { addressKey } = useSelector((state: RootState) => state.address);
+
+  useEffect(() => {
+    if(address.alias === addressKey){
+      setActiveAddress(true);
+    }else{
+      setActiveAddress(false);
+    }
+  },[addressKey]);
 
   return (
-    <Card elevation={3} className={styles.container} onClick={onClick}>
+    <Card elevation={3} className={`${styles.container} ${activeAddress ? styles.active : ""}`} onClick={onClick}>
       <CardActionArea>
         <CardContent>
           <Box className={styles.header}>

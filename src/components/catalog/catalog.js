@@ -2,7 +2,7 @@ import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import { MenuList, MenuItem } from '@material-ui/core';
 
-import TestComponent from '../testcomponent/testcomponent';
+import { catalogStyles } from './catalog.styles';
 import styled from 'styled-components';
 import Layout, {
     Root,
@@ -16,7 +16,11 @@ import Layout, {
 } from '@mui-treasury/layout';
 import Toolbar from '@material-ui/core/Toolbar';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { HeaderMockUp, NavHeaderMockUp } from '@mui-treasury/mockup/layout';
+import AppMenu from '../menu/menu';
+import Home from 'components/home';
+import { SearchInputComponent } from '../ui-components/search-input/search-input.component';
+import CartBarComponent from '../ui-components/cart-counter/cart-counter.component';
+import BuyProcessComponent from '../buy-process/buy-process';
 
 const Header = getHeader(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -53,11 +57,12 @@ scheme.configureInsetSidebar((builder) => {
     builder
         .create('secondarySidebar', { anchor: 'right' })
         .registerFixedConfig('md', {
-            width: 256,
+            width: 300,
         });
 });
 
 const Catalog = () => {
+    const classes = catalogStyles();
     return (
         <Root scheme={scheme}>
             {({ state: { sidebar } }) => (
@@ -67,27 +72,24 @@ const Catalog = () => {
                         <Toolbar>
                             <SidebarTrigger sidebarId="primarySidebar" />
                             WinCaja
+                            <div className={classes.topBarContainer}>
+                                <SearchInputComponent />
+                                <MenuItem component={Link} to="/tienda/carrito">
+                                    <CartBarComponent />
+                                </MenuItem>
+                            </div>
                         </Toolbar>
                     </Header>
                     <DrawerSidebar sidebarId="primarySidebar">
                         <SidebarContent>
-                            <NavHeaderMockUp
-                                collapsed={sidebar.primarySidebar.collapsed}
-                            />
-                            <MenuList>
-                                <MenuItem component={Link} to="/catalogo">
-                                    Home
-                                </MenuItem>
-                            </MenuList>
+                            <AppMenu />
                         </SidebarContent>
                         <CollapseBtn />
                     </DrawerSidebar>
                     <Content>
-                        <Route
-                            path="/catalogo"
-                            component={TestComponent}
-                            exact
-                        />
+                        <Route path="/" component={Home} exact />
+                        <Route path="/tienda" component={Home} exact />
+                        <Route path="/tienda/carrito" component={BuyProcessComponent} exact/>
                     </Content>
                     <InsetFooter></InsetFooter>
                 </>

@@ -16,6 +16,9 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import IconButton from '@material-ui/core/IconButton';
 import useStyles from './logincss';
 import { setStatusAlert } from '../../utils/snackbar.utils';
+
+const { REACT_APP_API_URL } = process.env;
+
 function Login() {
   let history = useHistory();
   const dispatch = useDispatch();
@@ -38,8 +41,7 @@ function Login() {
           type: 'LOGIN',
           payload: auth_values,
         });
-        setSnackStatus(setStatusAlert('Acceso autorizado', 'success'));
-        history.push('/productos');
+        setSnackStatus(setStatusAlert('Acceso autorizado', 'success'));      
       } else {
         setSnackStatus(setStatusAlert(auth_values.error, 'error'));
       }
@@ -62,7 +64,7 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setMethod('POST');
-    setUrl('http://localhost:5001/api/authenticate');
+    setUrl(`${REACT_APP_API_URL}/api/authenticate`);
   };
 
   return (

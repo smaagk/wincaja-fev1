@@ -1,5 +1,5 @@
 const initialState = {
-  step: 1,
+  step: 0,
 };
 
 interface actionI {

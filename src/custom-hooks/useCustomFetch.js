@@ -32,6 +32,8 @@ function useCustomFetch(url, data) {
 
 	useEffect(() => {
 		setLoading(true);
+		console.log(url);
+		console.log(data)
 		if (url !== null && !_.isEmpty(data)) {
 			customFetch(url, data);
 		}

@@ -26,6 +26,9 @@ const useAddressStyles = makeStyles({
     },
     addressSection :{
         minWidth: 200
+    },
+    active: {
+        border: '3px solid #6ac31a'
     }
 });
 

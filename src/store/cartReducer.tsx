@@ -3,6 +3,7 @@ import { cartActionTypes } from '../action-types';
 const initialState = {
   cart: [],
   total: 0,
+  qtyTotal: 0
 };
 
 interface actionI {
@@ -20,13 +21,16 @@ interface IProducto {
 }
 const cartReducer = (state = initialState, action: actionI) => {
   const item = action.payload;
-  const total = state.total
+  const total = state.total;
+  const qtyTotal = state.qtyTotal;
+
   switch (action.type) {
     case 'ADDPRODUCT':
       return {
         ...state,
         cart: state.cart.concat({ ...action.payload, quantity: 1 }),
-        total : total + item.price
+        total: total + item.price,
+        qtyTotal: qtyTotal + 1
       };
     case 'ADDQUANTITY':
       return {
@@ -36,7 +40,8 @@ const cartReducer = (state = initialState, action: actionI) => {
             ? { ...product, quantity: Number(product.quantity) + 1 }
             : product
         ),
-        total : total + item.price
+        total : total + item.price,
+        qtyTotal: qtyTotal + 1
       };
     case 'SUBQUANTITY':
       return {
@@ -46,12 +51,15 @@ const cartReducer = (state = initialState, action: actionI) => {
             ? { ...product, quantity: Number(product.quantity) - 1 }
             : product
         ),
-        total: Number(total) - item.price
+        total: Number(total) - item.price,
+        qtyTotal: qtyTotal - 1
       };
     case 'DELETEPRODUCT':
       return {
         ...state,
-        cart: state.cart.filter((itm: IProducto) => itm.articulo !== item.articulo)
+        cart: state.cart.filter((itm: IProducto) => itm.articulo !== item.articulo),
+        total: Number(total) - (item.quantity * item.price),
+        qtyTotal: qtyTotal - item.quantity
       };
     default:
       return state;

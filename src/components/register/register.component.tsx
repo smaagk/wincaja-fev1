@@ -13,6 +13,9 @@ import useCustomFetch from '../../custom-hooks/useCustomFetch';
 import { setStatusAlert, StatusAlert } from '../../utils/snackbar.utils';
 import CustomSnackBar from '../ui-components/custom-snackbar';
 
+const { REACT_APP_API_URL } = process.env;
+
+
 function RegisterComponent() {
   const firstRender = useRef(true);
   const classes = useStyles();
@@ -80,7 +83,7 @@ function RegisterComponent() {
       addresses: [],
     })
 
-    setUrl('http://localhost:5001/api/user')
+    setUrl(`${REACT_APP_API_URL}/user`)
   
   }
 

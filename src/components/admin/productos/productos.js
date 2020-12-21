@@ -14,6 +14,8 @@ import { useState, useEffect } from 'react';
 import useGetFetchData from '../../../custom-hooks/useGetFetchData';
 import useCustomFetch from '../../../custom-hooks/useCustomFetch';
 import ImageProductComponent from '../../ui-components/image-product/image-product';
+import { MenuItem } from '@material-ui/core';
+import { Route, Link } from 'react-router-dom';
 
 const columns = [
   { id: 'articulo', label: 'Articulo', minWidth: 170 },
@@ -29,10 +31,14 @@ const useStyles = makeStyles({
   container: {
     maxHeight: 700,
   },
+  imgContainer: {
+    display: 'flex'
+  }
 });
+const { REACT_APP_API_URL } = process.env;
+
 
 export default function Productos() {
-  const apiUrl = 'http://localhost:5001/api';
   const classes = useStyles();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(20);
@@ -42,17 +48,17 @@ export default function Productos() {
   const [selected, setSelected] = useState([]);
   const [productSelected, setProductSelected] = useState({});
   const [productsData, productsLoading] = useGetFetchData(
-    `${apiUrl}/articulos`,
+    `${REACT_APP_API_URL}/adminarticulos`,
     params
   );
   // eslint-disable-next-line no-unused-vars
   const [productUpdated, productUpdatedLoading] = useCustomFetch(
-    `${apiUrl}/articulo_online`,
+    `${REACT_APP_API_URL}/articulo_online`,
     productSelected
   );
 
   useEffect(() => {
-    if (!productsLoading && apiUrl !== null) {
+    if (!productsLoading && REACT_APP_API_URL !== null) {
       if (productsData.success) {
         console.log(productsData)
         setMetaPagination(productsData);
@@ -149,8 +155,11 @@ export default function Productos() {
                   {columns.map((column) => {
                     if (column.id === 'imagen') {
                       return (
-                        <TableCell key={column.id} align={column.align}>
+                        <TableCell className={classes.imgContainer} key={column.id} align={column.align}>
                           <ImageProductComponent articulo={row.articulo} imgUrl={row.img}/>
+                          <MenuItem component={Link} to={`/admin/producto/${row.articulo}`}>
+                            Imagenes
+                          </MenuItem>
                         </TableCell>
                       );
                     } else {

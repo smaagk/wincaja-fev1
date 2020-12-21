@@ -1,9 +1,11 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
- import { MenuList, MenuItem } from '@material-ui/core';
+import { MenuList, MenuItem } from '@material-ui/core';
 
 import Home from '../home';
 import Productos from './productos/productos';
+import Producto from './producto/producto';
+import MetodosDePago from './metodos-pago/metodos-pago';
 import styled from 'styled-components';
 import Layout, {
   Root,
@@ -13,8 +15,6 @@ import Layout, {
   getSidebarContent,
   getCollapseBtn,
   getContent,
-  getInsetContainer,
-  getInsetSidebar,
   getInsetFooter,
 } from '@mui-treasury/layout';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -24,6 +24,8 @@ import {
   NavHeaderMockUp,
   FooterMockUp,
 } from '@mui-treasury/mockup/layout';
+import Preordenes from './preordenes/preordenes';
+import Preorden from './preorden/preorden';
 
 const Header = getHeader(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -73,7 +75,7 @@ const HomeAdmin = () => {
           <Header>
             <Toolbar>
               <SidebarTrigger sidebarId="primarySidebar" />
-              <HeaderMockUp />
+              
             </Toolbar>
           </Header>
           <DrawerSidebar sidebarId="primarySidebar">
@@ -86,6 +88,12 @@ const HomeAdmin = () => {
                 <MenuItem component={Link} to="/admin/productos">
                   Productos
                 </MenuItem>
+                <MenuItem component={Link} to="/admin/metodos">
+                  Metodos de pago
+                </MenuItem>
+                <MenuItem component={Link} to="/admin/preordenes">
+                  Preordenes
+                </MenuItem>
               </MenuList>
             </SidebarContent>
             <CollapseBtn />
@@ -93,10 +101,11 @@ const HomeAdmin = () => {
           <Content>
             <Route path="/admin/home" component={Home} exact />
             <Route path="/admin/productos" component={Productos} />
+            <Route path="/admin/producto/:articulo" component={Producto} />
+            <Route path="/admin/metodos" component={MetodosDePago} />
+            <Route path="/admin/preordenes" component={Preordenes} />
+            <Route path="/admin/preorden/:preorden" component={Preorden} />
           </Content>
-          <InsetFooter>
-            <FooterMockUp />
-          </InsetFooter>
         </>
       )}
     </Root>

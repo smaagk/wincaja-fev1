@@ -24,7 +24,7 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
     [breakpoints.up('md')]: {
       marginTop: 65,
       marginLeft: 20,
-      maxHeight:200
+      maxHeight:250
     },
   },
   subtotal: {

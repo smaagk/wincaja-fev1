@@ -60,6 +60,7 @@ createStyles({
     paddingTop: 15,
     paddingLeft: 15,
     paddingRight: 15,
+    
   },
   button: {
     marginRight: theme.spacing(1),
@@ -68,5 +69,8 @@ createStyles({
     marginTop: theme.spacing(1),
     marginBottom: theme.spacing(1),
   },
+  stepper: {
+    background: '#fafafa'
+  }
 }),
 );

@@ -22,6 +22,7 @@ const Basket: FC = () => {
         {store.cart.map((data: ItemI) => {
           return (
             <Item
+              key = {data.articulo}
               articulo={data.articulo}
               name={data.name}
               price={data.price}
