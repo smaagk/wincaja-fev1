@@ -8,8 +8,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import Button from '../button';
-import TextInfoContent from '@mui-treasury/components/content/textInfo';
-import { useN01TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n01';
+import { TextContentComponent } from '../../ui-components';
+import { useN04TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n04';
 import { useWideCardMediaStyles } from '@mui-treasury/styles/cardMedia/wide';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
 import noimage from '../../../static/noimage.png';
@@ -26,7 +26,6 @@ function ProductCard(props) {
     const cardStyles = useStyles();
     const wideCardMediaStyles = useWideCardMediaStyles();
     const fadeShadowStyles = useFadedShadowStyles();
-    const textCardContentStyles = useN01TextInfoContentStyles();
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const dispatch = useDispatch();
     const [dataProduct, setDataProduct] = useState({
@@ -80,7 +79,7 @@ function ProductCard(props) {
         <Card className={cx(cardStyles.root, fadeShadowStyles.root)}>
             <CardMedia
                 // component={'img'} // add this line to use <img />
-                classes={wideCardMediaStyles}
+                className={cardStyles.img}
                 image={imgSrc}
             >
                 <div className={cardStyles.chip}>
@@ -90,18 +89,14 @@ function ProductCard(props) {
                                 style={{ color: 'white', marginLeft: 10 }}
                             />
                         }
-                        style={{ backgroundColor: '#08b108', color: 'white' }}
-                        label={`$ ${dataProduct.price.toFixed(2)}`}
+                        className={cardStyles.priceChip}
+                        label={`${dataProduct.price.toFixed(2)}`}
                     />
                 </div>
             </CardMedia>
 
             <CardContent className={cardStyles.content}>
-                <TextInfoContent
-                    classes={textCardContentStyles}
-                    heading={dataProduct.name}
-                    body={dataProduct.description}
-                />
+                <TextContentComponent title={dataProduct.name} description={dataProduct.description}/>
             </CardContent>
             <Box px={3} pb={3}>
                 <Button

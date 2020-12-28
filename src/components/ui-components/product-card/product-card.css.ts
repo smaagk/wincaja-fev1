@@ -20,9 +20,19 @@ const useStyles = makeStyles({
     display: 'flex',
     color: 'white',
   },
+  priceChip: {
+    backgroundColor: 'rgb(0 0 0 / 48%);',
+    width: '50%',
+    height: '40px',
+    fontSize: '19px',
+    color: 'white',
+  },
   chipLabel: {
     color: 'white',
   },
+  img: {
+    height: 300
+  }
 });
 
 export default useStyles;

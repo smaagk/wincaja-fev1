@@ -64,7 +64,7 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setMethod('POST');
-    setUrl(`${REACT_APP_API_URL}/api/authenticate`);
+    setUrl(`${REACT_APP_API_URL}/authenticate`);
   };
 
   return (

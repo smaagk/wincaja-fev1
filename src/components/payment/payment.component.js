@@ -138,7 +138,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
 
     //Se inicializa las credenciales de open pay al iniciar el componente
     useEffect(() => {
-        window.OpenPay.setId(MERCHANT_ID);
+        window.OpenPay.setId(REACT_APP_MERCHANT_ID);
         window.OpenPay.setApiKey('pk_180216fa25694b768c2c4c3e4fd63863');
         window.OpenPay.setSandboxMode(true);
         setDeviceDataId(window.OpenPay.deviceData.setup('paymentForm'));

@@ -16,6 +16,8 @@ const useStyles = makeStyles(() => ({
         WebkitFlexWrap: 'wrap',
         flexWrap: 'wrap',
         justifyContent: 'center',
+        width: '90%',
+        margin: 'auto'
     },
 }));
 
@@ -75,17 +77,19 @@ function Home() {
     }
 
     return (
-        <div className={classes.container}>
+        <div>
             {dataProduct.length > 0 ? (
                 <>
-                    {dataProduct.map((data: any) => {
-                        return (
-                            <ProductCard
-                                key={`${data.img}${data.name}`}
-                                data={data}
-                            />
-                        );
-                    })}
+                    <div className={classes.container}>
+                        {dataProduct.map((data: any) => {
+                            return (
+                                <ProductCard
+                                    key={`${data.img}${data.name}`}
+                                    data={data}
+                                />
+                            );
+                        })}
+                    </div>
                     <br />
                     <TablePagination
                         component="div"
