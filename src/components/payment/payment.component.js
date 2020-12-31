@@ -63,7 +63,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
 
     const [shoppingCartInfo, setShoppingCartInfo] = useState(null);
     const [payment, paymentLoading, paymentError] = useCustomFetch(
-        `${REACT_APP_API_URL}/api/payment`,
+        `${REACT_APP_API_URL}/payment`,
         shoppingCartInfo
     );
     const [startPayment, setStartPayment] = useState(false);
