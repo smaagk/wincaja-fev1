@@ -1,13 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, FC, useEffect } from 'react';
-import { Box, ButtonGroup, Button, Card, CardMedia } from '@material-ui/core';
+import { Box, Button, ButtonGroup, Card, CardMedia } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteIcon from '@material-ui/icons/Delete';
-import useStyles from './item.css';
-import { formatCurrency } from '../../../utils/currency';
+import React, { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { arrayBufferToBase64 } from 'utils/arrrayToBuffer';
+
 import noimage from '../../../static/noimage.png';
+import { formatCurrency } from '../../../utils/currency';
+import useStyles from './item.css';
 
 export type ItemI = {
     articulo?: string;
@@ -27,12 +28,15 @@ const Item: FC<ItemI> = (data: ItemI) => {
     const [imgSrc, setImgSrc] = useState('');
 
     useEffect(() => {
-        const image =
-            data.img !== null
-                ? 'data:image/png;base64,' +
-                  arrayBufferToBase64(data.img.Body.data)
-                : noimage;
-        setImgSrc(image);
+        if (data) {
+            const image =
+                data.img !== null
+                    ? 'data:image/png;base64,' +
+                      arrayBufferToBase64(data.img.Body.data)
+                    : noimage;
+            setImgSrc(image);
+        }
+        console.log(data);
     }, []);
 
     useEffect(() => {
@@ -90,7 +94,6 @@ const Item: FC<ItemI> = (data: ItemI) => {
                             size="small"
                             aria-label="small outlined button group"
                         >
-                            
                             {displayCounter && (
                                 <Button onClick={handleDecrement}>-</Button>
                             )}
@@ -100,7 +103,6 @@ const Item: FC<ItemI> = (data: ItemI) => {
                                 </Button>
                             )}
                             <Button onClick={handleIncrement}>+</Button>
-                           
                         </ButtonGroup>
                         <DeleteIcon
                             onClick={handleDelete}

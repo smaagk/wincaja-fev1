@@ -1,22 +1,23 @@
-import React, { useEffect } from 'react';
+import { Divider, IconButton, makeStyles } from '@material-ui/core';
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormLabel from '@material-ui/core/FormLabel';
-import CreditCardIcon from '@material-ui/icons/CreditCard';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import { Divider, IconButton, makeStyles } from '@material-ui/core';
+import CreditCardIcon from '@material-ui/icons/CreditCard';
 import DeleteIcon from '@material-ui/icons/Delete';
-import PaymentOptionLabel from './payment-option-label';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+
+import PaymentOptionLabel from './payment-option-label';
 
 const useStyles = makeStyles(({ breakpoints, spacing }) => ({
     root: {
         display: 'flex',
         marginBottom: 30,
         margin: 'auto',
-        width: 700,
+        maxWidth: 700,
         flexDirection: 'column',
         alignItems: 'center',
         [breakpoints.up('md')]: {

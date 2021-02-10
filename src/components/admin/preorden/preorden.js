@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,14 +8,16 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import { useState, useEffect } from 'react';
-import useGetFetchData from '../../../custom-hooks/useGetFetchData';
-import useCustomFetch from '../../../custom-hooks/useCustomFetch';
-import Button from '../../ui-components/button';
-import { formatCurrency } from '../../../utils/currency';
-import { useHistory } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
+import React from 'react';
+import { useEffect,useState } from 'react';
+import { useHistory } from 'react-router-dom';
+
+import useCustomFetch from '../../../custom-hooks/useCustomFetch';
+import useGetFetchData from '../../../custom-hooks/useGetFetchData';
+import { formatCurrency } from '../../../utils/currency';
 import { errorSnackbar, successSnackbar } from '../../../utils/snackbar.utils';
+import Button from '../../ui-components/button';
 
 
 
@@ -77,7 +78,6 @@ export default function Preorden(props) {
     useEffect(() => {
         if (!preordenLoading && REACT_APP_API_URL !== null) {
             if (preordenData.success) {
-                console.log(preordenData)
                 setPreorden(preordenData.detalles);
             }
         }
@@ -136,7 +136,6 @@ export default function Preorden(props) {
                     </TableHead>
                     <TableBody>
                         {preorden.map((row) => {
-                            console.log(row);
 
                             return (
                                 <TableRow
@@ -147,7 +146,6 @@ export default function Preorden(props) {
                                 >
                                     {columns.map((column) => {
                                         if (column.id === 'articulo') {
-                                            console.log(row.articulo.nombre)
                                             return (
                                                 <TableCell key={column.id} align={column.align}>
                                                     {row.articulo.nombre}

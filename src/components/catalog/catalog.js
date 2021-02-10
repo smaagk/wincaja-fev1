@@ -1,26 +1,28 @@
-import React from 'react';
-import { Route, Link } from 'react-router-dom';
-import { MenuList, MenuItem } from '@material-ui/core';
-
-import { catalogStyles } from './catalog.styles';
-import styled from 'styled-components';
+import { Drawer,MenuItem, MenuList} from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Toolbar from '@material-ui/core/Toolbar';
 import Layout, {
-    Root,
-    getHeader,
-    getDrawerSidebar,
-    getSidebarTrigger,
-    getSidebarContent,
     getCollapseBtn,
     getContent,
+    getDrawerSidebar,
+    getHeader,
     getInsetFooter,
+    getSidebarContent,
+    getSidebarTrigger,
+    Root,
 } from '@mui-treasury/layout';
-import Toolbar from '@material-ui/core/Toolbar';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import AppMenu from '../menu/menu';
 import Home from 'components/home';
-import { SearchInputComponent } from '../ui-components/search-input/search-input.component';
-import CartBarComponent from '../ui-components/cart-counter/cart-counter.component';
+import React, { useState } from 'react';
+import { useDispatch,useSelector } from 'react-redux';
+import { Link, Route, Switch } from 'react-router-dom';
+import styled from 'styled-components';
+
+import AppMenu from '../app-menu/AppMenu';
 import BuyProcessComponent from '../buy-process/buy-process';
+import ProductDetailsComponent from '../product/product-details'
+import CartBarComponent from '../ui-components/cart-counter/cart-counter.component';
+import { SearchInputComponent } from '../ui-components/search-input/search-input.component';
+import { catalogStyles } from './catalog.styles';
 
 const Header = getHeader(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -63,37 +65,54 @@ scheme.configureInsetSidebar((builder) => {
 
 const Catalog = () => {
     const classes = catalogStyles();
+    const dispatch = useDispatch();
+    const isDrawerOpen = useSelector((state) => state.drawer.isOpen);
+
+    function handleDrawer() {
+        dispatch({ type: 'DRAWER'});
+    }
+
     return (
         <Root scheme={scheme}>
-            {({ state: { sidebar } }) => (
-                <>
-                    <CssBaseline />
-                    <Header>
-                        <Toolbar>
-                            <SidebarTrigger sidebarId="primarySidebar" />
-                            WinCaja
-                            <div className={classes.topBarContainer}>
-                                <SearchInputComponent />
-                                <MenuItem component={Link} to="/tienda/carrito">
-                                    <CartBarComponent />
-                                </MenuItem>
-                            </div>
-                        </Toolbar>
-                    </Header>
-                    <DrawerSidebar sidebarId="primarySidebar">
-                        <SidebarContent>
+            {({ state: { sidebar }, setOpen }) => {
+                sidebar.primarySidebar.open = isDrawerOpen;
+                return (
+                    <>
+                        <CssBaseline />
+                        <Header>
+                            <Toolbar>
+                                <SidebarTrigger sidebarId="primarySidebar" onClick={handleDrawer} />
+                                WinCaja
+                                <div className={classes.topBarContainer}>
+                                    <SearchInputComponent />
+                                    <MenuItem component={Link} to="/tienda/carrito">
+                                        <CartBarComponent />
+                                    </MenuItem>
+                                </div>
+                            </Toolbar>
+                        </Header>
+                        {/* <Drawer anchor='left' open={isDrawerOpen} onClose={handleDrawer}>
                             <AppMenu />
-                        </SidebarContent>
-                        <CollapseBtn />
-                    </DrawerSidebar>
-                    <Content>
-                        <Route path="/" component={Home} exact />
-                        <Route path="/tienda" component={Home} exact />
-                        <Route path="/tienda/carrito" component={BuyProcessComponent} exact/>
-                    </Content>
-                    <InsetFooter></InsetFooter>
-                </>
-            )}
+                        </Drawer> */}
+                        <DrawerSidebar onClose={handleDrawer} sidebarId="primarySidebar">
+                            <SidebarContent>
+                                <AppMenu  />
+                            </SidebarContent>
+                            <CollapseBtn />
+                        </DrawerSidebar>
+                        <Content>
+                            <Switch>
+                                <Route path="/" component={Home} exact />
+                                <Route path="/tienda" component={Home} exact />
+                                <Route path="/tienda/categoria/:categoria" component={Home} exact />
+                                <Route path="/tienda/producto/:articulo" component={ProductDetailsComponent} exact />
+                                <Route path="/tienda/carrito" component={BuyProcessComponent} exact/>
+                            </Switch>
+                        </Content>
+                        <InsetFooter></InsetFooter>
+                    </>
+                )
+            }}
         </Root>
     );
 };

@@ -1,29 +1,29 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import MuiAccordion from '@material-ui/core/Accordion';
-import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
-import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
 import {
-  TextField,
+  Button,
   FormControl,
   InputLabel,
-  Select,
   MenuItem,
-  Button,
+  Select,
+  TextField,
 } from '@material-ui/core';
+import MuiAccordion from '@material-ui/core/Accordion';
+import MuiAccordionDetails from '@material-ui/core/AccordionDetails';
+import MuiAccordionSummary from '@material-ui/core/AccordionSummary';
+import { withStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import React, { useEffect, useRef,useState } from 'react';
+import { useDispatch } from 'react-redux';
+
+import useFetch from '../../../custom-hooks/useFetch';
+import useForm from '../../../custom-hooks/useForm';
+import { setStatusAlert,StatusAlert } from '../../../utils/snackbar.utils';
+import CustomSnackBar from '../../ui-components/custom-snackbar';
 import {
   AccordionStyles,
   AccordionSummaryStyles,
   AddAddressStyles,
 } from './add-address.styles';
-
-import useForm from '../../../custom-hooks/useForm';
 import validateSchema, { IAddress } from './validate-address';
-import { StatusAlert, setStatusAlert } from '../../../utils/snackbar.utils';
-import CustomSnackBar from '../../ui-components/custom-snackbar';
-import { useDispatch } from 'react-redux';
-import useFetch from '../../../custom-hooks/useFetch';
 
 const Accordion = withStyles(AccordionStyles)(MuiAccordion);
 const AccordionSummary = withStyles(AccordionSummaryStyles)(
@@ -99,7 +99,6 @@ export default function CustomizedAccordions() {
     },5000)
   }
   useEffect(() => {
-    console.log(addresses);
     if (!addressCreatedLoading && addressCreated) {
       if (addressCreated.success) {
         dispatch({ type: 'ADDADDRESS', payload: addressCreated.newAddress[0]});

@@ -1,9 +1,10 @@
+import { Divider,Paper } from '@material-ui/core';
 import React, { useState } from 'react';
-import { Paper, Divider } from '@material-ui/core';
-import useStyles from './access.styles';
+
 import Login from '../login/login';
 import RegisterComponent from '../register/register.component'
 import Button from '../ui-components/button';
+import useStyles from './access.styles';
 function AccessComponent() {
   const classes = useStyles();
   const [showLoginForm, setShowLoginForm] = useState(true);

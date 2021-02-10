@@ -1,16 +1,14 @@
-import React from 'react'
-import { makeStyles, createStyles } from '@material-ui/core/styles'
-
 import List from '@material-ui/core/List'
-
-import IconDashboard from '@material-ui/icons/Dashboard'
-import IconShoppingCart from '@material-ui/icons/ShoppingCart'
-import IconPeople from '@material-ui/icons/People'
+import { createStyles,makeStyles } from '@material-ui/core/styles'
+import { AccountCircle, ExitToApp,LocalMall, Store } from '@material-ui/icons'
 import IconBarChart from '@material-ui/icons/BarChart'
+import IconDashboard from '@material-ui/icons/Dashboard'
 import IconLibraryBooks from '@material-ui/icons/LibraryBooks'
+import IconPeople from '@material-ui/icons/People'
+import IconShoppingCart from '@material-ui/icons/ShoppingCart'
+import React from 'react'
 
 import AppMenuItem from './menu-item'
-import { AccountCircle, LocalMall, Store, ExitToApp } from '@material-ui/icons'
 
 const appMenuItems = [
   {
@@ -31,7 +29,9 @@ const appMenuItems = [
   {
     name: 'Comprar por categoria',
     Icon: Store,
-    items: [],
+    items: [{
+      name: 'Level 2',
+    }],
   },
   {
     name: 'Cerrar sesión',

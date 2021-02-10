@@ -1,17 +1,17 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { makeStyles, createStyles } from '@material-ui/core/styles';
-
+import Collapse from '@material-ui/core/Collapse';
+import Divider from '@material-ui/core/Divider';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import Collapse from '@material-ui/core/Collapse';
-
+import { createStyles,makeStyles } from '@material-ui/core/styles';
 import IconExpandLess from '@material-ui/icons/ExpandLess';
 import IconExpandMore from '@material-ui/icons/ExpandMore';
+import PropTypes from 'prop-types';
+import React from 'react';
 import { useDispatch } from 'react-redux';
+
+import AppMenuItemComponent from './menu-item.component';
 
 // React runtime PropTypes
 export const AppMenuItemPropTypes = {
@@ -52,7 +52,7 @@ const AppMenuItem: React.FC<AppMenuItemProps> = (props) => {
     }
 
     const MenuItemRoot = (
-        <ListItem button className={classes.menuItem} onClick={handleClick}>
+        <AppMenuItemComponent  className={classes.menuItem} onClick={handleClick}>
             {/* Display an icon if any */}
             {!!Icon && (
                 <ListItemIcon className={classes.menuItemIcon}>
@@ -63,7 +63,7 @@ const AppMenuItem: React.FC<AppMenuItemProps> = (props) => {
             {/* Display the expand menu if the item has children */}
             {isExpandable && !open && <IconExpandMore />}
             {isExpandable && open && <IconExpandLess />}
-        </ListItem>
+        </AppMenuItemComponent>
     );
 
     const MenuItemChildren = isExpandable ? (

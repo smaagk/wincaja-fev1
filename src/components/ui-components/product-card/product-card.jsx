@@ -1,25 +1,25 @@
-import React, { FC, useState, useEffect } from 'react';
-import cx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
+import Avatar from '@material-ui/core/Avatar';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
+import { makeStyles } from '@material-ui/core/styles';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import Button from '../button';
-import { TextContentComponent } from '../../ui-components';
-import { useN04TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n04';
 import { useWideCardMediaStyles } from '@mui-treasury/styles/cardMedia/wide';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
-import noimage from '../../../static/noimage.png';
-import useStyles from './product-card.css';
-import { useDispatch, useSelector } from 'react-redux';
-import Avatar from '@material-ui/core/Avatar';
-import { arrayBufferToBase64 } from '../../../utils/arrrayToBuffer';
+import { useN04TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n04';
+import cx from 'clsx';
 import { useSnackbar } from 'notistack';
-import { successSnackbar } from '../../../utils/snackbar.utils';
+import React, { FC, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
+import noimage from '../../../static/noimage.png';
+import { arrayBufferToBase64 } from '../../../utils/arrrayToBuffer';
+import { successSnackbar } from '../../../utils/snackbar.utils';
+import { TextContentComponent } from '../../ui-components';
+import Button from '../button';
+import useStyles from './product-card.css';
 
 function ProductCard(props) {
     const store = useSelector((state) => state.cart);
@@ -39,7 +39,7 @@ function ProductCard(props) {
     const [imgSrc, setImgSrc] = useState('');
 
     useEffect(() => {
-        console.log(props.data)
+        console.log(props.data);
         setDataProduct({
             articulo: `${props.data.articulo}`,
             img: props.data.img,
@@ -57,7 +57,7 @@ function ProductCard(props) {
     }, []);
 
     function handleAddProduct() {
-        if ( store.cart.findIndex((x) => x.articulo === dataProduct.articulo) === -1 ) {
+        if ( store.cart.findIndex((x) => x.articulo === dataProduct.articulo) === -1) {
             dispatch({
                 type: 'ADDPRODUCT',
                 payload: dataProduct,
@@ -69,10 +69,7 @@ function ProductCard(props) {
             });
         }
 
-        enqueueSnackbar(
-            'Producto añadido al carrrito',
-            successSnackbar
-        );
+        enqueueSnackbar('Producto añadido al carrrito', successSnackbar);
     }
 
     return (
@@ -81,7 +78,15 @@ function ProductCard(props) {
                 // component={'img'} // add this line to use <img />
                 className={cardStyles.img}
                 image={imgSrc}
-            >
+            ></CardMedia>
+
+            <CardContent className={cardStyles.content}>
+                <TextContentComponent
+                    title={dataProduct.name}
+                    description={dataProduct.description}
+                />
+            </CardContent>
+            <Box px={3} pb={3}>
                 <div className={cardStyles.chip}>
                     <Chip
                         icon={
@@ -93,12 +98,6 @@ function ProductCard(props) {
                         label={`${dataProduct.price.toFixed(2)}`}
                     />
                 </div>
-            </CardMedia>
-
-            <CardContent className={cardStyles.content}>
-                <TextContentComponent title={dataProduct.name} description={dataProduct.description}/>
-            </CardContent>
-            <Box px={3} pb={3}>
                 <Button
                     title="Añadir al carrito"
                     onClick={handleAddProduct}

@@ -4,3 +4,5 @@ export const creditCardConstants = {
     METODOPAGONOELECCIONADO: 'Por favor selecciona un método de pago',
     NOADDRESS: 'Por favor selecciona una dirección para entregar el pedido'
 };
+
+export const { REACT_APP_API_URL } = process.env;

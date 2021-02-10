@@ -4,7 +4,7 @@ const useStyles = makeStyles({
   container: {
     display: "flex",
     margin : "auto",
-    width: "400px"
+    maxWidth: "400px"
   },
   loginContainer: {
     width: "100%",

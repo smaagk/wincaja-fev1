@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-
+import { CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TablePagination from '@material-ui/core/TablePagination';
-import ProductCard from './ui-components/product-card/product-card';
-import useGetFetchData from '../custom-hooks/useGetFetchData';
-import useDebounce from '../custom-hooks/useDebounce';
-
+import * as _ from 'lodash';
+import React, { useEffect,useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from 'store';
-import { CircularProgress } from '@material-ui/core';
+
+import useDebounceSearch from '../custom-hooks/useDebounce';
+import useGetFetchData from '../custom-hooks/useGetFetchData';
+import { CategoriesSearch } from './categories-search/CategoriesSearch';
+import ProductCard from './ui-components/product-card/product-card';
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -25,8 +26,8 @@ const { REACT_APP_API_URL } = process.env;
 
 function Home() {
     const classes = useStyles();
-    const { searchValue } = useSelector((state: RootState) => state.search);
-    const debouncedSearchTerm = useDebounce(searchValue, 1000);
+    const { simpleSearchValue } = useSelector((state: RootState) => state.search);
+    const debouncedSearchTerm = useDebounceSearch(simpleSearchValue, 1000);
     const [params, setParams] = useState({});
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(20);
@@ -34,6 +35,9 @@ function Home() {
         `${REACT_APP_API_URL}/articulos`,
         params
     );
+  
+    const [paramsAutocomplete, setParamsAutocompleteParams] = useState({});
+
     const [dataProduct, setDataProduct] = useState([]);
 
     const handleChangePage = (
@@ -54,30 +58,32 @@ function Home() {
     useEffect(() => {
         if (!productsLoading && REACT_APP_API_URL !== null) {
             if (productsData.success) {
-                console.log(productsData);
                 setDataProduct(mapProducts(productsData.rows));
             }
         }
     }, [productsLoading]);
 
     useEffect(() => {
-        setParams({ ...params, phrase: debouncedSearchTerm });
+        if(debouncedSearchTerm) {
+            setParams({ ...params, phrase: debouncedSearchTerm });
+        }
     }, [debouncedSearchTerm]);
 
     function mapProducts(products: any) {
         return products.map((product: any) => {
-            return {
-                articulo: product.articulo,
-                name: product.nombre,
-                description: product.descripcion,
-                img: product.img,
-                price: Math.random() * 1000,
-            };
+                return {
+                    articulo: product.articulo,
+                    name: product.nombre,
+                    description: product.descripcion,
+                    img: product.img,
+                    price: !_.isEmpty(product.precio) ? product.precio[0].Precio : 0 
+                };
         });
     }
 
     return (
         <div>
+            <CategoriesSearch/>
             {dataProduct.length > 0 ? (
                 <>
                     <div className={classes.container}>
@@ -96,6 +102,7 @@ function Home() {
                         count={100}
                         page={page}
                         onChangePage={handleChangePage}
+                        labelRowsPerPage="Productos por página"
                         rowsPerPage={rowsPerPage}
                         onChangeRowsPerPage={handleChangeRowsPerPage}
                     />

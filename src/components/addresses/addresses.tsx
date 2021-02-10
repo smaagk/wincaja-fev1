@@ -1,14 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { RootState } from '../../store';
-import { useSelector, useDispatch } from 'react-redux';
-import AccessComponent from '../access/acccess';
-import Address from './address/address';
-import AddAddressComponent from './addAddressComponent/add-address.component';
 import { makeStyles } from '@material-ui/core';
-import useGetFetchData from '../../custom-hooks/useGetFetchData';
-import { IAddress } from './addAddressComponent/validate-address';
-import useDeleteFetch from '../../custom-hooks/useDelete';
 import * as _ from 'lodash';
+import React, { useEffect, useState } from 'react';
+import { useDispatch,useSelector } from 'react-redux';
+
+import useDeleteFetch from '../../custom-hooks/useDelete';
+import useGetFetchData from '../../custom-hooks/useGetFetchData';
+import { RootState } from '../../store';
+import AccessComponent from '../access/acccess';
+import AddAddressComponent from './addAddressComponent/add-address.component';
+import { IAddress } from './addAddressComponent/validate-address';
+import Address from './address/address';
 
 const AddressStyles = makeStyles({
   container: {
@@ -43,8 +44,6 @@ function AddressesComponent() {
     if (_.isEmpty(addresses)) {
       setParamsAddress(true);
     }
-
-    console.log(addresses)
   }, []);
 
   useEffect(() => {
@@ -58,9 +57,7 @@ function AddressesComponent() {
   }
 
   useEffect(() => {
-    console.log(deleteAddressLoading)
     if (!deleteAddressLoading && deletedAddress === 1) {
-      console.log("borrando")
       dispatch({ type: 'DELETEADDRESS', payload: addressToDelete.alias });
     }
   }, [deleteAddressLoading]);

@@ -1,21 +1,21 @@
+import FormControl from '@material-ui/core/FormControl';
+import IconButton from '@material-ui/core/IconButton';
+import InputAdornment from '@material-ui/core/InputAdornment';
+import InputLabel from '@material-ui/core/InputLabel';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import TextField from '@material-ui/core/TextField';
+import Visibility from '@material-ui/icons/Visibility';
+import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import React from 'react';
-import { useState, useEffect } from 'react';
+import { useEffect,useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
 import useCustomFetch from '../../custom-hooks/useCustomFetch';
-import CustomSnackBar from '../ui-components/custom-snackbar';
-import Button from '../ui-components/button';
-import TextField from '@material-ui/core/TextField';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import IconButton from '@material-ui/core/IconButton';
-import useStyles from './logincss';
 import { setStatusAlert } from '../../utils/snackbar.utils';
+import Button from '../ui-components/button';
+import CustomSnackBar from '../ui-components/custom-snackbar';
+import useStyles from './logincss';
 
 const { REACT_APP_API_URL } = process.env;
 

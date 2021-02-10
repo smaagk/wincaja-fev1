@@ -6,7 +6,7 @@ const useStyles = makeStyles({
     alignItems: "center",
     margin : "auto",
     height: "600px",
-    width: "400px"
+    maxWidth: "400px"
   },
   loginContainer: {
     height: "300px",

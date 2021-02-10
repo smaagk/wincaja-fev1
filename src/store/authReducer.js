@@ -15,6 +15,8 @@ const authReducer = (state = initialState, action) => {
 			};
 		case 'LOGOUT':
 			localStorage.clear();
+			window.location.href = '/tienda/home';
+			
 			return {
 				...state,
 				isAuthenticated: false,

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { MenuItem } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
+import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -9,15 +9,13 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import VisibilityIcon from '@material-ui/icons/Visibility';
-import Checkbox from '@material-ui/core/Checkbox';
-import { useState, useEffect } from 'react';
-import useGetFetchData from '../../../custom-hooks/useGetFetchData';
-import useCustomFetch from '../../../custom-hooks/useCustomFetch';
-import ImageProductComponent from '../../ui-components/image-product/image-product';
-import { MenuItem } from '@material-ui/core';
-import { Route, Link } from 'react-router-dom';
+import React from 'react';
+import { useEffect,useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router-dom';
+
+import useCustomFetch from '../../../custom-hooks/useCustomFetch';
+import useGetFetchData from '../../../custom-hooks/useGetFetchData';
 
 
 const columns = [
@@ -65,13 +63,13 @@ export default function Preordenes() {
   const [params, setParams] = useState({});
   const [products, setProducts] = useState([]);
   const [selected, setSelected] = useState([]);
-  const [productSelected, setProductSelected] = useState({});
+  const [productSelected] = useState({});
   const [preordenData, preordenLoading] = useGetFetchData(
     `${REACT_APP_API_URL}/preorden`,
     params
   );
   // eslint-disable-next-line no-unused-vars
-  const [productUpdated, productUpdatedLoading] = useCustomFetch(
+  const [] = useCustomFetch(
     `${REACT_APP_API_URL}/articulo_online`,
     productSelected
   );
@@ -79,7 +77,6 @@ export default function Preordenes() {
   useEffect(() => {
     if (!preordenLoading && REACT_APP_API_URL !== null) {
       if (preordenData.success) {
-        console.log(preordenData)
         setMetaPagination(preordenData);
       }
     }
@@ -113,9 +110,6 @@ export default function Preordenes() {
 
   const isSelected = (articulo) => selected.indexOf(articulo) !== -1;
 
-  const getPreorden = (id) => {
-    history.push(`/admin/preorden/${id}`);
-  }
 
   return (
     <Paper className={classes.root}>

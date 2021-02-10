@@ -13,6 +13,8 @@ const searchReducer = (state = initialState, action: actionI) => {
   switch (action.type) {
     case 'SETSEARCH':
       return { searchValue: data };
+    case 'SETSIMPLESEARCH':
+      return { simpleSearchValue: data };
     default:
       return state;
   }

@@ -1,27 +1,28 @@
-import React, { FC, useState, useEffect } from 'react';
-import cx from 'clsx';
-import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
+import { makeStyles } from '@material-ui/core/styles';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import DeleteIcon from '@material-ui/icons/Delete';
-import Button from '../../ui-components/button';
 import TextInfoContent from '@mui-treasury/components/content/textInfo';
-import { useN01TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n01';
+import DotIndicator from '@mui-treasury/components/indicator/dot';
 import { useWideCardMediaStyles } from '@mui-treasury/styles/cardMedia/wide';
 import { useFadedShadowStyles } from '@mui-treasury/styles/shadow/faded';
-import noimage from '../../../static/noimage.png';
-import useStyles from './prodruct-card-admin.css';
+import { useN01TextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/n01';
+import cx from 'clsx';
+import React, { FC, useEffect,useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import useGetFetchData from '../../../custom-hooks/useGetFetchData';
+
 import useDeleteFetch from '../../../custom-hooks/useDelete';
+import useGetFetchData from '../../../custom-hooks/useGetFetchData';
 import useUploadFile from '../../../custom-hooks/useUploadFile';
-import DotIndicator from '@mui-treasury/components/indicator/dot';
+import noimage from '../../../static/noimage.png';
 import { arrayBufferToBase64 } from '../../../utils/arrrayToBuffer';
+import Button from '../../ui-components/button';
 import ImageProductDialog from '../../ui-components/image-product/image-product-dialog/image-product-dialog';
+import useStyles from './prodruct-card-admin.css';
 
 const { REACT_APP_API_URL } = process.env;
 
@@ -61,11 +62,11 @@ function ProductAdminCard(props) {
 
     useEffect(() => {
         if (productsLoading === false) {
-            console.log(productsData)
+
             setDataProduct({
                 articulo: `${productsData.articulo}`,
                 img: productsData.img,
-                name: productsData.nombbre,
+                name: productsData.nombre,
                 description: productsData.descripcion,
                 price: 123,
             });
@@ -80,6 +81,12 @@ function ProductAdminCard(props) {
         }
     }, [indexImg]);
 
+    useEffect(() => {
+        if( image_upload === 'imagen creada'){
+            window.location.reload();
+        }
+    }, [image_upload_loading])
+
     function setImageInCard(index) {
         const image =
             productsData.img[index] !== undefined
@@ -92,6 +99,7 @@ function ProductAdminCard(props) {
 
     function handleDeleteImage() {
         setImageToDelete({ key: productsData.img[indexImg].key });
+        window.location.reload();
     }
 
     function handleDialogClose() {

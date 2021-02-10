@@ -18,10 +18,11 @@ const useStyles = makeStyles({
   },
   chip: {
     display: 'flex',
+    justifyContent: 'center',
     color: 'white',
   },
   priceChip: {
-    backgroundColor: 'rgb(0 0 0 / 48%);',
+    backgroundColor: 'rgb(113 164 189)',
     width: '50%',
     height: '40px',
     fontSize: '19px',
