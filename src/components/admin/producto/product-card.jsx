@@ -88,13 +88,15 @@ function ProductAdminCard(props) {
     }, [image_upload_loading])
 
     function setImageInCard(index) {
-        const image =
+        if(productsData.img.length > 0) {
+            const image =
             productsData.img[index] !== undefined
                 ? 'data:image/png;base64,' +
                   arrayBufferToBase64(productsData.img[index].data.Body.data)
                 : noimage;
 
-        setImgSrc(image);
+            setImgSrc(image);
+        }
     }
 
     function handleDeleteImage() {
@@ -123,7 +125,7 @@ function ProductAdminCard(props) {
                         className={cx(cardStyles.root, fadeShadowStyles.root)}
                     >
                         <CardMedia classes={wideCardMediaStyles} image={imgSrc}>
-                            <div className={cardStyles.chip}>
+                            { productsData.img.length > 0 ? (<div className={cardStyles.chip}>
                                 <Chip
                                     icon={
                                         <DeleteIcon
@@ -140,7 +142,7 @@ function ProductAdminCard(props) {
                                     label={`Borrar imagen`}
                                     onClick={handleDeleteImage}
                                 />
-                            </div>
+                            </div>) : <></> }
                         </CardMedia>
                         {dataProduct.img.map((val,index) => (
                             <DotIndicator

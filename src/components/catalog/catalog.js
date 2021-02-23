@@ -11,6 +11,7 @@ import Layout, {
     getSidebarTrigger,
     Root,
 } from '@mui-treasury/layout';
+import AccessComponent from 'components/access/acccess';
 import Home from 'components/home';
 import React, { useState } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
@@ -19,6 +20,7 @@ import styled from 'styled-components';
 
 import AppMenu from '../app-menu/AppMenu';
 import BuyProcessComponent from '../buy-process/buy-process';
+import ConfirmationOrder from '../confirmation/ConfirmationOrder'
 import ProductDetailsComponent from '../product/product-details'
 import CartBarComponent from '../ui-components/cart-counter/cart-counter.component';
 import { SearchInputComponent } from '../ui-components/search-input/search-input.component';
@@ -107,6 +109,8 @@ const Catalog = () => {
                                 <Route path="/tienda/categoria/:categoria" component={Home} exact />
                                 <Route path="/tienda/producto/:articulo" component={ProductDetailsComponent} exact />
                                 <Route path="/tienda/carrito" component={BuyProcessComponent} exact/>
+                                <Route path='/tienda/confirmacion' component={ConfirmationOrder} exact/>
+                                <Route path='/tienda/login' component={AccessComponent} exact/>
                             </Switch>
                         </Content>
                         <InsetFooter></InsetFooter>

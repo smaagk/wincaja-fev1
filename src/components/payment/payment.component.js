@@ -1,5 +1,6 @@
 import 'react-credit-cards/es/styles-compiled.css';
 
+import { CircularProgress } from '@material-ui/core';
 import { Card, TextField } from '@material-ui/core';
 import { useOverShadowStyles } from '@mui-treasury/styles/shadow/over';
 import { useBlogTextInfoContentStyles } from '@mui-treasury/styles/textInfoContent/blog';
@@ -7,9 +8,10 @@ import cx from 'clsx';
 import useCustomFetch from 'custom-hooks/useCustomFetch';
 import useFetch from 'custom-hooks/useFetch';
 import { useSnackbar } from 'notistack';
-import React, { useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Cards from 'react-credit-cards';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import { creditCardConstants } from '../../constants/app.constants';
 import useFetchOpenPay from '../../custom-hooks/useFetchOpenPay';
@@ -42,10 +44,15 @@ const cardDataInitialState = {
         isValid: undefined,
     },
 };
-const { REACT_APP_API_URL, REACT_APP_MERCHANT_ID, REACT_APP_APIOPENPAY } = process.env;
+const {
+    REACT_APP_API_URL,
+    REACT_APP_MERCHANT_ID,
+    REACT_APP_APIOPENPAY,
+} = process.env;
 
 export const PaymentCardComponent = React.memo(function PaymentCard() {
     const dispatch = useDispatch();
+    const history = useHistory();
     const { metodoPago } = useSelector((state) => state.payment);
     const address = useSelector((state) => state.address);
     const { cart } = useSelector((state) => state.cart);
@@ -69,6 +76,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
         shoppingCartInfo
     );
     const [startPayment, setStartPayment] = useState(false);
+    const [paymentLoadingProgress, setPaymentLoadingProgress] = useState(false);
     const [preorden, setPreorden] = useState({});
     const [
         preordenCreated,
@@ -181,7 +189,6 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
 
     useEffect(() => {
         if (tokenResponse !== null && startPayment) {
-            console.log(tokenResponse);
             const articulos = cart.map((val) => {
                 return { articulo: val.articulo, quantity: val.quantity };
             });
@@ -211,9 +218,17 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
         }
     }, [preordenCreatedLoading]);
 
+    useEffect(() => {
+        if (paymentLoading !== false && payment && payment.success) {
+            history.push('/tienda/confirmacion');
+            dispatch({ type: 'CLEANCART' })
+        }
+    }, [paymentLoading, payment]);
+
     function makeOrder() {
         if (checkValidDataCard(cardData)) {
             setStartPayment(true);
+            setPaymentLoadingProgress(true);
         } else {
             enqueueSnackbar(creditCardConstants.INCOMPLETEDATA, errorSnackbar);
         }
@@ -245,128 +260,144 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
     }
 
     return (
-        <>
-            <PaymentOption />
-            {metodoPago === 'Linea' ? (
-                <Card className={cx(styles.root, shadowStyles.root)}>
-                    <div className={styles.media}>
-                        <Cards
-                            cvc={cardData.cvc.value}
-                            expiry={cardData.expiry.value}
-                            focused={cardData.focused.value}
-                            name={cardData.name.value}
-                            locale={{ valid: 'Válida hasta' }}
-                            placeholders={{ name: 'Nombre del titular' }}
-                            number={cardData.number.value}
-                        />
-                    </div>
-                    <div className={styles.payment}>
-                        <form
-                            id="paymentForm"
-                            className={styles.formPayment}
-                            noValidate
-                            autoComplete="off"
-                        >
-                            <TextField
-                                label="Nombre del titular"
-                                name="name"
-                                onChange={handleInput}
-                                onFocus={handleInputFocus}
-                                InputProps={{
-                                    endAdornment: (
-                                        <ValidationAdornment
-                                            status={cardData.name.isValid}
-                                        />
-                                    ),
-                                }}
-                                error={isValidAndTouched('name')}
-                                variant="outlined"
-                            />
-                            <TextField
-                                label="Numero de la tarjeta"
-                                name="number"
-                                onChange={handleInput}
-                                onFocus={handleInputFocus}
-                                variant="outlined"
-                                autoComplete="cc-number"
-                                InputProps={{
-                                    endAdornment: (
-                                        <ValidationAdornment
-                                            status={cardData.number.isValid}
-                                        />
-                                    ),
-                                }}
-                                error={isValidAndTouched('number')}
-                            />
-
-                            <div className={styles.formBox}>
-                                <TextField
-                                    label="Mes"
-                                    name="month"
-                                    onFocus={handleInputFocus}
-                                    onChange={handleInputExpiry}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <ValidationAdornment
-                                                status={
-                                                    cardData.expiry.isMonthValid
-                                                }
-                                            />
-                                        ),
+        <div>
+            {paymentLoadingProgress ? (
+                <CircularProgress />
+            ) : (
+                <>
+                    <PaymentOption />
+                    {metodoPago === 'Linea' ? (
+                        <Card className={cx(styles.root, shadowStyles.root)}>
+                            <div className={styles.media}>
+                                <Cards
+                                    cvc={cardData.cvc.value}
+                                    expiry={cardData.expiry.value}
+                                    focused={cardData.focused.value}
+                                    name={cardData.name.value}
+                                    locale={{ valid: 'Válida hasta' }}
+                                    placeholders={{
+                                        name: 'Nombre del titular',
                                     }}
-                                    variant="outlined"
-                                />
-                                <TextField
-                                    label="Año"
-                                    name="year"
-                                    onFocus={handleInputFocus}
-                                    onChange={handleInputExpiry}
-                                    InputProps={{
-                                        endAdornment: (
-                                            <ValidationAdornment
-                                                status={
-                                                    cardData.expiry.isYearValid
-                                                }
-                                            />
-                                        ),
-                                    }}
-                                    variant="outlined"
-                                />
-                                <TextField
-                                    onFocus={handleInputFocus}
-                                    onChange={handleInput}
-                                    label="CVC"
-                                    name="cvc"
-                                    variant="outlined"
-                                    type="number"
-                                    InputProps={{
-                                        endAdornment: (
-                                            <ValidationAdornment
-                                                status={cardData.cvc.isValid}
-                                            />
-                                        ),
-                                    }}
-                                    error={isValidAndTouched('cvc')}
+                                    number={cardData.number.value}
                                 />
                             </div>
-                            <Button
-                                className={buttonStyles}
-                                title="Proceder al pago"
-                                color="deepGreen"
-                                onClick={makeOrder}
-                            ></Button>
-                        </form>
-                    </div>
-                </Card>
-            ) : (
-                <Button
-                    className={buttonStyles}
-                    title="Finalizar pedido"
-                    color="deepGreen"
-                    onClick={makePreOrder}
-                ></Button>
+                            <div className={styles.payment}>
+                                <form
+                                    id="paymentForm"
+                                    className={styles.formPayment}
+                                    noValidate
+                                    autoComplete="off"
+                                >
+                                    <TextField
+                                        label="Nombre del titular"
+                                        name="name"
+                                        onChange={handleInput}
+                                        onFocus={handleInputFocus}
+                                        InputProps={{
+                                            endAdornment: (
+                                                <ValidationAdornment
+                                                    status={
+                                                        cardData.name.isValid
+                                                    }
+                                                />
+                                            ),
+                                        }}
+                                        error={isValidAndTouched('name')}
+                                        variant="outlined"
+                                    />
+                                    <TextField
+                                        label="Numero de la tarjeta"
+                                        name="number"
+                                        onChange={handleInput}
+                                        onFocus={handleInputFocus}
+                                        variant="outlined"
+                                        autoComplete="cc-number"
+                                        InputProps={{
+                                            endAdornment: (
+                                                <ValidationAdornment
+                                                    status={
+                                                        cardData.number.isValid
+                                                    }
+                                                />
+                                            ),
+                                        }}
+                                        error={isValidAndTouched('number')}
+                                    />
+
+                                    <div className={styles.formBox}>
+                                        <TextField
+                                            label="Mes"
+                                            name="month"
+                                            onFocus={handleInputFocus}
+                                            onChange={handleInputExpiry}
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <ValidationAdornment
+                                                        status={
+                                                            cardData.expiry
+                                                                .isMonthValid
+                                                        }
+                                                    />
+                                                ),
+                                            }}
+                                            variant="outlined"
+                                        />
+                                        <TextField
+                                            label="Año"
+                                            name="year"
+                                            onFocus={handleInputFocus}
+                                            onChange={handleInputExpiry}
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <ValidationAdornment
+                                                        status={
+                                                            cardData.expiry
+                                                                .isYearValid
+                                                        }
+                                                    />
+                                                ),
+                                            }}
+                                            variant="outlined"
+                                        />
+                                        <TextField
+                                            onFocus={handleInputFocus}
+                                            onChange={handleInput}
+                                            label="CVC"
+                                            name="cvc"
+                                            variant="outlined"
+                                            type="number"
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <ValidationAdornment
+                                                        status={
+                                                            cardData.cvc.isValid
+                                                        }
+                                                    />
+                                                ),
+                                            }}
+                                            error={isValidAndTouched('cvc')}
+                                        />
+                                    </div>
+                                    <Button
+                                        className={buttonStyles}
+                                        title="Proceder al pago"
+                                        color="deepGreen"
+                                        onClick={makeOrder}
+                                    ></Button>
+                                </form>
+                            </div>
+                        </Card>
+                    ) : (
+                        <Button
+                            className={buttonStyles}
+                            title="Finalizar pedido"
+                            color="deepGreen"
+                            onClick={makePreOrder}
+                        ></Button>
+                    )}
+                </>
             )}
-        </>
+        </div>
     );
 });
 

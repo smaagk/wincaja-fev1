@@ -8,6 +8,7 @@ import { ISearchInput } from 'interfaces/search-input.interface';
 import _ from 'lodash';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { RootState } from 'store';
 
 const { REACT_APP_API_URL } = process.env;
@@ -22,6 +23,7 @@ export function SearchInputComponent(props: ISearchInput) {
     const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
     const [options, setOptions] = useState<Productos[]>([]);
+    const history = useHistory();
     const loading = open && options.length === 0;
 
     const { searchValue } = useSelector((state: RootState) => state.search);
@@ -80,6 +82,10 @@ export function SearchInputComponent(props: ISearchInput) {
         });
     }, [open]);
 
+    const handleGoToProduct = (option: any) => {
+        history.push(`/tienda/producto/${option.articulo}`)
+    }
+
     return (
         <Autocomplete
             id="asynchronous-demo"
@@ -91,9 +97,8 @@ export function SearchInputComponent(props: ISearchInput) {
             onClose={() => {
                 setOpen(false);
             }}
+            onChange={(event: any, value: any) => handleGoToProduct(value)} 
             getOptionSelected={(option, value) => { 
-                console.log(option)
-                window.location.href = `tienda/producto/${option.articulo}`
                 return option.name === value.name }}
             getOptionLabel={(option) => option.name}
             options={options}

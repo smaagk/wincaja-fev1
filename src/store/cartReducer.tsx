@@ -82,6 +82,10 @@ const cartReducer = (state = initialState, action: actionI) => {
                 total: Number(total) - item.quantity * item.price,
                 qtyTotal: qtyTotal - item.quantity,
             };
+        case 'CLEANCART':
+            return {
+                ...initialState
+            }
         default:
             return state;
     }

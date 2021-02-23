@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import React from 'react';
-import { useEffect,useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
@@ -20,95 +20,113 @@ import useStyles from './logincss';
 const { REACT_APP_API_URL } = process.env;
 
 function Login() {
-  let history = useHistory();
-  const dispatch = useDispatch();
-  const classes = useStyles();
-  const [values, setValues] = useState({
-    idUsuario: '',
-    password: '',
-    showPassword: false,
-  });
-  const [method, setMethod] = useState(null);
-  const [url, setUrl] = useState(null);
-  const [auth_values, auth_loading, auth_error] = useCustomFetch(url, values);
+    let history = useHistory();
+    const dispatch = useDispatch();
+    const classes = useStyles();
+    const [values, setValues] = useState({
+        idUsuario: '',
+        password: '',
+        showPassword: false,
+    });
+    const [method, setMethod] = useState(null);
+    const [url, setUrl] = useState(null);
+    const [auth_values, auth_loading, auth_error] = useCustomFetch(url, values);
 
-  const [snackStatus, setSnackStatus] = useState(null);
+    const [snackStatus, setSnackStatus] = useState(null);
 
-  useEffect(() => {
-    if (!auth_loading && url !== null) {
-      if (auth_values.success) {
-        dispatch({
-          type: 'LOGIN',
-          payload: auth_values,
-        });
-        setSnackStatus(setStatusAlert('Acceso autorizado', 'success'));      
-      } else {
-        setSnackStatus(setStatusAlert(auth_values.error, 'error'));
-      }
-      setUrl(null);
-    }
-  }, [url, auth_loading]);
+    useEffect(() => {
+        if (!auth_loading && url !== null) {
+            if (auth_values.success) {
+                dispatch({
+                    type: 'LOGIN',
+                    payload: auth_values,
+                });
 
-  const handleInpuChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
-  };
+                if (
+                    auth_values.usuario &&
+                    auth_values.usuario.role === 'admin'
+                ) {
+                    history.push('/admin/productos');
+                    dispatch({
+                        type: 'SETSIMPLESEARCH',
+                        payload: '',
+                    });
+                }
 
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword });
-  };
+                setSnackStatus(setStatusAlert('Acceso autorizado', 'success'));
+            } else {
+                setSnackStatus(setStatusAlert(auth_values.error, 'error'));
+            }
+            setUrl(null);
+        }
+    }, [url, auth_loading]);
 
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
+    const handleInpuChange = (event) => {
+        setValues({ ...values, [event.target.name]: event.target.value });
+    };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setMethod('POST');
-    setUrl(`${REACT_APP_API_URL}/authenticate`);
-  };
+    const handleClickShowPassword = () => {
+        setValues({ ...values, showPassword: !values.showPassword });
+    };
 
-  return (
-    <>
-      <TextField
-        className={classes.inputLogin}
-        label="Usuario"
-        onChange={handleInpuChange}
-        name="idUsuario"
-        variant="outlined"
-      ></TextField>
-      <FormControl className={classes.inputLogin} variant="outlined">
-        <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-        <OutlinedInput
-          id="outlined-adornment-password"
-          type={values.showPassword ? 'text' : 'password'}
-          value={values.password}
-          name="password"
-          onChange={handleInpuChange}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                onMouseDown={handleMouseDownPassword}
-                edge="end"
-              >
-                {values.showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          }
-          labelWidth={70}
-        />
-      </FormControl>
-      <Button
-        title="Acceder"
-        onClick={handleSubmit}
-        color={'deepOrange'}
-      ></Button>
-      {snackStatus ? (
-        <CustomSnackBar key={snackStatus.date} status={snackStatus} />
-      ) : null}
-    </>
-  );
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        setMethod('POST');
+        setUrl(`${REACT_APP_API_URL}/authenticate`);
+    };
+
+    return (
+        <>
+            <TextField
+                className={classes.inputLogin}
+                label="Usuario"
+                onChange={handleInpuChange}
+                name="idUsuario"
+                variant="outlined"
+            ></TextField>
+            <FormControl className={classes.inputLogin} variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-password">
+                    Password
+                </InputLabel>
+                <OutlinedInput
+                    id="outlined-adornment-password"
+                    type={values.showPassword ? 'text' : 'password'}
+                    value={values.password}
+                    name="password"
+                    onChange={handleInpuChange}
+                    endAdornment={
+                        <InputAdornment position="end">
+                            <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                edge="end"
+                            >
+                                {values.showPassword ? (
+                                    <Visibility />
+                                ) : (
+                                    <VisibilityOff />
+                                )}
+                            </IconButton>
+                        </InputAdornment>
+                    }
+                    labelWidth={70}
+                />
+            </FormControl>
+            <Button
+                title="Acceder"
+                onClick={handleSubmit}
+                color={'deepOrange'}
+            ></Button>
+            {snackStatus ? (
+                <CustomSnackBar key={snackStatus.date} status={snackStatus} />
+            ) : null}
+        </>
+    );
 }
 
 export default Login;
