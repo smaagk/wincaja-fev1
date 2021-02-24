@@ -13,6 +13,7 @@ import cx from 'clsx';
 import { useSnackbar } from 'notistack';
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import noimage from '../../../static/noimage.png';
 import { arrayBufferToBase64 } from '../../../utils/arrrayToBuffer';
@@ -22,6 +23,7 @@ import Button from '../button';
 import useStyles from './product-card.css';
 
 function ProductCard(props) {
+    const history = useHistory();
     const store = useSelector((state) => state.cart);
     const cardStyles = useStyles();
     const wideCardMediaStyles = useWideCardMediaStyles();
@@ -39,7 +41,6 @@ function ProductCard(props) {
     const [imgSrc, setImgSrc] = useState('');
 
     useEffect(() => {
-        console.log(props.data);
         setDataProduct({
             articulo: `${props.data.articulo}`,
             img: props.data.img,
@@ -72,12 +73,17 @@ function ProductCard(props) {
         enqueueSnackbar('Producto añadido al carrrito', successSnackbar);
     }
 
+    function goToProduct() {
+        history.push(`/tienda/producto/${dataProduct.articulo}`)
+    }
+
     return (
         <Card className={cx(cardStyles.root, fadeShadowStyles.root)}>
             <CardMedia
                 // component={'img'} // add this line to use <img />
                 className={cardStyles.img}
                 image={imgSrc}
+                onClick={goToProduct}
             ></CardMedia>
 
             <CardContent className={cardStyles.content}>

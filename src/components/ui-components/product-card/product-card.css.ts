@@ -32,7 +32,8 @@ const useStyles = makeStyles({
     color: 'white',
   },
   img: {
-    height: 300
+    height: 300,
+    cursor: 'pointer'
   }
 });
 

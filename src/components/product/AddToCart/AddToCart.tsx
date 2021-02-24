@@ -16,6 +16,7 @@ export interface InfoCart {
 }
 
 export function AddToCart(props: InfoCart) {
+    console.log(props)
     const styles = useStyles();
     const [counter, setCounter] = useState(1);
     const [disableCounter, setDisableCounter] = useState(false);

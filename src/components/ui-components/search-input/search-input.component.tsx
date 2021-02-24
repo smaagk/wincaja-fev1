@@ -83,7 +83,9 @@ export function SearchInputComponent(props: ISearchInput) {
     }, [open]);
 
     const handleGoToProduct = (option: any) => {
-        history.push(`/tienda/producto/${option.articulo}`)
+        if (option !== null) {
+            history.push(`/tienda/producto/${option.articulo}`,{forceRefresh:true});
+        }
     }
 
     return (

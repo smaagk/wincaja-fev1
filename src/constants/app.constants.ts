@@ -1,6 +1,6 @@
 export const creditCardConstants = {
     INCOMPLETEDATA:
-        'Es necesario completar todos los datos de la tarrjeta de credito',
+        'Es necesario completar todos los datos de la tarjeta de credito',
     METODOPAGONOELECCIONADO: 'Por favor selecciona un método de pago',
     NOADDRESS: 'Por favor selecciona una dirección para entregar el pedido'
 };
