@@ -112,6 +112,14 @@ export function SearchInputComponent(props: ISearchInput) {
                     label="Busqueda de productos"
                     variant="outlined"
                     onChange={handleSearch}
+                    onKeyDown={(e: any) => {
+                        if (e.key === "Enter") {
+                            dispatch({
+                                type: 'SETSEARCH',
+                                payload: e.target.value,
+                            });
+                         }
+                    }}
                     InputProps={{
                         ...params.InputProps,
                         endAdornment: (
