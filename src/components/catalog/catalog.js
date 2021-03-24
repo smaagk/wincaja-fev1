@@ -22,6 +22,7 @@ import AppMenu from '../app-menu/AppMenu';
 import BuyProcessComponent from '../buy-process/buy-process';
 import ConfirmationOrder from '../confirmation/ConfirmationOrder'
 import ProductDetailsComponent from '../product/product-details'
+import TypeaHead from '../typeahead/typeahead';
 import CartBarComponent from '../ui-components/cart-counter/cart-counter.component';
 import { SearchInputComponent } from '../ui-components/search-input/search-input.component';
 import { catalogStyles } from './catalog.styles';
@@ -86,10 +87,10 @@ const Catalog = () => {
                                 <SidebarTrigger sidebarId="primarySidebar" onClick={handleDrawer} />
                                 WinCaja
                                 <div className={classes.topBarContainer}>
-                                    <SearchInputComponent />
-                                    <MenuItem component={Link} to="/tienda/carrito">
+                                    <TypeaHead />
+                                    {/* <MenuItem component={Link} to="/tienda/carrito">
                                         <CartBarComponent />
-                                    </MenuItem>
+                                    </MenuItem> */}
                                 </div>
                             </Toolbar>
                         </Header>

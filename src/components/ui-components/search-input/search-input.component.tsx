@@ -27,7 +27,7 @@ export function SearchInputComponent(props: ISearchInput) {
     const loading = open && options.length === 0;
 
     const { searchValue } = useSelector((state: RootState) => state.search);
-    const debouncedSearchTerm = useDebounce(searchValue, 1000);
+    const debouncedSearchTerm = useDebounce(searchValue, 3000);
     const [paramsAutocomplete, setParamsAutocompleteParams] = useState({});
     const [autoCompleteData, autoCompleteDataLoading]: any = useGetFetchData(
         `${REACT_APP_API_URL}/autocomplete`,

@@ -2,6 +2,7 @@ import './App.css';
 
 import AccessComponent from 'components/access/acccess';
 import RegisterComponent from 'components/register/register.component';
+import TypeaHead from 'components/typeahead/typeahead';
 import React from 'react';
 import { BrowserRouter, Route } from 'react-router-dom';
 
@@ -17,7 +18,7 @@ function App() {
         <AuthAdmin path="/admin" component={HomeAdmin} />
         <Route path="/login" component={AccessComponent} exact />
         <Route path="/tienda" component={Catalog} />
-        <Route path="/debug" component={RegisterComponent} />
+        <Route path="/debug" component={TypeaHead} />
       </div>
     </BrowserRouter>
   );
