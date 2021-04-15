@@ -8,8 +8,9 @@
     },
     "extends": "react-app",
     "rules": {
-        "simple-import-sort/imports": "error",
-        "simple-import-sort/exports": "error",
+        "no-unused-vars": "off",
+        "simple-import-sort/imports": "warning",
+        "simple-import-sort/exports": "warning",
         "strict": [
             "error",
             "never"
