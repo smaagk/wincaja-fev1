@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, ChangeEvent, useEffect, useRef } from 'react';
+import { ChangeEvent, useEffect, useRef,useState } from 'react';
 import { callbackify } from 'util';
 
 const useForm = (
@@ -26,7 +26,7 @@ const useForm = (
     setSubmmiting(true);
     setErrors(validateSchema(values));
     let allDirty = {};
-    const dirt = new Promise((resolve, reject) => {
+    const dirt = new Promise<void>((resolve, reject) => {
       Object.keys(isDirty).forEach((name, index) => {
         allDirty = { ...allDirty, [name]: true };
         if (index === Object.entries(isDirty).length - 1) resolve();

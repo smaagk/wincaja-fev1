@@ -16,9 +16,14 @@ import AppMenuItem from './AppMenuItem'
 
 let appMenuItems: any = [
     {
-      name: 'Inicio',
+      name: 'Tienda',
       link: '/',
       Icon: IconDashboard,
+    },
+    {
+      name: 'Comprar por categoria',
+      Icon: Store,
+      items: [],
     },
     {
       name: 'Mis Pedidos',
@@ -27,13 +32,8 @@ let appMenuItems: any = [
     },
     {
       name: 'Mi Cuenta',
-      link: '/customers',
+      link: '/tienda/cuenta',
       Icon: AccountCircle,
-    },
-    {
-      name: 'Comprar por categoria',
-      Icon: Store,
-      items: [],
     },
     {
       name: 'Cerrar sesión',

@@ -14,6 +14,8 @@ const stepsReducer = (state = initialState, action: actionI) => {
       return { step: state.step - 1 };
     case 'STEP':
       return { step: action.payload };
+    case 'RESETSTEP':
+      return { step: 0};
     default:
       return state;
   }

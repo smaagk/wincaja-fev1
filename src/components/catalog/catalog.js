@@ -18,9 +18,11 @@ import { useDispatch,useSelector } from 'react-redux';
 import { Link, Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 
+import AccountComponent from '../account/AccountComponent';
 import AppMenu from '../app-menu/AppMenu';
 import BuyProcessComponent from '../buy-process/buy-process';
 import ConfirmationOrder from '../confirmation/ConfirmationOrder'
+import Pedidos from '../pedidos/pedidos'
 import ProductDetailsComponent from '../product/product-details'
 import TypeaHead from '../typeahead/typeahead';
 import CartBarComponent from '../ui-components/cart-counter/cart-counter.component';
@@ -88,9 +90,6 @@ const Catalog = () => {
                                 WinCaja
                                 <div className={classes.topBarContainer}>
                                     <TypeaHead />
-                                    {/* <MenuItem component={Link} to="/tienda/carrito">
-                                        <CartBarComponent />
-                                    </MenuItem> */}
                                 </div>
                             </Toolbar>
                         </Header>
@@ -113,9 +112,14 @@ const Catalog = () => {
                                 <Route path="/tienda/carrito" component={BuyProcessComponent} exact/>
                                 <Route path='/tienda/confirmacion' component={ConfirmationOrder} exact/>
                                 <Route path='/tienda/login' component={AccessComponent} exact/>
+                                <Route path='/tienda/cuenta' component={AccountComponent} exact/>
+                                <Route path='/tienda/pedidos' component={Pedidos} exact/>
+                                
                             </Switch>
                         </Content>
                         <InsetFooter></InsetFooter>
+                        <CartBarComponent />
+                       
                     </>
                 )
             }}

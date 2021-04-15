@@ -22,7 +22,7 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
   total: {
     padding: 15,
     [breakpoints.up('md')]: {
-      marginTop: 65,
+      marginTop: '3em',
       marginLeft: 20,
       maxHeight:250
     },

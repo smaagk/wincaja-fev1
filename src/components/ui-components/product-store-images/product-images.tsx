@@ -2,6 +2,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import { Card, CardMedia, CircularProgress } from '@material-ui/core';
+import { Skeleton } from '@material-ui/lab';
 import { REACT_APP_API_URL } from 'constants/app.constants';
 import useGetFetchData from 'custom-hooks/useGetFetchData';
 import React, { useEffect, useState } from 'react';
@@ -48,7 +49,10 @@ export function ProductImages(props: IProductImage) {
     };
 
     useEffect(() => {
-        if (productImagesDataLoading === false  && productImagesData.length > 0) {
+        if (
+            productImagesDataLoading === false &&
+            productImagesData.length > 0
+        ) {
             setImageData(
                 productImagesData.map((img: S3Image) => {
                     return `data:image/png;base64,${arrayBufferToBase64(
@@ -60,7 +64,7 @@ export function ProductImages(props: IProductImage) {
     }, [productImagesDataLoading]);
 
     useEffect(() => {
-        if(imageData.length > 0){
+        if (imageData.length > 0) {
             props.onImage(productImagesData[0].data);
         }
     }, [imageData]);
@@ -73,7 +77,7 @@ export function ProductImages(props: IProductImage) {
                         <Slider {...settings}>
                             {imageData.map((img, index) => {
                                 return (
-                                    <Card key={index} elevation={3} >
+                                    <Card key={index} elevation={3}>
                                         <CardMedia
                                             className={productImageStyles.media}
                                             image={img}
@@ -86,7 +90,9 @@ export function ProductImages(props: IProductImage) {
                     </div>
                 </div>
             ) : (
-                <CircularProgress/>
+                <Skeleton variant="rect" width="500px" height="540px">
+                    
+                </Skeleton>
             )}
         </>
     );

@@ -34,7 +34,7 @@ const Basket: FC = () => {
           );
         })}
       </Box>
-      <Card elevation={3} className={basketStyles.total} id="total">
+      <Box className={basketStyles.total} id="total">
         <span className={basketStyles.subtotal}>
           Subtotal de articulos: {formatCurrency(store.total)}
         </span>
@@ -50,7 +50,7 @@ const Basket: FC = () => {
           whiteSpace="break-spaces"
           onClick={handleNextStep}
         ></Button>
-      </Card>
+      </Box>
     </div>
   );
 };

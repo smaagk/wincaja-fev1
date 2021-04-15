@@ -1,9 +1,10 @@
-import React, { FC, useState, useEffect } from 'react';
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import AddPhotoAlternateTwoToneIcon from '@material-ui/icons/Image';
-import ImageProductDialog from './image-product-dialog/image-product-dialog';
+import React, { FC, useEffect,useState } from 'react';
+
 import useUploadFile from '../../../custom-hooks/useUploadFile';
+import ImageProductDialog from './image-product-dialog/image-product-dialog';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

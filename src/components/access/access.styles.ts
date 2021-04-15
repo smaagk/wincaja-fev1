@@ -15,6 +15,10 @@ const useStyles = makeStyles({
   },
   inputLogin : {
     margin : "20px"
+  },
+  loginContainerButtons : {
+    margin: 'auto',
+    padding: '10px'
   }
 });
 

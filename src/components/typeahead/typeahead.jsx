@@ -24,9 +24,22 @@ export default function TypeaHead() {
     };
 
     const handleChangeSearch = (query) => {
-        if (query !== null) {
+        if (query && query[0].articulo) {
             history.push(`/tienda/producto/${query[0].articulo}`,{forceRefresh:true});
         }
+    }
+
+    function sortAlph( a, b ) {
+
+        if ( a.last_nom < b.last_nom ){
+          return -1;
+        }
+
+        if ( a.last_nom > b.last_nom ){
+          return 1;
+        }
+
+        return 0;
     }
 
     const handleSearch =  useCallback((query) => {

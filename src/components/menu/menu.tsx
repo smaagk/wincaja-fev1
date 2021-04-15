@@ -12,9 +12,16 @@ import AppMenuItem from './menu-item'
 
 const appMenuItems = [
   {
-    name: 'Inicio',
+    name: 'Tienda',
     link: '/',
     Icon: IconDashboard,
+  },
+  {
+    name: 'Comprar por categoria',
+    Icon: Store,
+    items: [{
+      name: 'Level 2',
+    }],
   },
   {
     name: 'Mis Pedidos',
@@ -25,13 +32,6 @@ const appMenuItems = [
     name: 'Mi Cuenta',
     link: '/customers',
     Icon: AccountCircle,
-  },
-  {
-    name: 'Comprar por categoria',
-    Icon: Store,
-    items: [{
-      name: 'Level 2',
-    }],
   },
   {
     name: 'Cerrar sesión',

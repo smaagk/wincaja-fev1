@@ -1,17 +1,19 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useRef, useState } from 'react';
 import { TextField } from '@material-ui/core';
-import { PasswordInputComponent, ValidationAdornment } from '../ui-components';
-import useStyles from './register.styles';
-import Button from '../ui-components/button';
+import { useSnackbar } from 'notistack';
+import React, { useEffect, useRef, useState } from 'react';
+
+import useCustomFetch from '../../custom-hooks/useCustomFetch';
 import useForm from '../../custom-hooks/useForm';
+import { errorSnackbar, successSnackbar } from '../../utils/snackbar.utils';
+import { setStatusAlert, StatusAlert } from '../../utils/snackbar.utils';
+import { PasswordInputComponent, ValidationAdornment } from '../ui-components';
+import Button from '../ui-components/button';
+import useStyles from './register.styles';
 import validateSchema, {
   IRegister,
   IRegisterErrors,
 } from './validate-register';
-import useCustomFetch from '../../custom-hooks/useCustomFetch';
-import { setStatusAlert, StatusAlert } from '../../utils/snackbar.utils';
-import CustomSnackBar from '../ui-components/custom-snackbar';
 
 const { REACT_APP_API_URL } = process.env;
 
@@ -54,33 +56,50 @@ function RegisterComponent() {
     valuesRegister
   );
 
-  const [snackStatus, setSnackStatus] : [StatusAlert | null , Function] = useState(null);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (!registerLoading && url !== null) {
+      console.log(register);
       if (register.success) {
-        setSnackStatus(setStatusAlert('Te has registrado con exito', 'success'));
+        enqueueSnackbar(
+          register.msg,
+          {
+            anchorOrigin: {
+                vertical: 'bottom',
+                horizontal: 'center',
+            },
+            variant: 'success',
+            autoHideDuration: 3000
+        }
+        );
       } else {
-        setSnackStatus(setStatusAlert(register.error, 'error'));
+        enqueueSnackbar(
+          register.error,
+          {
+            anchorOrigin: {
+                vertical: 'bottom',
+                horizontal: 'center',
+            },
+            variant: 'error',
+            autoHideDuration: 3000
+        }
+        );
       }
-      setUrl(null);
     }
+
+    setUrl(null);
   }, [url, registerLoading]);
 
   function submmitRegister() {
     setValuesRegister({
-      client: {
         nombre: values.nombre,
         apellido1: values.apellidop,
         apellido2: values.apellidom,
         rfc: values.rfc,
         email: values.email,
-      },
-      user: {
         idUsuario: values.email,
         passwordHash: values.password,
-      },
-      addresses: [],
     })
 
     setUrl(`${REACT_APP_API_URL}/user`)
@@ -187,9 +206,6 @@ function RegisterComponent() {
         whiteSpace="break-spaces"
         onClick={handleSubmmit}
       ></Button>
-      {snackStatus ? (
-        <CustomSnackBar key={new Date().getMilliseconds()} status={snackStatus} />
-      ) : null}
     </>
   );
 }
