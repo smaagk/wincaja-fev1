@@ -2,6 +2,8 @@
 import { Box, Button, ButtonGroup, Card, CardMedia } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { REACT_APP_API_URL } from 'constants/app.constants';
+import useGetFetchData from 'custom-hooks/useGetFetchData';
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { arrayBufferToBase64 } from 'utils/arrrayToBuffer';
@@ -27,17 +29,19 @@ const Item: FC<ItemI> = (data: ItemI) => {
     const [totalProduct, setTotalProduct] = useState('');
     const [imgSrc, setImgSrc] = useState('');
 
+
+    const [image, imageLoading]: any = useGetFetchData(
+        `${REACT_APP_API_URL}/image/${data.articulo}`
+    );
+    const [imageData, setImageData] : any = useState();
+
     useEffect(() => {
-        if (data) {
-            const image =
-                data.img !== null
-                    ? 'data:image/png;base64,' +
-                      arrayBufferToBase64(data.img.Body.data)
-                    : noimage;
-            setImgSrc(image);
+        if (image.success === true) {
+            setImageData(image.location);
+        } else if (image.success === false){
+            setImageData(noimage);
         }
-        console.log(data);
-    }, []);
+    }, [image]);
 
     useEffect(() => {
         setTotalProduct(formatCurrency(counter * data.price));
@@ -68,7 +72,7 @@ const Item: FC<ItemI> = (data: ItemI) => {
     const displayCounter = counter > 0;
     return (
         <>
-            {imgSrc ? (
+            {imageData ? (
                 <Card elevation={3} className={itemStyles.root}>
                     <Box
                         className={itemStyles.itemContainer}
@@ -77,7 +81,7 @@ const Item: FC<ItemI> = (data: ItemI) => {
                     >
                         <CardMedia
                             className={itemStyles.image}
-                            image={imgSrc}
+                            image={imageData}
                         ></CardMedia>
                         <p
                             className={`${itemStyles.marginItem} ${itemStyles.name}`}
