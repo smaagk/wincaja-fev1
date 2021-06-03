@@ -18,6 +18,7 @@ function useGetFetchData(url, params) {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
         },
+        credentials: 'include'
       });
 
       let resData = await response.json();

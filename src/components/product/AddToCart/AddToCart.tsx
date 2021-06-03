@@ -65,7 +65,7 @@ export function AddToCart(props: InfoCart) {
                         </h1>
                         <div className={styles.priceBox}>
                             <span className={styles.price}>
-                                {`$ ${ toFixPrice(_.get(infoData.precio[0], 'Precio'))}`}
+                                {`$ ${ toFixPrice(_.get(infoData.precio[0], 'PrecioIVA'))}`}
                             </span>
                             <span>* Precio exclusivo de tienda en línea.</span>
                             <span>* Producto sujeto a disponibilidad.</span>

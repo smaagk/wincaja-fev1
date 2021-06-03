@@ -76,7 +76,7 @@ function Home() {
                     name: product.nombre,
                     description: product.descripcion,
                     img: product.img,
-                    price: !_.isEmpty(product.precio) ? product.precio[0].Precio : 0 
+                    price: !_.isEmpty(product.precio) ? product.precio[0].PrecioIVA : 0 
                 };
         });
     }

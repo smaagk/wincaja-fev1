@@ -26,7 +26,7 @@ function ProductDetailsComponent(props: any) {
         img: noimage,
         Nombre: 'Nombre Articulo',
         Descripcion: 'description',
-        precio: [{ Precio: 0 }],
+        precio: [{ PrecioIVA: 0 }],
     });
 
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -42,7 +42,7 @@ function ProductDetailsComponent(props: any) {
             img: image,
             name: dataProduct.Nombre,
             description: dataProduct.Descripcion,
-            price: dataProduct.precio[0] && dataProduct.precio[0].Precio | 0,
+            price: dataProduct.precio[0] && dataProduct.precio[0].PrecioIVA | 0,
         });
     }, [image, dataProduct]);
 

@@ -1,6 +1,9 @@
 import { Divider, Paper } from '@material-ui/core';
-import React, { useState } from 'react';
+import { REACT_APP_API_URL } from 'constants/app.constants';
+import useGetFetchData from 'custom-hooks/useGetFetchData';
+import React, { useEffect, useState } from 'react';
 import GoogleButton from 'react-google-button';
+import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom'
 
 import Login from '../login/login';
@@ -11,10 +14,28 @@ import useStyles from './access.styles';
 function AccessComponent() {
     const classes = useStyles();
     const location = useLocation();
+    const dispatch = useDispatch();
     const [showLoginForm, setShowLoginForm] = useState(true);
     function handleShowRegisterForm() {
         setShowLoginForm(false);
     }
+
+    // const [dataLogin, dataLoginLoading]: any = useGetFetchData(
+    //     `${REACT_APP_API_URL}/checkpassportlogin`
+    // );
+
+    // const [imageData, setImageData] : any = useState();
+
+    // useEffect(() => {
+    //     if(dataLoginLoading === false && dataLogin.success){
+    //       dispatch({
+    //         type: 'LOGIN',
+    //         payload: dataLogin,
+    //       });
+    //     }        
+    // }, [dataLogin,dataLoginLoading]);
+
+    
 
     return (
         <div className={classes.container}>
