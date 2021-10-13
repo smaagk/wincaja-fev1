@@ -86,7 +86,7 @@ export default function Productos() {
 
     const setOnlineEnabled = (products) => {
         const productsOnline = products
-            .filter((product) => product.tipo4)
+            .filter((product) => product.ventalinea)
             .map((product) => product.articulo);
         setSelected(productsOnline);
     };
