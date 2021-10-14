@@ -40,7 +40,7 @@ const ImageProductComponent: FC<ImageType> = ({
 
   useEffect(() => {
     console.log(articulo);
-    if (imgUrl !== null) {
+    if (imgUrl) {
       const image = arrayBufferToBase64(imgUrl.Body.data);
       setImgSrc('data:image/png;base64,' + image);
     }

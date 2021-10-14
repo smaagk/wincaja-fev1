@@ -36,6 +36,11 @@ function ProductAdminCard(props) {
     const [productsData, productsLoading] = useGetFetchData(
         `${REACT_APP_API_URL}/articulos/${props.articulo}`
     );
+    const [getProductosCallback, setGetProductosCallback] = useState(true);
+    const [productsData2, productsLoading2] = useGetFetchData(
+        `${REACT_APP_API_URL}/admindetallearticulo/${props.articulo}`,
+        getProductosCallback
+    );
     const [dataProduct, setDataProduct] = useState(null);
 
     const [imgSrc, setImgSrc] = useState('');
@@ -62,46 +67,71 @@ function ProductAdminCard(props) {
 
     useEffect(() => {
         if (productsLoading === false) {
-
-            setDataProduct({
-                articulo: `${productsData.articulo}`,
-                img: productsData.img,
-                name: productsData.nombre,
-                description: productsData.descripcion,
-                price: 123,
-            });
-
-            setImageInCard(0);
+            console.log(productsData);         
         }
     }, [productsLoading]);
 
     useEffect(() => {
-        if (productsData.img !== undefined) {
+        if (productsLoading2 === false) {
+            console.log(productsData2);
+            setDataProduct({
+                articulo: `${productsData2.id}`,
+                img: [productsData2.image],
+                gallery: productsData2.gallery,
+                name: productsData2.title,
+                description: productsData2.descripcion,
+                price: 123,
+            });
+
+            if(productsData2.gallery.length < 2) {
+                setImageInCard(0);
+            }
+
+            setGetProductosCallback(false)
+        }
+    }, [productsLoading2]);
+
+    useEffect(() => {
+        if (productsData2.gallery?.length > 0) {
             setImageInCard(indexImg);
         }
     }, [indexImg]);
 
     useEffect(() => {
+        if (dataProduct) {
+            console.log(dataProduct)
+        }
+    }, [dataProduct]);
+
+    useEffect(() => {
         if( image_upload === 'imagen creada'){
-            window.location.reload();
+            setGetProductosCallback(true);
         }
     }, [image_upload_loading])
 
-    function setImageInCard(index) {
-        if(productsData.img.length > 0) {
-            const image =
-            productsData.img[index] !== undefined
-                ? 'data:image/png;base64,' +
-                  arrayBufferToBase64(productsData.img[index].data.Body.data)
-                : noimage;
+    useEffect(() => {
+        if (deletedImage?.msg === 'borrando imagen') {
+            console.log('borrando de imagenes')
+            setGetProductosCallback(true);
+            setImageInCard(indexImg-1);       
+        }
+    }, [deleteImageLoading])
 
+    function setImageInCard(index) {
+        
+        if(productsData2.gallery) {
+            const image =
+            productsData2.image !== undefined
+                ? productsData2?.gallery[index]?.url
+                : noimage;
+                console.log(image)
             setImgSrc(image);
         }
     }
 
     function handleDeleteImage() {
-        setImageToDelete({ key: productsData.img[indexImg].key });
-        window.location.reload();
+        console.log('voy a borrar ', indexImg)
+        setImageToDelete({ key: productsData2.gallery[indexImg].key });
     }
 
     function handleDialogClose() {
@@ -125,7 +155,7 @@ function ProductAdminCard(props) {
                         className={cx(cardStyles.root, fadeShadowStyles.root)}
                     >
                         <CardMedia classes={wideCardMediaStyles} image={imgSrc}>
-                            { productsData.img.length > 0 ? (<div className={cardStyles.chip}>
+                            { productsData2?.image?.length > 0 ? (<div className={cardStyles.chip}>
                                 <Chip
                                     icon={
                                         <DeleteIcon
@@ -144,7 +174,7 @@ function ProductAdminCard(props) {
                                 />
                             </div>) : <></> }
                         </CardMedia>
-                        {dataProduct.img.map((val,index) => (
+                        {dataProduct?.gallery?.map((val,index) => (
                             <DotIndicator
                                 key={index}
                                 active={index === indexImg}

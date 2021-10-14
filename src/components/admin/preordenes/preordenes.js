@@ -92,7 +92,7 @@ export default function Preordenes() {
 
   const setOnlineEnabled = (products) => {
     const productsOnline = products
-      .filter((product) => product.tipo5)
+      .filter((product) => product.ventalinea)
       .map((product) => product.articulo);
     setSelected(productsOnline);
   };
