@@ -18,7 +18,7 @@ import validateSchema, {
 const { REACT_APP_API_URL } = process.env;
 
 
-function RegisterComponent() {
+function RegisterComponent(props: any) {
   const firstRender = useRef(true);
   const classes = useStyles();
   const {
@@ -59,8 +59,8 @@ function RegisterComponent() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   useEffect(() => {
-    if (!registerLoading && url !== null) {
-      console.log(register);
+
+    if (!registerLoading && register && url !== null) {
       if (register.success) {
         enqueueSnackbar(
           register.msg,
@@ -73,6 +73,8 @@ function RegisterComponent() {
             autoHideDuration: 3000
         }
         );
+        props.onRegisterSucces(true);
+        setUrl(null);
       } else {
         enqueueSnackbar(
           register.error,
@@ -85,11 +87,12 @@ function RegisterComponent() {
             autoHideDuration: 3000
         }
         );
+
+        setUrl(null);
       }
     }
 
-    setUrl(null);
-  }, [url, registerLoading]);
+  }, [url, registerLoading,  register]);
 
   function submmitRegister() {
     setValuesRegister({

@@ -4,7 +4,7 @@ import useGetFetchData from 'custom-hooks/useGetFetchData';
 import React, { useEffect, useState } from 'react';
 import GoogleButton from 'react-google-button';
 import { useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom';
 
 import Login from '../login/login';
 import RegisterComponent from '../register/register.component';
@@ -20,6 +20,12 @@ function AccessComponent() {
         setShowLoginForm(false);
     }
 
+    function handleShowLoginForm(registerSucces: any) {
+        if (registerSucces) {
+            setShowLoginForm(true);
+        }
+    }
+
     // const [dataLogin, dataLoginLoading]: any = useGetFetchData(
     //     `${REACT_APP_API_URL}/checkpassportlogin`
     // );
@@ -32,10 +38,8 @@ function AccessComponent() {
     //         type: 'LOGIN',
     //         payload: dataLogin,
     //       });
-    //     }        
+    //     }
     // }, [dataLogin,dataLoginLoading]);
-
-    
 
     return (
         <div className={classes.container}>
@@ -43,7 +47,7 @@ function AccessComponent() {
                 {showLoginForm === true ? (
                     <>
                         <Login />
-                        <Divider />
+                        {/* <Divider />
                         <div className={classes.loginContainerButtons}>
                             <GoogleButton
                                 label='Inicia sesión con google'
@@ -51,7 +55,7 @@ function AccessComponent() {
                                     window.location.href = `http://localhost:5001/api/auth/google?returnTo=${window.location.href}`;
                                 }}
                             />
-                        </div>
+                        </div> */}
 
                         <Divider />
                         <br />
@@ -63,7 +67,7 @@ function AccessComponent() {
                         />
                     </>
                 ) : (
-                    <RegisterComponent />
+                    <RegisterComponent onRegisterSucces={handleShowLoginForm} />
                 )}
             </Paper>
         </div>
