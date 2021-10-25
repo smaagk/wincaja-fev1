@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux';
 
 import addressReducer from './addressReducer';
+import almacenReducer from './almacenReducer';
 import authReducer from './authReducer';
 import cartReducer from './cartReducer';
 import categoriesReducer from './catReducer';
@@ -18,6 +19,7 @@ export const rootReducer = combineReducers({
     address: addressReducer,
     search: searchReducer,
     payment: paymentReducer,
+    almacen: almacenReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

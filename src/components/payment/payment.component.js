@@ -55,6 +55,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
     const history = useHistory();
     const { metodoPago } = useSelector((state) => state.payment);
     const address = useSelector((state) => state.address);
+    const almacen = useSelector((state) => state.almacen);
     const { cart } = useSelector((state) => state.cart);
     const styles = useStyles();
     const { button: buttonStyles } = useBlogTextInfoContentStyles();
@@ -209,11 +210,15 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
 
     useEffect(() => {
         if (!preordenCreatedLoading && preordenCreated) {
+            console.log(preordenCreated); 
             if (preordenCreated.success === true) {
                 enqueueSnackbar(
                     'Pedido finalizado, por favor revisa en tu correo la confirmación del pedido',
                     successSnackbar
                 );
+
+                history.push('/tienda/confirmacion');
+                dispatch({ type: 'CLEAR_CART' });   //Se limpia el carrito
             }
         }
     }, [preordenCreatedLoading]);
@@ -241,16 +246,15 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
                 errorSnackbar
             );
         } else if (
-            address.addressKey === '' ||
-            address.addressKey === undefined
+            !almacen
         ) {
-            enqueueSnackbar(creditCardConstants.NOADDRESS, errorSnackbar);
+            enqueueSnackbar(creditCardConstants.NOALMACEN, errorSnackbar);
         } else {
             const articulos = cart.map((val) => {
                 return { articulo: val.articulo, quantity: val.quantity };
             });
             const preorder = {
-                alias: address.addressKey,
+                almacen,
                 metodoPago,
                 articulos,
             };

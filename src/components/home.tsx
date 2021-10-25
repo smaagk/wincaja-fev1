@@ -71,11 +71,12 @@ function Home() {
 
     function mapProducts(products: any) {
         return products.map((product: any) => {
+            console.log(product);
                 return {
                     articulo: product.articulo,
                     name: product.nombre,
                     description: product.descripcion,
-                    img: product.img,
+                    img: product.img?.location,
                     price: !_.isEmpty(product.precio) ? product.precio[0].PrecioIVA : 0 
                 };
         });

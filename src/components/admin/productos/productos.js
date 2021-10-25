@@ -70,7 +70,6 @@ export default function Productos() {
     useEffect(() => {
         if (!productsLoading && REACT_APP_API_URL !== null) {
             if (productsData.success) {
-                console.log(productsData)
                 setMetaPagination(productsData);
             }
         }

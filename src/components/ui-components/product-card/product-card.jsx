@@ -4,6 +4,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
+import { CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import { useWideCardMediaStyles } from '@mui-treasury/styles/cardMedia/wide';
@@ -50,15 +51,14 @@ function ProductCard(props) {
         });
 
         const image =
-            props.data.img !== null
-                ? 'data:image/png;base64,' +
-                  arrayBufferToBase64(props.data.img.Body.data)
+            props.data.img !== undefined
+                ? props.data.img
                 : noimage;
         setImgSrc(image);
     }, []);
 
     function handleAddProduct() {
-        if ( store.cart.findIndex((x) => x.articulo === dataProduct.articulo) === -1) {
+        if (store.cart.findIndex((x) => x.articulo === dataProduct.articulo) === -1) {
             dispatch({
                 type: 'ADDPRODUCT',
                 payload: dataProduct,
@@ -79,13 +79,18 @@ function ProductCard(props) {
 
     return (
         <Card className={cx(cardStyles.root, fadeShadowStyles.root)}>
-            <CardMedia
-                // component={'img'} // add this line to use <img />
-                className={cardStyles.img}
-                image={imgSrc}
-                onClick={goToProduct}
-            ></CardMedia>
-
+            <>
+                {imgSrc ? (
+                    <CardMedia
+                        // component={'img'} // add this line to use <img />
+                        className={cardStyles.img}
+                        image={imgSrc}
+                        onClick={goToProduct}
+                    ></CardMedia>
+                ) : (
+                    <CircularProgress />
+                )}
+            </>
             <CardContent className={cardStyles.content}>
                 <TextContentComponent
                     title={dataProduct.name}

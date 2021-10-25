@@ -82,9 +82,6 @@ const HomeAdmin = () => {
             <SidebarContent>
               <NavHeaderMockUp collapsed={sidebar.primarySidebar.collapsed} />
               <MenuList>
-                <MenuItem component={Link} to="/admin/home">
-                  Home
-                </MenuItem>
                 <MenuItem component={Link} to="/admin/productos">
                   Productos
                 </MenuItem>
@@ -99,7 +96,6 @@ const HomeAdmin = () => {
             <CollapseBtn />
           </DrawerSidebar>
           <Content>
-            <Route path="/admin/home" component={Home} exact />
             <Route path="/admin/productos" component={Productos} />
             <Route path="/admin/producto/:articulo" component={Producto} />
             <Route path="/admin/metodos" component={MetodosDePago} />
