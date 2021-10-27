@@ -49,11 +49,7 @@ function ProductCard(props) {
             price: props.data.price,
         });
 
-        const image =
-            props.data.img !== null
-                ? 'data:image/png;base64,' +
-                  arrayBufferToBase64(props.data.img.Body.data)
-                : noimage;
+        const image = props.data.img ? props.data.img : noimage;
         setImgSrc(image);
     }, []);
 
