@@ -69,15 +69,7 @@ const Almacen: FunctionComponent = () => {
                     return (<MenuItem key={almacen.Almacen} value={almacen.Almacen}>{almacen.Descripcion}</MenuItem>)
                 })}
             </Select>
-            <FormHelperText>Selecciona el almacen al que deseas realizar el pedido</FormHelperText>
         </FormControl>
-        <Button
-          title="Continuar"
-          color="deepGreen"
-          height="40px"
-          whiteSpace="break-spaces"
-          onClick={handleNextStep}
-        ></Button>
     </div>);
 }
 

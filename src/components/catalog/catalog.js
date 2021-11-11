@@ -20,6 +20,7 @@ import styled from 'styled-components';
 
 import AccountComponent from '../account/AccountComponent';
 import AppMenu from '../app-menu/AppMenu';
+import Almacenes from '../almacen/select-almacen';
 import BuyProcessComponent from '../buy-process/buy-process';
 import ConfirmationOrder from '../confirmation/ConfirmationOrder'
 import Pedidos from '../pedidos/pedidos'

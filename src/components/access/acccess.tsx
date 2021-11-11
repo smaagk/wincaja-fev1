@@ -3,8 +3,10 @@ import { REACT_APP_API_URL } from 'constants/app.constants';
 import useGetFetchData from 'custom-hooks/useGetFetchData';
 import React, { useEffect, useState } from 'react';
 import GoogleButton from 'react-google-button';
-import { useDispatch } from 'react-redux';
-import { useLocation } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom'
+import { RootState } from 'store';
+import showRegisterFormReducer from 'store/showRegisterFormReducer';
 
 import Login from '../login/login';
 import RegisterComponent from '../register/register.component';
@@ -15,15 +17,9 @@ function AccessComponent() {
     const classes = useStyles();
     const location = useLocation();
     const dispatch = useDispatch();
-    const [showLoginForm, setShowLoginForm] = useState(true);
+    const { showRegisterForm } = useSelector((state: RootState) => state.showRegisterForm);
     function handleShowRegisterForm() {
-        setShowLoginForm(false);
-    }
-
-    function handleShowLoginForm(registerSucces: any) {
-        if (registerSucces) {
-            setShowLoginForm(true);
-        }
+        dispatch({ type: 'SHOW_REGISTER_FORM'});
     }
 
     // const [dataLogin, dataLoginLoading]: any = useGetFetchData(
@@ -38,17 +34,21 @@ function AccessComponent() {
     //         type: 'LOGIN',
     //         payload: dataLogin,
     //       });
-    //     }
+    //     }        
     // }, [dataLogin,dataLoginLoading]);
+
+    useEffect(() => {
+        console.log(showRegisterForm);
+    }, [showRegisterForm]);
 
     return (
         <div className={classes.container}>
             <Paper className={classes.loginContainer} elevation={3}>
-                {showLoginForm === true ? (
+                {showRegisterForm === false ? (
                     <>
                         <Login />
-                        {/* <Divider />
-                        <div className={classes.loginContainerButtons}>
+                        <Divider />
+                        {/* <div className={classes.loginContainerButtons}>
                             <GoogleButton
                                 label='Inicia sesión con google'
                                 onClick={() => {
@@ -67,7 +67,7 @@ function AccessComponent() {
                         />
                     </>
                 ) : (
-                    <RegisterComponent onRegisterSucces={handleShowLoginForm} />
+                    <RegisterComponent />
                 )}
             </Paper>
         </div>

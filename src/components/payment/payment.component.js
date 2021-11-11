@@ -218,7 +218,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
                 );
 
                 history.push('/tienda/confirmacion');
-                dispatch({ type: 'CLEAR_CART' });   //Se limpia el carrito
+                dispatch({ type: 'CLEANCART' });   //Se limpia el carrito
             }
         }
     }, [preordenCreatedLoading]);

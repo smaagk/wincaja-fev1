@@ -18,7 +18,12 @@ const registerStyles = makeStyles({
   },
   input : {
     margin : "10px"
-  }
+  },
+  errorInputMessage: {
+    color: "red",
+    fontSize: "12px",
+    margin: "10px"
+  },
 });
 
 export default registerStyles;

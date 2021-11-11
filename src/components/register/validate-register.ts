@@ -3,7 +3,8 @@ export interface IRegister {
   password: string;
   email: string;
   nombre: string
-  apellidop: string
+  apellidop: string,
+  telefono: string
 }
 
 export interface inputValid {
@@ -15,7 +16,8 @@ export interface IRegisterErrors {
   password: inputValid
   passwordConfirmation: inputValid;
   nombre: inputValid;
-  apellidop: inputValid
+  apellidop: inputValid,
+  telefono: inputValid
 }
 export default function validateRegister(values: IRegister) {
   const initialErrorState = { isValid: false, msg: '' }
@@ -24,7 +26,8 @@ export default function validateRegister(values: IRegister) {
     password:  {...initialErrorState},
     passwordConfirmation :  {...initialErrorState},
     nombre: {...initialErrorState},
-    apellidop: {...initialErrorState}
+    apellidop: {...initialErrorState},
+    telefono: {...initialErrorState}
   };
   if (values.email === '') {
     errors.email.msg = 'El correo electronico es requerido';
@@ -56,6 +59,14 @@ export default function validateRegister(values: IRegister) {
     errors.apellidop.msg = 'El apellido es requerido'
   }else{
       errors.apellidop.isValid = true
+  }
+
+  if (values.telefono === '') {
+    errors.telefono.msg = 'El telefono es requerido'
+  }else if(!/^[0-9]{10}$/.test(values.telefono) && values.telefono !== ''){
+    errors.telefono.msg = 'El telefono tiene un formato incorrecto'
+  }else{
+      errors.telefono.isValid = true
   }
 
   return errors;

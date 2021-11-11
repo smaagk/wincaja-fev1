@@ -4,7 +4,6 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Chip from '@material-ui/core/Chip';
-import { CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import { useWideCardMediaStyles } from '@mui-treasury/styles/cardMedia/wide';
@@ -20,6 +19,8 @@ import noimage from '../../../static/noimage.png';
 import { arrayBufferToBase64 } from '../../../utils/arrrayToBuffer';
 import { successSnackbar } from '../../../utils/snackbar.utils';
 import { TextContentComponent } from '../../ui-components';
+import { StockAvailability } from '../stock-avail/stockAvailComponent';
+
 import Button from '../button';
 import useStyles from './product-card.css';
 
@@ -50,15 +51,13 @@ function ProductCard(props) {
             price: props.data.price,
         });
 
-        const image =
-            props.data.img !== undefined
-                ? props.data.img
-                : noimage;
+        const image = props.data.img ? props.data.img : noimage;
         setImgSrc(image);
+        console.log(props);
     }, []);
 
     function handleAddProduct() {
-        if (store.cart.findIndex((x) => x.articulo === dataProduct.articulo) === -1) {
+        if ( store.cart.findIndex((x) => x.articulo === dataProduct.articulo) === -1) {
             dispatch({
                 type: 'ADDPRODUCT',
                 payload: dataProduct,
@@ -79,23 +78,20 @@ function ProductCard(props) {
 
     return (
         <Card className={cx(cardStyles.root, fadeShadowStyles.root)}>
-            <>
-                {imgSrc ? (
-                    <CardMedia
-                        // component={'img'} // add this line to use <img />
-                        className={cardStyles.img}
-                        image={imgSrc}
-                        onClick={goToProduct}
-                    ></CardMedia>
-                ) : (
-                    <CircularProgress />
-                )}
-            </>
+            <CardMedia
+                // component={'img'} // add this line to use <img />
+                className={cardStyles.img}
+                image={imgSrc}
+                onClick={goToProduct}
+            ></CardMedia>
+
             <CardContent className={cardStyles.content}>
                 <TextContentComponent
                     title={dataProduct.name}
                     description={dataProduct.description}
                 />
+                
+                <StockAvailability stock={props.data.existencia}></StockAvailability>
             </CardContent>
             <Box px={3} pb={3}>
                 <div className={cardStyles.chip}>

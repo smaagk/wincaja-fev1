@@ -10,6 +10,7 @@ import useDebounceSearch from '../custom-hooks/useDebounce';
 import useGetFetchData from '../custom-hooks/useGetFetchData';
 import { CategoriesSearch } from './categories-search/CategoriesSearch';
 import ProductCard from './ui-components/product-card/product-card';
+import Almacenes from './almacen/select-almacen';
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -27,8 +28,9 @@ const { REACT_APP_API_URL } = process.env;
 function Home() {
     const classes = useStyles();
     const { simpleSearchValue } = useSelector((state: RootState) => state.search);
+    const { almacen } = useSelector((state: RootState) => state.almacen);
     const debouncedSearchTerm = useDebounceSearch(simpleSearchValue, 1000);
-    const [params, setParams] = useState({});
+    const [params, setParams]: any = useState({almacen: almacen });
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(20);
     const [productsData, productsLoading]: any = useGetFetchData(
@@ -69,6 +71,12 @@ function Home() {
         }
     }, [debouncedSearchTerm]);
 
+    useEffect(() => {
+        if(almacen) {
+            setParams({ ...params, almacen: almacen });
+        }
+    }, [almacen]);
+
     function mapProducts(products: any) {
         return products.map((product: any) => {
             console.log(product);
@@ -77,13 +85,15 @@ function Home() {
                     name: product.nombre,
                     description: product.descripcion,
                     img: product.img?.location,
-                    price: !_.isEmpty(product.precio) ? product.precio[0].PrecioIVA : 0 
+                    price: !_.isEmpty(product.precio) ? product.precio[0].PrecioIVA : 0,
+                    existencia: product['existencia.ExActual']
                 };
         });
     }
 
     return (
         <div>
+            <Almacenes />
             <CategoriesSearch/>
             {dataProduct.length > 0 ? (
                 <>
