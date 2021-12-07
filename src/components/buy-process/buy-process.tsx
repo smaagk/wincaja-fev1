@@ -14,7 +14,7 @@ import { RootState } from '../../store';
 import Almacen from 'components/almacen/select-almacen';
 
 function getSteps() {
-  return ['Revisa tu carrito', 'Selecciona el Almacen', 'Completa tu orden'];
+  return ['Revisa tu carrito', 'Completa tu orden'];
 }
 
 function getStepContent(step: number) {
@@ -22,8 +22,6 @@ function getStepContent(step: number) {
     case 0:
       return <Basket />;
     case 1:
-      return <Almacen/>;
-    case 2:
       return <PaymentComponent />;
     default:
       return 'Unknown step';
