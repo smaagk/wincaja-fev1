@@ -15,7 +15,7 @@ const useOrderStyles = makeStyles({
 function Pedidos() {
     const orderStyles = useOrderStyles();
     const [pedidosData, pedidosDataDataLoading]: any = useGetFetchData(
-        `${REACT_APP_API_URL}/compras`
+        `${REACT_APP_API_URL}/peordenescliente`
     );
 
     const [orders, setOrders] = useState([]);

@@ -23,7 +23,7 @@ export function AddToCart(props: InfoCart) {
 
     const [infoData, setInfoData]: any = useState({});
     const [productInfoData, productInfoDataLoading]: any = useGetFetchData(
-        `${REACT_APP_API_URL}/articulo/${props.articulo}`
+        `${REACT_APP_API_URL}/articulocliente/${props.articulo}`
     );
 
     useEffect(() => {

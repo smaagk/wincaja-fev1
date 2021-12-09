@@ -64,7 +64,7 @@ export default function Productos() {
      const debouncedSearchTerm = useDebounce(simpleSearchValue, 1000);
 
     useEffect(() => {
-        setParams({ ...params, phrase: debouncedSearchTerm });
+        setParams({ ...params, phrase: debouncedSearchTerm, almacen: 0 });
     }, [debouncedSearchTerm]);
 
     useEffect(() => {

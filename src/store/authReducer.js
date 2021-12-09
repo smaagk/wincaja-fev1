@@ -25,7 +25,6 @@ const authReducer = (state = initialState, action) => {
 			window.location.href = '/tienda/home';
 			
 			return {
-				state: initialState,
 				isAuthenticated: false,
 				user: null,
 				token: null,
