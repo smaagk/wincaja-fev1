@@ -59,12 +59,12 @@ function AccessComponent() {
 
                         <Divider />
                         <br />
-                        {/* <span>¿No tienes cuenta?</span>
+                        <span>¿No tienes cuenta?</span>
                         <Button
                             title="Crear cuenta"
                             color="deepGreen"
                             onClick={handleShowRegisterForm}
-                        /> */}
+                        />
                     </>
                 ) : (
                     <RegisterComponent />

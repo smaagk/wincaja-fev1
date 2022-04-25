@@ -46,6 +46,7 @@ const cardDataInitialState = {
 };
 const {
     REACT_APP_API_URL,
+    REACT_APP_API2_URL,
     REACT_APP_MERCHANT_ID,
     REACT_APP_APIOPENPAY,
 } = process.env;
@@ -57,6 +58,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
     const address = useSelector((state) => state.address);
     const almacen = useSelector((state) => state.almacen);
     const { cart } = useSelector((state) => state.cart);
+    const auth = useSelector((state) => state.auth);
     const styles = useStyles();
     const { button: buttonStyles } = useBlogTextInfoContentStyles();
     const shadowStyles = useOverShadowStyles();
@@ -73,7 +75,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
 
     const [shoppingCartInfo, setShoppingCartInfo] = useState(null);
     const [payment, paymentLoading, paymentError] = useCustomFetch(
-        `${REACT_APP_API_URL}/payment`,
+        `${REACT_APP_API2_URL}/payment`,
         shoppingCartInfo
     );
     const [startPayment, setStartPayment] = useState(false);
@@ -190,17 +192,18 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
 
     useEffect(() => {
         if (tokenResponse !== null && startPayment) {
-            const articulos = cart.map((val) => {
-                return { articulo: val.articulo, quantity: val.quantity };
+            const products = cart.map((val) => {
+                return { id: val.articulo, quantity: val.quantity };
             });
 
             setShoppingCartInfo({
-                charge: {
+                chargeInfo: {
                     source_id: tokenResponse.id,
                     device_session_id: deviceDataId,
                 },
-                alias: address.addressKey,
-                articulos,
+                AliasDireccion: address.addressKey,
+                customerId: auth.user.clientesLinea.OpenpayClientId,
+                products,
             });
 
             setStartPayment(false);

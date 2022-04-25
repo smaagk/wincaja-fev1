@@ -13,8 +13,10 @@ import Typography from '@material-ui/core/Typography';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { ProductImage } from 'components/ui-components/product-image/product-image';
-import { REACT_APP_API_URL } from 'constants/app.constants';
+import { REACT_APP_API_URL, REACT_APP_API2_URL } from 'constants/app.constants';
 import useGetFetchData from 'custom-hooks/useGetFetchData';
+import { articulosPedido } from 'interfaces/atriculos.interfaces';
+import { openpaytransaction } from 'interfaces/openpay.interface';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 
@@ -47,7 +49,25 @@ function Row(props: { row: any }) {
     const [openPayData, openPayDataLoading]: any = useGetFetchData(
         `${REACT_APP_API_URL}/transactiondetails/${row.idOpenPayTransaction}`
     );
-    const [openPayInfo, setOpenPayInfo] = useState({});
+
+    const [products, productsDataLoading]: any = useGetFetchData(
+        `${REACT_APP_API2_URL}/ordenes/${row.id}`
+    );
+    const [openPayInfo, setOpenPayInfo]: [openpaytransaction, any] = useState({} as openpaytransaction);
+    const [productsInfo, setProductsInfo]: [articulosPedido[], any] = useState([] as articulosPedido[]);
+
+    useEffect(() => {
+        if (openPayData) {
+            setOpenPayInfo(openPayData);
+            console.log(openPayData);
+        }
+    }, [openPayData])
+
+    useEffect(() => {
+        if (productsDataLoading !== true && products.hasOwnProperty('articulosCompraLinea')) {
+            setProductsInfo(products.articulosCompraLinea);
+        }
+    }, [productsDataLoading, products])
 
     return (
         <React.Fragment>
@@ -58,9 +78,9 @@ function Row(props: { row: any }) {
                     </IconButton>
                 </TableCell>
                 <TableCell component="th" scope="row">
-                    {row.idOrder}
+                    {row.id}
                 </TableCell>
-                <TableCell align="right">{row.orderDate}</TableCell>
+                <TableCell align="right">{row.Fecha}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -68,10 +88,10 @@ function Row(props: { row: any }) {
                         <Box margin={1}>
                             <Typography variant="h6" gutterBottom component="div">
                                 <ul>
-                                    <li>Id OpenPay:  {openPayData.id} </li>
-                                    <li>Tarjeta: {openPayData && openPayData.card && openPayData.card.card_number}</li>
-                                    <li>Total de la compra: {openPayData.amount} MXN</li>
-                                    <li>Fecha del cargo: {openPayData.operation_date}</li>
+                                    <li>Id OpenPay: {row.idOpenPayTransaction}</li>
+                                    <li>Tarjeta: {openPayInfo?.card?.card_number}</li>
+                                    <li>Total de la compra: {openPayInfo?.amount}</li>
+                                    <li>Fecha del cargo: {openPayInfo?.creation_date}</li>
                                 </ul>
                             </Typography>
                             <Table size="small" aria-label="purchases">
@@ -80,22 +100,22 @@ function Row(props: { row: any }) {
                                         <TableCell>Producto</TableCell>
                                         <TableCell>Imagen</TableCell>
                                         <TableCell align="right">Cantidad</TableCell>
-                                        <TableCell align="right">Precio Total ($)</TableCell>
+                                        <TableCell align="right">Precio ($)</TableCell>
                                     </TableRow>
                                 </TableHead>
                                 <TableBody>
-                                    {row.products.map((productsRow: any) => (
+                                    {productsInfo.length > 0 ? productsInfo.map((productsRow: articulosPedido) => (
                                         <TableRow key={productsRow.id}>
                                             <TableCell component="th" scope="row">
-                                                {productsRow.name}
+                                                {productsRow.nombre}
                                             </TableCell>
                                             <TableCell><ProductImage idProduct={productsRow.id} /></TableCell>
-                                            <TableCell align="right">{productsRow.amount}</TableCell>
+                                            <TableCell align="right">{productsRow.Cantidad}</TableCell>
                                             <TableCell align="right">
-                                                {productsRow.total}
+                                                {productsRow.PrecioVenta}
                                             </TableCell>
                                         </TableRow>
-                                    ))}
+                                    )) : <TableRow> <TableCell>No hay productos</TableCell> </TableRow> }
                                 </TableBody>
                             </Table>
                         </Box>
@@ -136,9 +156,9 @@ export default function OrderTable(pedidos: any) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {orders.map((row: any) => (
-                            <Row key={row.idOrder} row={row} />
-                        ))}
+                        {orders.length > 0 ? orders.map((row: any) => (
+                            <Row key={row.id} row={row} />
+                        )) : <></>}
                     </TableBody>
                 </Table>
             </TableContainer>

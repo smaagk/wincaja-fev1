@@ -78,7 +78,7 @@ function PaymentOptions() {
 
     return (
         <div>
-            <h2>Selecciona tu método de pago</h2>
+            <h2>Selecciona tu método de pago hehehhe</h2>
             <div className={classes.root}>
                 {paymentOptions && paymentOptions.map((payment: PaymentOptionsProps) => {
                     return payment.habilitado ? (

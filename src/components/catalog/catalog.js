@@ -1,4 +1,4 @@
-import { Drawer,MenuItem, MenuList} from '@material-ui/core';
+import { Drawer, MenuItem, MenuList } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Toolbar from '@material-ui/core/Toolbar';
 import Layout, {
@@ -14,7 +14,7 @@ import Layout, {
 import AccessComponent from 'components/access/acccess';
 import Home from 'components/home';
 import React, { useState } from 'react';
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, Route, Switch } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -75,7 +75,7 @@ const Catalog = () => {
     const isDrawerOpen = useSelector((state) => state.drawer.isOpen);
 
     function handleDrawer() {
-        dispatch({ type: 'DRAWER'});
+        dispatch({ type: 'DRAWER' });
     }
 
     return (
@@ -99,7 +99,7 @@ const Catalog = () => {
                         </Drawer> */}
                         <DrawerSidebar onClose={handleDrawer} sidebarId="primarySidebar">
                             <SidebarContent>
-                                <AppMenu  />
+                                <AppMenu />
                             </SidebarContent>
                             <CollapseBtn />
                         </DrawerSidebar>
@@ -108,19 +108,18 @@ const Catalog = () => {
                                 <Route path="/" component={Home} exact />
                                 <Route path="/tienda" component={Home} exact />
                                 <Route path="/tienda/categoria/:categoria" component={Home} exact />
-                                <Route path="/tienda/producto/:articulo"  render={({ match }) => <ProductDetailsComponent key={match.params.articulo || 'empty'} info={match} />} exact />
-                                
-                                <Route path="/tienda/carrito" component={BuyProcessComponent} exact/>
-                                <Route path='/tienda/confirmacion' component={ConfirmationOrder} exact/>
-                                <Route path='/tienda/login' component={AccessComponent} exact/>
-                                <Route path='/tienda/cuenta' component={AccountComponent} exact/>
-                                <Route path='/tienda/pedidos' component={Pedidos} exact/>
-                                
+                                <Route path="/tienda/producto/:articulo" render={({ match }) => <ProductDetailsComponent key={match.params.articulo || 'empty'} info={match} />} exact />
+                                <Route path="/tienda/carrito" component={BuyProcessComponent} exact />
+                                <Route path='/tienda/confirmacion' component={ConfirmationOrder} exact />
+                                <Route path='/tienda/login' component={AccessComponent} exact />
+                                <Route path='/tienda/cuenta' component={AccountComponent} exact />
+                                <Route path='/tienda/pedidos' component={Pedidos} exact />
+
                             </Switch>
                         </Content>
                         <InsetFooter></InsetFooter>
                         <CartBarComponent />
-                       
+
                     </>
                 )
             }}

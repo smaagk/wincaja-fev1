@@ -15,10 +15,10 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
-        <AuthClient path="/" component={Catalog} exact />
+        <Route path="/" component={Catalog} exact />
         <AuthAdmin path="/admin" component={HomeAdmin} />
         <Route path="/login" component={AccessComponent} exact />
-        <AuthClient path="/tienda" component={Catalog} />
+        <Route path="/tienda" component={Catalog} />
         <Route path="/debug" component={TypeaHead} />
       </div>
     </BrowserRouter>

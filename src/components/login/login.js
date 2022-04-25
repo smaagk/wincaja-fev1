@@ -17,7 +17,7 @@ import Button from '../ui-components/button';
 import CustomSnackBar from '../ui-components/custom-snackbar';
 import useStyles from './logincss';
 
-const { REACT_APP_API_URL } = process.env;
+const { REACT_APP_API2_URL } = process.env;
 
 function Login() {
     let history = useHistory();
@@ -76,7 +76,7 @@ function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         setMethod('POST');
-        setUrl(`${REACT_APP_API_URL}/authenticate`);
+        setUrl(`${REACT_APP_API2_URL}/auth`);
     };
 
     return (

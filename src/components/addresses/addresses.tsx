@@ -48,6 +48,7 @@ function AddressesComponent() {
     }, []);
 
     useEffect(() => {
+        console.log('addresses', addresses);
         if (!addressesLoading && _addresses.success) {
             dispatch({ type: 'SETADDRESSES', payload: _addresses.addresses });
         }
