@@ -17,7 +17,7 @@ import validateSchema, {
   IRegisterErrors,
 } from './validate-register';
 
-const { REACT_APP_API_URL } = process.env;
+const { REACT_APP_API_URL, REACT_APP_API2_URL } = process.env;
 
 
 function RegisterComponent() {
@@ -64,9 +64,9 @@ function RegisterComponent() {
 
   useEffect(() => {
     if (!registerLoading && register) {
-      if (register.success) {
+      if (register.message === 'Usuario creado correctamente') {
         enqueueSnackbar(
-          register.msg,
+          register.message,
           {
             anchorOrigin: {
               vertical: 'bottom',
@@ -81,7 +81,7 @@ function RegisterComponent() {
         });
       } else {
         enqueueSnackbar(
-          register.error,
+          register.message,
           {
             anchorOrigin: {
               vertical: 'bottom',
@@ -94,11 +94,6 @@ function RegisterComponent() {
       }
     }
 
-    console.log(url)
-    console.log(register)
-    console.log(registerLoading)
-    console.log(registerError)
-
     setUrl(null);
   }, [url, registerLoading]);
 
@@ -110,11 +105,11 @@ function RegisterComponent() {
       rfc: values.rfc,
       email: values.email,
       idUsuario: values.email,
-      passwordHash: values.password,
+      password: values.password,
       telefono: values.telefono
     })
 
-    setUrl(`${REACT_APP_API_URL}/user`)
+    setUrl(`${REACT_APP_API2_URL}/user`)
 
   }
 
