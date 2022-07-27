@@ -1,5 +1,5 @@
 const initialState = {
-    almacen: null,
+    almacen: 0,
 };
 
 interface actionI {

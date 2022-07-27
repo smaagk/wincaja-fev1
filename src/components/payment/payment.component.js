@@ -49,6 +49,7 @@ const {
     REACT_APP_API2_URL,
     REACT_APP_MERCHANT_ID,
     REACT_APP_APIOPENPAY,
+    REACT_APP_PKOPENPAY
 } = process.env;
 
 export const PaymentCardComponent = React.memo(function PaymentCard() {
@@ -75,7 +76,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
 
     const [shoppingCartInfo, setShoppingCartInfo] = useState(null);
     const [payment, paymentLoading, paymentError] = useCustomFetch(
-        `${REACT_APP_API2_URL}/payment`,
+        `${REACT_APP_API2_URL}/payment-line`,
         shoppingCartInfo
     );
     const [startPayment, setStartPayment] = useState(false);
@@ -152,7 +153,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
     //Se inicializa las credenciales de open pay al iniciar el componente
     useEffect(() => {
         window.OpenPay.setId(REACT_APP_MERCHANT_ID);
-        window.OpenPay.setApiKey('pk_180216fa25694b768c2c4c3e4fd63863');
+        window.OpenPay.setApiKey('pk_9ba749f326ef4154a0dacb06dae26370');
         window.OpenPay.setSandboxMode(true);
         setDeviceDataId(window.OpenPay.deviceData.setup('paymentForm'));
     }, []);

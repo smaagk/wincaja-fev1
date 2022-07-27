@@ -26,6 +26,7 @@ import {
 } from '@mui-treasury/mockup/layout';
 import Preordenes from './preordenes/preordenes';
 import Preorden from './preorden/preorden';
+import Pedidos from './pedidos/pedidos';
 
 const Header = getHeader(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -99,7 +100,7 @@ const HomeAdmin = () => {
             <Route path="/admin/productos" component={Productos} />
             <Route path="/admin/producto/:articulo" component={Producto} />
             <Route path="/admin/metodos" component={MetodosDePago} />
-            <Route path="/admin/preordenes" component={Preordenes} />
+            <Route path="/admin/preordenes" component={Pedidos} />
             <Route path="/admin/preorden/:preorden" component={Preorden} />
           </Content>
         </>

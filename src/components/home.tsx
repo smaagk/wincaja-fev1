@@ -63,17 +63,17 @@ function Home() {
                 setDataProduct(mapProducts(productsData.rows));
             }
         }
-    }, [productsLoading]);
+    }, [productsLoading, productsData]);
 
     useEffect(() => {
         if(debouncedSearchTerm) {
-            setParams({ ...params, phrase: debouncedSearchTerm });
+            setParams((prevParams: any) => ({ ...prevParams, phrase: debouncedSearchTerm }));
         }
     }, [debouncedSearchTerm]);
 
     useEffect(() => {
         if(almacen) {
-            setParams({ ...params, almacen: almacen });
+            setParams((prevParams: any) => ({ ...prevParams, almacen: almacen }));
         }
     }, [almacen]);
 
@@ -109,13 +109,12 @@ function Home() {
                     </div>
                     <br />
                     <TablePagination
-                        component="div"
                         count={100}
                         page={page}
-                        onChangePage={handleChangePage}
                         labelRowsPerPage="Productos por página"
                         rowsPerPage={rowsPerPage}
                         onChangeRowsPerPage={handleChangeRowsPerPage}
+                        onPageChange={handleChangePage}
                     />
                 </>
             ) : (

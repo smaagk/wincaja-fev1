@@ -24,8 +24,8 @@ export default function ConfirmationOrder() {
                 <div className={styles.message}>
                     <h1>¡Gracias por tu compra!</h1>
                     <h2>
-                        En breve se te hara llegar un correo con los detalles de
-                        tu pedido
+                        Una vez que nuestro equipo revise y confirme tu pedido, 
+                        te enviaremos un correo con los detalles de tu pedido.
                     </h2>
                     <CustomButton
                             title="Regresar a la tienda"

@@ -44,6 +44,7 @@ function createData(
 
 function Row(props: { row: any }) {
     const { row } = props;
+    console.log(row);
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
     const [openPayData, openPayDataLoading]: any = useGetFetchData(
@@ -80,45 +81,47 @@ function Row(props: { row: any }) {
                 <TableCell component="th" scope="row">
                     {row.id}
                 </TableCell>
-                <TableCell align="right">{row.Fecha}</TableCell>
+                <TableCell align="right">{row.createdAt}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
                     <Collapse in={open} timeout="auto" unmountOnExit>
-                        <Box margin={1}>
-                            <Typography variant="h6" gutterBottom component="div">
-                                <ul>
-                                    <li>Id OpenPay: {row.idOpenPayTransaction}</li>
-                                    <li>Tarjeta: {openPayInfo?.card?.card_number}</li>
-                                    <li>Total de la compra: {openPayInfo?.amount}</li>
-                                    <li>Fecha del cargo: {openPayInfo?.creation_date}</li>
-                                </ul>
-                            </Typography>
-                            <Table size="small" aria-label="purchases">
-                                <TableHead>
-                                    <TableRow>
-                                        <TableCell>Producto</TableCell>
-                                        <TableCell>Imagen</TableCell>
-                                        <TableCell align="right">Cantidad</TableCell>
-                                        <TableCell align="right">Precio ($)</TableCell>
-                                    </TableRow>
-                                </TableHead>
-                                <TableBody>
-                                    {productsInfo.length > 0 ? productsInfo.map((productsRow: articulosPedido) => (
-                                        <TableRow key={productsRow.id}>
-                                            <TableCell component="th" scope="row">
-                                                {productsRow.nombre}
-                                            </TableCell>
-                                            <TableCell><ProductImage idProduct={productsRow.id} /></TableCell>
-                                            <TableCell align="right">{productsRow.Cantidad}</TableCell>
-                                            <TableCell align="right">
-                                                {productsRow.PrecioVenta}
-                                            </TableCell>
+                        <React.Fragment>
+                            <Box margin={1}>
+                                <Typography variant="h6" gutterBottom component="div">
+                                    <ul>
+                                        <li>Id OpenPay: {row.idOpenPayTransaction}</li>
+                                        <li>Tarjeta: {openPayInfo?.card?.card_number}</li>
+                                        <li>Total de la compra: {openPayInfo?.amount}</li>
+                                        <li>Fecha del cargo: {openPayInfo?.creation_date}</li>
+                                    </ul>
+                                </Typography>
+                                <Table size="small" aria-label="purchases">
+                                    <TableHead>
+                                        <TableRow>
+                                            <TableCell>Producto</TableCell>
+                                            <TableCell>Imagen</TableCell>
+                                            <TableCell align="right">Cantidad</TableCell>
+                                            <TableCell align="right">Precio ($)</TableCell>
                                         </TableRow>
-                                    )) : <TableRow> <TableCell>No hay productos</TableCell> </TableRow> }
-                                </TableBody>
-                            </Table>
-                        </Box>
+                                    </TableHead>
+                                    <TableBody>
+                                        {productsInfo.length > 0 ? productsInfo.map((productsRow: articulosPedido) => (
+                                            <TableRow key={productsRow.id}>
+                                                <TableCell component="th" scope="row">
+                                                    {productsRow.nombre}
+                                                </TableCell>
+                                                <TableCell><ProductImage idProduct={productsRow.id} /></TableCell>
+                                                <TableCell align="right">{productsRow.Cantidad}</TableCell>
+                                                <TableCell align="right">
+                                                    {productsRow.PrecioVenta}
+                                                </TableCell>
+                                            </TableRow>
+                                        )) : <TableRow> <TableCell>No hay productos</TableCell> </TableRow> }
+                                    </TableBody>
+                                </Table>
+                            </Box>
+                        </React.Fragment>
                     </Collapse>
                 </TableCell>
             </TableRow>

@@ -1,5 +1,4 @@
 import { Card } from '@material-ui/core';
-import { Match } from '@testing-library/react';
 import { ProductImages } from 'components/ui-components';
 import { OptionsObject, useSnackbar } from 'notistack';
 import React, { useEffect, useState } from 'react';

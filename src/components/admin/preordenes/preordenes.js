@@ -51,7 +51,7 @@ const useStyles = makeStyles({
     }
   }
 });
-const { REACT_APP_API_URL } = process.env;
+const { REACT_APP_API_URL, REACT_APP_API2_URL } = process.env;
 
 
 export default function Preordenes() {
@@ -61,11 +61,11 @@ export default function Preordenes() {
   const [rowsPerPage, setRowsPerPage] = useState(20);
   const [totalRows, setTotalRows] = useState(0);
   const [params, setParams] = useState({});
-  const [products, setProducts] = useState([]);
+  const [preordenes, setPreordenes] = useState([]);
   const [selected, setSelected] = useState([]);
   const [productSelected] = useState({});
   const [preordenData, preordenLoading] = useGetFetchData(
-    `${REACT_APP_API_URL}/preorden`,
+    `${REACT_APP_API2_URL}/preordenes`,
     params
   );
   // eslint-disable-next-line no-unused-vars
@@ -76,18 +76,14 @@ export default function Preordenes() {
 
   useEffect(() => {
     if (!preordenLoading && REACT_APP_API_URL !== null) {
-      if (preordenData.success) {
-        setMetaPagination(preordenData);
+      if (preordenData) {
+        setPreordenes(preordenData.preOrdenesVentaEnLinea);
       }
     }
   }, [preordenLoading]);
 
   const setMetaPagination = (productsData) => {
-    setProducts(productsData.rows);
-    setTotalRows(productsData.meta.count);
-    setRowsPerPage(productsData.meta.pageSize);
-    setPage(productsData.meta.currentPage - 1);
-    setOnlineEnabled(productsData.rows);
+    
   };
 
   const setOnlineEnabled = (products) => {
@@ -129,7 +125,7 @@ export default function Preordenes() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {products.map((row) => {
+            {preordenes.map((row) => {
               const isItemSelected = isSelected(row.articulo);
 
               return (

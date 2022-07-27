@@ -42,7 +42,7 @@ function PaymentOptions() {
     const classes = useStyles();
     const dispatch = useDispatch();
 
-    const [paymentOptions, paymentOptionsLoading]: any = useFetchData(
+    const [paymentOptions, ]: any = useFetchData(
         `${REACT_APP_API_URL}/metodospago`
     );
 
@@ -74,11 +74,11 @@ function PaymentOptions() {
             type: 'SETMETHOD',
             payload: method[0],
         });
-    }, [options]);
+    }, [options, dispatch]);
 
     return (
         <div>
-            <h2>Selecciona tu método de pago hehehhe</h2>
+            <h2>Selecciona tu método de pago</h2>
             <div className={classes.root}>
                 {paymentOptions && paymentOptions.map((payment: PaymentOptionsProps) => {
                     return payment.habilitado ? (

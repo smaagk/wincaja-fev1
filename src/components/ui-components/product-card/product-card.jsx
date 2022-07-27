@@ -91,7 +91,7 @@ function ProductCard(props) {
                     description={dataProduct.description}
                 />
                 
-                <StockAvailability stock={props.data.existencia}></StockAvailability>
+                {/* <StockAvailability stock={props.data.existencia}></StockAvailability> */}
             </CardContent>
             <Box px={3} pb={3}>
                 <div className={cardStyles.chip}>

@@ -12,7 +12,7 @@ function useFetchOpenPay(
 
   let headers = {
     'Content-Type': 'application/json',
-    Authorization: 'Basic cGtfMTgwMjE2ZmEyNTY5NGI3NjhjMmM0YzNlNGZkNjM4NjM6',
+    Authorization: 'Basic cGtfOWJhNzQ5ZjMyNmVmNDE1NGEwZGFjYjA2ZGFlMjYzNzA6',
   };
 
   async function Fetch(url: string, data: any) {
