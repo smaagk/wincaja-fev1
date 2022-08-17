@@ -31,7 +31,8 @@ function Home() {
     const { almacen } = useSelector((state: RootState) => state.almacen);
     const debouncedSearchTerm = useDebounceSearch(simpleSearchValue, 1000);
     const [params, setParams]: any = useState({almacen: almacen });
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(1);
+    const [count, setCount] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(20);
     const [productsData, productsLoading]: any = useGetFetchData(
         `${REACT_APP_API_URL}/articulos`,
@@ -47,20 +48,26 @@ function Home() {
         newPage: number
     ) => {
         setPage(newPage);
-        setParams({ ...params, currentPage: newPage });
     };
 
     const handleChangeRowsPerPage = (
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+        setPage(1);
+        console.log(rowsPerPage);
     };
+
+    useEffect(() => {
+        setParams({ ...params, currentPage: page, pageSize: rowsPerPage });
+        console.log(params);
+    } , [page, rowsPerPage]);
 
     useEffect(() => {
         if (!productsLoading && REACT_APP_API_URL !== null) {
             if (productsData.success) {
                 setDataProduct(mapProducts(productsData.rows));
+                setCount(productsData.meta.count);
             }
         }
     }, [productsLoading, productsData]);
@@ -109,7 +116,7 @@ function Home() {
                     </div>
                     <br />
                     <TablePagination
-                        count={100}
+                        count={count}
                         page={page}
                         labelRowsPerPage="Productos por página"
                         rowsPerPage={rowsPerPage}
