@@ -261,6 +261,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
                 almacen,
                 metodoPago,
                 articulos,
+                AliasDireccion: address.addressKey
             };
 
             setPreorden(preorder);

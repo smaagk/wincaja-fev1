@@ -35,4 +35,5 @@ export type openpaytransaction ={
         "currency": string,
         "method": string,
         "success": boolean
+        "http_code"?: number
     }

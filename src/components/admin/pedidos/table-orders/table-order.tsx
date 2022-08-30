@@ -26,6 +26,7 @@ import { RootState } from 'store';
 import { CustomButton } from 'components/ui-components';
 import useCustomFetch from 'custom-hooks/useCustomFetch';
 import Chip from '@mui/material/Chip';
+import _ from 'lodash';
 
 const ORDER_STATUS_COLORS = [
     { status: 1, statusName: 'completed', color: '#00bcd4', textColor: '#fff' }, 
@@ -117,6 +118,12 @@ function Row(props: { row: any }) {
         preordenParams
     );
 
+    const [preordenCashParams, setPreordenCashParams] = useState({});
+    const [preordenCashUpdated, preordenCashUpdatedLoading] = useCustomFetch(
+        `${REACT_APP_API2_URL}/approve-payment-cash`,
+        preordenCashParams
+    );
+
     const [cancelParams, setCancelParams] = useState({});
     const [preordenCancelled, preordenCancelledLoading] = useCustomFetch(
         `${REACT_APP_API2_URL}/cancel-payment`,
@@ -167,12 +174,28 @@ function Row(props: { row: any }) {
         }
     }, [preordenCancelledLoading])
 
+    useEffect(() => {
+        if (preordenCashUpdatedLoading !== true ) {
+            setPreordenCashParams({});
+            setOpen(false);
+        }
+    } , [preordenCashUpdatedLoading])
+
     const handleApprovePayment = () => {
-        setPreordenParams({
-            customerId: openPayInfo?.customer_id,
-            transactionId: openPayInfo.id,
-            almacen: _almacen
-        });
+
+        if (openPayInfo.http_code === 404) {
+            setPreordenCashParams({
+                transactionId: row.idMetodoPago,
+                almacen: _almacen,
+                customerId: null
+            });
+        } else {
+            setPreordenParams({
+                customerId: openPayInfo?.customer_id,
+                transactionId: openPayInfo.id,
+                almacen: _almacen
+            });
+        }
     }
 
     const handleCancelPayment = () => {

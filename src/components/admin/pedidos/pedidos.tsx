@@ -7,7 +7,7 @@ import OrderTable from './table-orders/table-order';
 
 const useOrderStyles = makeStyles({
     root: {
-      width: '60%',
+      width: '90%',
       margin: 'auto'
     },
   });
