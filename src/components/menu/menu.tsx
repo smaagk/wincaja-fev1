@@ -22,12 +22,12 @@ const appMenuItems = [
     items: [{
       name: 'Level 2',
     }],
-  },
-  {
-    name: 'Mis Pedidos',
-    link: '/pedidos',
-    Icon: LocalMall,
-  },
+ },
+  // {
+  //   name: 'Mis Pedidos',
+  //   link: '/pedidos',
+  //   Icon: LocalMall,
+  // },
   {
     name: 'Mi Cuenta',
     link: '/customers',

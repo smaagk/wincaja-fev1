@@ -23,8 +23,8 @@ const useStyles = makeStyles((props) => ({
     }
 }));
 
-type PaymentOptions = {
-    type: 'Efectivo' | 'Linea' | 'Terminal';
+export type PaymentOptionsTypes = {
+    type: 'Efectivo' | 'Linea' | 'Terminal' | 'Preorden';
     title: string;
     active: boolean;
     onClick: React.MouseEventHandler<HTMLElement>;
@@ -35,9 +35,10 @@ const iconTypes = {
     Linea: roundPayment,
     Efectivo: moneyWithWings,
     Terminal: creditCard,
+    Preorden: creditCard
 };
 
-function PaymentOptionLabel(props: PaymentOptions) {
+function PaymentOptionLabel(props: PaymentOptionsTypes) {
     const classes = useStyles();
 
     return (

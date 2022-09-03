@@ -64,13 +64,12 @@ export default function Productos() {
      const debouncedSearchTerm = useDebounce(simpleSearchValue, 1000);
 
     useEffect(() => {
-        setParams({ ...params, phrase: debouncedSearchTerm });
+        setParams({ ...params, phrase: debouncedSearchTerm, almacen: 0 });
     }, [debouncedSearchTerm]);
 
     useEffect(() => {
         if (!productsLoading && REACT_APP_API_URL !== null) {
             if (productsData.success) {
-                console.log(productsData)
                 setMetaPagination(productsData);
             }
         }

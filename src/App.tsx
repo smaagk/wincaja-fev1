@@ -9,6 +9,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import HomeAdmin from './components/admin/home-admin';
 import Catalog from './components/catalog/catalog';
 import AuthAdmin from './guards/auth-guard';
+import AuthClient from 'guards/client-guard';
 
 function App() {
   return (

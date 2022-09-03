@@ -115,7 +115,6 @@ export default function CustomizedAccordions() {
   }, [addressCreatedLoading]);
 
   function submmitAddress() {
-    
     setAdresses([{ ...values }]);
   }
 
@@ -213,8 +212,8 @@ export default function CustomizedAccordions() {
               />
             </div>
             <TextField
-              label="Referencia"
-              name="referrencia"
+              label="Referencias"
+              name="referencias"
               variant="filled"
               value={values.referencias}
               onChange={handleChange}

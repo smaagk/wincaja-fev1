@@ -17,6 +17,7 @@ const useForm = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> 
   ) => {
     const { name, value } = event.target;
+    setSubmmiting(false);
     setValues({ ...values, [name]: value });
     setDirty({ ...isDirty, [name]: true });
   };

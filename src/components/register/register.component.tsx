@@ -2,6 +2,8 @@
 import { TextField } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 
 import useCustomFetch from '../../custom-hooks/useCustomFetch';
 import useForm from '../../custom-hooks/useForm';
@@ -15,12 +17,13 @@ import validateSchema, {
   IRegisterErrors,
 } from './validate-register';
 
-const { REACT_APP_API_URL } = process.env;
+const { REACT_APP_API_URL, REACT_APP_API2_URL } = process.env;
 
 
 function RegisterComponent() {
   const firstRender = useRef(true);
   const classes = useStyles();
+  const dispatch = useDispatch();
   const {
     values,
     errors,
@@ -44,14 +47,15 @@ function RegisterComponent() {
       apellidop: '',
       apellidom: '',
       rfc: '',
+      telefono: ''
     },
     validateSchema,
     submmitRegister
   );
-  
+
   const [valuesRegister, setValuesRegister] = useState({})
-  const [url, setUrl] : any = useState(null);
-  const [register, registerLoading, registerError] : any = useCustomFetch(
+  const [url, setUrl]: any = useState(null);
+  const [register, registerLoading, registerError]: any = useCustomFetch(
     url,
     valuesRegister
   );
@@ -59,31 +63,33 @@ function RegisterComponent() {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   useEffect(() => {
-    if (!registerLoading && url !== null) {
-      console.log(register);
-      if (register.success) {
+    if (!registerLoading && register) {
+      if (register.message === 'Usuario creado correctamente') {
         enqueueSnackbar(
-          register.msg,
+          register.message,
           {
             anchorOrigin: {
-                vertical: 'bottom',
-                horizontal: 'center',
+              vertical: 'bottom',
+              horizontal: 'center',
             },
             variant: 'success',
             autoHideDuration: 3000
-        }
-        );
+          });
+
+        dispatch({
+          type: 'HIDE_REGISTER_FORM'
+        });
       } else {
         enqueueSnackbar(
-          register.error,
+          register.message,
           {
             anchorOrigin: {
-                vertical: 'bottom',
-                horizontal: 'center',
+              vertical: 'bottom',
+              horizontal: 'center',
             },
             variant: 'error',
             autoHideDuration: 3000
-        }
+          }
         );
       }
     }
@@ -93,17 +99,18 @@ function RegisterComponent() {
 
   function submmitRegister() {
     setValuesRegister({
-        nombre: values.nombre,
-        apellido1: values.apellidop,
-        apellido2: values.apellidom,
-        rfc: values.rfc,
-        email: values.email,
-        idUsuario: values.email,
-        passwordHash: values.password,
+      nombre: values.nombre,
+      apellido1: values.apellidop,
+      apellido2: values.apellidom,
+      rfc: values.rfc,
+      email: values.email,
+      idUsuario: values.email,
+      password: values.password,
+      telefono: values.telefono
     })
 
-    setUrl(`${REACT_APP_API_URL}/user`)
-  
+    setUrl(`${REACT_APP_API2_URL}/user`)
+
   }
 
   useEffect(() => {
@@ -111,7 +118,7 @@ function RegisterComponent() {
       firstRender.current = false;
       return;
     }
-    console.log(errors);
+
   }, [values]);
 
   function isValidAndTouched(field: string) {
@@ -138,7 +145,7 @@ function RegisterComponent() {
         }}
         error={isValidAndTouched('email')}
       ></TextField>
-      {isValidAndTouched('email') ? <p>{errors.email.msg}</p> : null}
+      {isValidAndTouched('email') ? <p className={classes.errorInputMessage}>{errors.email.msg}</p> : null}
       <PasswordInputComponent
         label="Contraseña"
         name="password"
@@ -146,7 +153,7 @@ function RegisterComponent() {
         onChange={handleChange}
         error={isValidAndTouched('password')}
       />
-      {isValidAndTouched('password') ? <p>{errors.password.msg}</p> : null}
+      {isValidAndTouched('password') ? <p className={classes.errorInputMessage}>{errors.password.msg}</p> : null}
       <PasswordInputComponent
         label="Confirmar contraseña"
         name="passwordConfirmation"
@@ -155,7 +162,7 @@ function RegisterComponent() {
         error={isValidAndTouched('passwordConfirmation')}
       />
       {isValidAndTouched('passwordConfirmation') ? (
-        <p>{errors.passwordConfirmation.msg}</p>
+        <p className={classes.errorInputMessage}>{errors.passwordConfirmation.msg}</p>
       ) : null}
       <TextField
         className={classes.input}
@@ -170,7 +177,7 @@ function RegisterComponent() {
           ),
         }}
       ></TextField>
-      {isValidAndTouched('nombre') ? <p>{errors.nombre.msg}</p> : null}
+      {isValidAndTouched('nombre') ? <p className={classes.errorInputMessage}>{errors.nombre.msg}</p> : null}
       <TextField
         className={classes.input}
         label="Apellido paterno"
@@ -184,7 +191,7 @@ function RegisterComponent() {
           ),
         }}
       ></TextField>
-      {isValidAndTouched('apellidop') ? <p>{errors.apellidop.msg}</p> : null}
+      {isValidAndTouched('apellidop') ? <p className={classes.errorInputMessage}>{errors.apellidop.msg}</p> : null}
       <TextField
         className={classes.input}
         label="Apellido materno"
@@ -192,6 +199,14 @@ function RegisterComponent() {
         onChange={handleChange}
         variant="outlined"
       ></TextField>
+      <TextField
+        className={classes.input}
+        label="Telefono"
+        name="telefono"
+        onChange={handleChange}
+        variant="outlined"
+      ></TextField>
+      {isValidAndTouched('telefono') ? <p className={classes.errorInputMessage}>{errors.telefono.msg}</p> : null}
       <TextField
         className={classes.input}
         label="RFC"

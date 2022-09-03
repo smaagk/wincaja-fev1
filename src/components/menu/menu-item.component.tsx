@@ -5,7 +5,8 @@ import { NavLink, NavLinkProps } from 'react-router-dom'
 export interface AppMenuItemComponentProps {
   className?: string
   link?: string | null // because the InferProps props allows alows null value
-  onClick?: (event: React.MouseEvent<HTMLElement>) => void
+  onClick?: (event: React.MouseEvent<HTMLElement>) => void,
+  children?: React.ReactNode
 }
 
 const AppMenuItemComponent: React.FC<AppMenuItemComponentProps> = props => {

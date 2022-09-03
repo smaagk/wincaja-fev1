@@ -11,9 +11,10 @@ import PaymentComponent from '../payment/payment.component';
 import AddressesComponent from '../addresses/addresses'
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import Almacen from 'components/almacen/select-almacen';
 
 function getSteps() {
-  return ['Revisa tu carrito', 'Dirección de envio', 'Pago'];
+  return ['Revisa tu carrito','Datos de entrega', 'Completa tu orden'];
 }
 
 function getStepContent(step: number) {
@@ -21,7 +22,7 @@ function getStepContent(step: number) {
     case 0:
       return <Basket />;
     case 1:
-      return <AddressesComponent/>;
+      return <AddressesComponent />;
     case 2:
       return <PaymentComponent />;
     default:

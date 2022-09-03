@@ -43,7 +43,7 @@ function ProductAdminCard(props) {
     );
     const [dataProduct, setDataProduct] = useState(null);
 
-    const [imgSrc, setImgSrc] = useState('');
+    const [imgSrc, setImgSrc] = useState(noimage);
     const [indexImg, setIndexImg] = useState(0);
 
     const [imageToDelete, setImageToDelete] = useState(null);
@@ -66,14 +66,8 @@ function ProductAdminCard(props) {
     );
 
     useEffect(() => {
-        if (productsLoading === false) {
-            console.log(productsData);         
-        }
-    }, [productsLoading]);
-
-    useEffect(() => {
         if (productsLoading2 === false) {
-            console.log(productsData2);
+            console.log('productos', productsData2);
             setDataProduct({
                 articulo: `${productsData2.id}`,
                 img: [productsData2.image],
@@ -89,6 +83,7 @@ function ProductAdminCard(props) {
 
             setGetProductosCallback(false)
         }
+        console.log('productos', productsData2);
     }, [productsLoading2]);
 
     useEffect(() => {
@@ -97,11 +92,15 @@ function ProductAdminCard(props) {
         }
     }, [indexImg]);
 
-    useEffect(() => {
-        if (dataProduct) {
-            console.log(dataProduct)
-        }
-    }, [dataProduct]);
+    // useEffect(() => {
+    //     console.log('imgSrc', imgSrc);
+    // }, [imgSrc]);
+
+    // useEffect(() => {
+    //     if (dataProduct) {
+    //         console.log(dataProduct)
+    //     }
+    // }, [dataProduct]);
 
     useEffect(() => {
         if( image_upload === 'imagen creada'){
@@ -132,6 +131,7 @@ function ProductAdminCard(props) {
     function handleDeleteImage() {
         console.log('voy a borrar ', indexImg)
         setImageToDelete({ key: productsData2.gallery[indexImg].key });
+        setIndexImg(indexImg-1)
     }
 
     function handleDialogClose() {
@@ -149,7 +149,6 @@ function ProductAdminCard(props) {
 
     return (
         <div>
-            {dataProduct !== null ? (
                 <div>
                     <Card
                         className={cx(cardStyles.root, fadeShadowStyles.root)}
@@ -181,13 +180,14 @@ function ProductAdminCard(props) {
                                 onClick={() => setIndexImg(index)}
                             />
                         ))}
-                        <CardContent className={cardStyles.content}>
+                        {dataProduct !== null ? (<CardContent className={cardStyles.content}>
                             <TextInfoContent
                                 classes={textCardContentStyles}
                                 heading={dataProduct.name}
                                 body={dataProduct.description}
                             />
-                        </CardContent>
+                        </CardContent>) : <> Cargando info</>}
+                        
                         <Box px={3} pb={3}>
                             <Button
                                 title="Añadir imagen"
@@ -202,9 +202,7 @@ function ProductAdminCard(props) {
                         handleSave={handleSave}
                     />
                 </div>
-            ) : (
-                <div>Cargando info</div>
-            )}
+            )
         </div>
     );
 }

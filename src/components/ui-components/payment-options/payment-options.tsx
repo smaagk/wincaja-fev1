@@ -1,12 +1,6 @@
-import { Divider, IconButton, makeStyles } from '@material-ui/core';
-import FormControl from '@material-ui/core/FormControl';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormLabel from '@material-ui/core/FormLabel';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import CreditCardIcon from '@material-ui/icons/CreditCard';
-import DeleteIcon from '@material-ui/icons/Delete';
+import { Divider, makeStyles } from '@material-ui/core';
+import { REACT_APP_API_URL } from 'constants/app.constants';
+import useFetchData from 'custom-hooks/useFetchData';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
@@ -19,6 +13,7 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
         margin: 'auto',
         maxWidth: 700,
         flexDirection: 'column',
+        justifyContent: 'space-around',
         alignItems: 'center',
         [breakpoints.up('md')]: {
             flexDirection: 'row',
@@ -30,6 +25,12 @@ const useStyles = makeStyles(({ breakpoints, spacing }) => ({
     },
 }));
 
+interface PaymentOptionsProps {
+    id: number,
+    descripcion: "Efectivo" | "Linea" | "Terminal" | "Preorden",
+    habilitado: boolean
+}
+
 function PaymentOptions() {
     const allTypes: { [key: string]: boolean } = {
         Terminal: false,
@@ -40,6 +41,14 @@ function PaymentOptions() {
     const [options, setOptions]: any = React.useState(allTypes);
     const classes = useStyles();
     const dispatch = useDispatch();
+
+    const [paymentOptions, ]: any = useFetchData(
+        `${REACT_APP_API_URL}/metodospago`
+    );
+
+    useEffect(() => {
+        console.log(paymentOptions)
+    }, [paymentOptions])
 
     const handleChange = (metodo: string) => {
         const filteredObject = Object.keys(options)
@@ -65,13 +74,22 @@ function PaymentOptions() {
             type: 'SETMETHOD',
             payload: method[0],
         });
-    }, [options]);
+    }, [options, dispatch]);
 
     return (
         <div>
             <h2>Selecciona tu método de pago</h2>
             <div className={classes.root}>
-                <PaymentOptionLabel
+                {paymentOptions && paymentOptions.map((payment: PaymentOptionsProps) => {
+                    return payment.habilitado ? (
+                        <PaymentOptionLabel
+                            title={payment.descripcion}
+                            type={payment.descripcion}
+                            onClick={() => handleChange(payment.descripcion)}
+                            active={options[payment.descripcion]}
+                        />) : <></>
+                })}
+                {/* <PaymentOptionLabel
                     title="Pago con tarjeta, al recibir el producto"
                     type="Terminal"
                     onClick={() => handleChange('Terminal')}
@@ -88,7 +106,7 @@ function PaymentOptions() {
                     type="Linea"
                     onClick={() => handleChange('Linea')}
                     active={options['Linea']}
-                />
+                /> */}
             </div>
             <Divider flexItem />
         </div>
@@ -96,3 +114,4 @@ function PaymentOptions() {
 }
 
 export default PaymentOptions;
+

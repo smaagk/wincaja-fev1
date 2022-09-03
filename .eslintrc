@@ -9,8 +9,6 @@
     "extends": "react-app",
     "rules": {
         "no-unused-vars": "off",
-        "simple-import-sort/imports": "warning",
-        "simple-import-sort/exports": "warning",
         "strict": [
             "error",
             "never"

@@ -46,8 +46,10 @@ const cardDataInitialState = {
 };
 const {
     REACT_APP_API_URL,
+    REACT_APP_API2_URL,
     REACT_APP_MERCHANT_ID,
     REACT_APP_APIOPENPAY,
+    REACT_APP_PKOPENPAY
 } = process.env;
 
 export const PaymentCardComponent = React.memo(function PaymentCard() {
@@ -55,7 +57,9 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
     const history = useHistory();
     const { metodoPago } = useSelector((state) => state.payment);
     const address = useSelector((state) => state.address);
+    const almacen = useSelector((state) => state.almacen);
     const { cart } = useSelector((state) => state.cart);
+    const auth = useSelector((state) => state.auth);
     const styles = useStyles();
     const { button: buttonStyles } = useBlogTextInfoContentStyles();
     const shadowStyles = useOverShadowStyles();
@@ -72,7 +76,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
 
     const [shoppingCartInfo, setShoppingCartInfo] = useState(null);
     const [payment, paymentLoading, paymentError] = useCustomFetch(
-        `${REACT_APP_API_URL}/payment`,
+        `${REACT_APP_API2_URL}/payment-line`,
         shoppingCartInfo
     );
     const [startPayment, setStartPayment] = useState(false);
@@ -149,7 +153,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
     //Se inicializa las credenciales de open pay al iniciar el componente
     useEffect(() => {
         window.OpenPay.setId(REACT_APP_MERCHANT_ID);
-        window.OpenPay.setApiKey('pk_180216fa25694b768c2c4c3e4fd63863');
+        window.OpenPay.setApiKey('pk_9ba749f326ef4154a0dacb06dae26370');
         window.OpenPay.setSandboxMode(true);
         setDeviceDataId(window.OpenPay.deviceData.setup('paymentForm'));
     }, []);
@@ -189,17 +193,18 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
 
     useEffect(() => {
         if (tokenResponse !== null && startPayment) {
-            const articulos = cart.map((val) => {
-                return { articulo: val.articulo, quantity: val.quantity };
+            const products = cart.map((val) => {
+                return { id: val.articulo, quantity: val.quantity };
             });
 
             setShoppingCartInfo({
-                charge: {
+                chargeInfo: {
                     source_id: tokenResponse.id,
                     device_session_id: deviceDataId,
                 },
-                alias: address.addressKey,
-                articulos,
+                AliasDireccion: address.addressKey,
+                customerId: auth.user.clientesLinea.OpenpayClientId,
+                products,
             });
 
             setStartPayment(false);
@@ -209,11 +214,15 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
 
     useEffect(() => {
         if (!preordenCreatedLoading && preordenCreated) {
+            console.log(preordenCreated); 
             if (preordenCreated.success === true) {
                 enqueueSnackbar(
                     'Pedido finalizado, por favor revisa en tu correo la confirmación del pedido',
                     successSnackbar
                 );
+
+                history.push('/tienda/confirmacion');
+                dispatch({ type: 'CLEANCART' });   //Se limpia el carrito
             }
         }
     }, [preordenCreatedLoading]);
@@ -241,18 +250,18 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
                 errorSnackbar
             );
         } else if (
-            address.addressKey === '' ||
-            address.addressKey === undefined
+            !almacen
         ) {
-            enqueueSnackbar(creditCardConstants.NOADDRESS, errorSnackbar);
+            enqueueSnackbar(creditCardConstants.NOALMACEN, errorSnackbar);
         } else {
             const articulos = cart.map((val) => {
                 return { articulo: val.articulo, quantity: val.quantity };
             });
             const preorder = {
-                alias: address.addressKey,
+                almacen,
                 metodoPago,
                 articulos,
+                AliasDireccion: address.addressKey
             };
 
             setPreorden(preorder);

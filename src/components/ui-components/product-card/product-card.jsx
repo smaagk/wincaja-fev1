@@ -19,6 +19,8 @@ import noimage from '../../../static/noimage.png';
 import { arrayBufferToBase64 } from '../../../utils/arrrayToBuffer';
 import { successSnackbar } from '../../../utils/snackbar.utils';
 import { TextContentComponent } from '../../ui-components';
+import { StockAvailability } from '../stock-avail/stockAvailComponent';
+
 import Button from '../button';
 import useStyles from './product-card.css';
 
@@ -51,6 +53,7 @@ function ProductCard(props) {
 
         const image = props.data.img ? props.data.img : noimage;
         setImgSrc(image);
+        console.log(props);
     }, []);
 
     function handleAddProduct() {
@@ -87,6 +90,8 @@ function ProductCard(props) {
                     title={dataProduct.name}
                     description={dataProduct.description}
                 />
+                
+                {/* <StockAvailability stock={props.data.existencia}></StockAvailability> */}
             </CardContent>
             <Box px={3} pb={3}>
                 <div className={cardStyles.chip}>

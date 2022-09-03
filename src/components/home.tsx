@@ -10,6 +10,7 @@ import useDebounceSearch from '../custom-hooks/useDebounce';
 import useGetFetchData from '../custom-hooks/useGetFetchData';
 import { CategoriesSearch } from './categories-search/CategoriesSearch';
 import ProductCard from './ui-components/product-card/product-card';
+import Almacenes from './almacen/select-almacen';
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -27,9 +28,11 @@ const { REACT_APP_API_URL } = process.env;
 function Home() {
     const classes = useStyles();
     const { simpleSearchValue } = useSelector((state: RootState) => state.search);
+    const { almacen } = useSelector((state: RootState) => state.almacen);
     const debouncedSearchTerm = useDebounceSearch(simpleSearchValue, 1000);
-    const [params, setParams] = useState({});
-    const [page, setPage] = useState(0);
+    const [params, setParams]: any = useState({almacen: almacen });
+    const [page, setPage] = useState(1);
+    const [count, setCount] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(20);
     const [productsData, productsLoading]: any = useGetFetchData(
         `${REACT_APP_API_URL}/articulos`,
@@ -45,44 +48,59 @@ function Home() {
         newPage: number
     ) => {
         setPage(newPage);
-        setParams({ ...params, currentPage: newPage });
     };
 
     const handleChangeRowsPerPage = (
         event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
     ) => {
         setRowsPerPage(parseInt(event.target.value, 10));
-        setPage(0);
+        setPage(1);
+        console.log(rowsPerPage);
     };
+
+    useEffect(() => {
+        setParams({ ...params, currentPage: page, pageSize: rowsPerPage });
+        console.log(params);
+    } , [page, rowsPerPage]);
 
     useEffect(() => {
         if (!productsLoading && REACT_APP_API_URL !== null) {
             if (productsData.success) {
                 setDataProduct(mapProducts(productsData.rows));
+                setCount(productsData.meta.count);
             }
         }
-    }, [productsLoading]);
+    }, [productsLoading, productsData]);
 
     useEffect(() => {
         if(debouncedSearchTerm) {
-            setParams({ ...params, phrase: debouncedSearchTerm });
+            setParams((prevParams: any) => ({ ...prevParams, phrase: debouncedSearchTerm }));
         }
     }, [debouncedSearchTerm]);
 
+    useEffect(() => {
+        if(almacen) {
+            setParams((prevParams: any) => ({ ...prevParams, almacen: almacen }));
+        }
+    }, [almacen]);
+
     function mapProducts(products: any) {
         return products.map((product: any) => {
+            console.log(product);
                 return {
                     articulo: product.articulo,
                     name: product.nombre,
                     description: product.descripcion,
-                    img: product.img,
-                    price: !_.isEmpty(product.precio) ? product.precio[0].PrecioIVA : 0 
+                    img: product.img?.location,
+                    price: !_.isEmpty(product.precio) ? product.precio[0].PrecioIVA : 0,
+                    existencia: product['existencia.ExActual']
                 };
         });
     }
 
     return (
         <div>
+            <Almacenes />
             <CategoriesSearch/>
             {dataProduct.length > 0 ? (
                 <>
@@ -98,13 +116,12 @@ function Home() {
                     </div>
                     <br />
                     <TablePagination
-                        component="div"
-                        count={100}
+                        count={count}
                         page={page}
-                        onChangePage={handleChangePage}
                         labelRowsPerPage="Productos por página"
                         rowsPerPage={rowsPerPage}
                         onChangeRowsPerPage={handleChangeRowsPerPage}
+                        onPageChange={handleChangePage}
                     />
                 </>
             ) : (

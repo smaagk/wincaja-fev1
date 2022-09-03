@@ -7,7 +7,7 @@ import OrderTable from './table-orders/table-order';
 
 const useOrderStyles = makeStyles({
     root: {
-      width: '60%',
+      width: '90%',
       margin: 'auto'
     },
   });
@@ -15,14 +15,14 @@ const useOrderStyles = makeStyles({
 function Pedidos() {
     const orderStyles = useOrderStyles();
     const [pedidosData, pedidosDataDataLoading]: any = useGetFetchData(
-        `${REACT_APP_API2_URL}/ordenes`
+        `${REACT_APP_API2_URL}/preordenes`
     );
 
     const [orders, setOrders] = useState([]);
     useEffect(()=>  {
-        if(pedidosDataDataLoading !== true &&  pedidosData.hasOwnProperty('ordenesVentaEnLinea')){
-            setOrders(pedidosData.ordenesVentaEnLinea)
-            console.log(pedidosData.ordenesVentaEnLinea);
+        if(pedidosDataDataLoading !== true &&  pedidosData.hasOwnProperty('preOrdenesVentaEnLinea')){
+            setOrders(pedidosData.preOrdenesVentaEnLinea)
+            console.log(pedidosData.preOrdenesVentaEnLinea);
         }
     },[pedidosData,pedidosDataDataLoading])
 

@@ -8,7 +8,7 @@ import { createStyles,makeStyles } from '@material-ui/core/styles';
 import IconExpandLess from '@material-ui/icons/ExpandLess';
 import IconExpandMore from '@material-ui/icons/ExpandMore';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, { forwardRef } from 'react'
 import { useDispatch } from 'react-redux';
 
 import AppMenuItemComponent from './menu-item.component';

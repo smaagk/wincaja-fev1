@@ -48,14 +48,11 @@ const AppMenuItem: React.FC<AppMenuItemProps> = (props) => {
     function handleClick() {
         if (props.action && props.action === 'LOGOUT') {
             dispatch({ type: props.action });
+            dispatch({ type: 'CLEANCART' })
         }
 
         setOpen(!open);
     }
-
-    useEffect(() => {
-        console.log(props);
-    }, []);
 
     const MenuItemRoot =  (
             <AppMenuItemComponent

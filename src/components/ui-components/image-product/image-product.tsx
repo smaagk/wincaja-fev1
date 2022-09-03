@@ -39,7 +39,6 @@ const ImageProductComponent: FC<ImageType> = ({
   ] = useUploadFile(`${REACT_APP_API_URL}/upload-image`, dataImage, articulo);
 
   useEffect(() => {
-    console.log(articulo);
     if (imgUrl) {
       setImgSrc(imgUrl.location);
     }
