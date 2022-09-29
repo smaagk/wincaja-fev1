@@ -36,9 +36,9 @@ const Item: FC<ItemI> = (data: ItemI) => {
     const [imageData, setImageData] : any = useState();
 
     useEffect(() => {
-        if (image.success === true) {
+        if (image.success === true && image.location) {
             setImageData(image.location);
-        } else if (image.success === false){
+        } else {
             setImageData(noimage);
         }
     }, [image]);

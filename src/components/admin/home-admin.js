@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Link } from 'react-router-dom';
 import { MenuList, MenuItem } from '@material-ui/core';
+import { useDispatch, useSelector } from 'react-redux';
 
 import Home from '../home';
 import Productos from './productos/productos';
@@ -26,7 +27,7 @@ import {
 } from '@mui-treasury/mockup/layout';
 import Preordenes from './preordenes/preordenes';
 import Preorden from './preorden/preorden';
-import Pedidos from './pedidos/pedidos';
+import Pedidos from '../pedidos/pedidos';
 
 const Header = getHeader(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -68,6 +69,11 @@ scheme.configureInsetSidebar((builder) => {
 });
 
 const HomeAdmin = () => {
+  const dispatch = useDispatch();
+  function handleLogout() {
+      dispatch({ type: 'LOGOUT' });
+      dispatch({ type: 'CLEANCART' })
+  }
   return (
     <Root scheme={scheme}>
       {({ state: { sidebar } }) => (
@@ -91,6 +97,9 @@ const HomeAdmin = () => {
                 </MenuItem>
                 <MenuItem component={Link} to="/admin/preordenes">
                   Preordenes
+                </MenuItem>
+                <MenuItem onClick={handleLogout}>
+                  Cerrar sesión
                 </MenuItem>
               </MenuList>
             </SidebarContent>

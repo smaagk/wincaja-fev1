@@ -128,6 +128,12 @@ function RegisterComponent() {
       return undefined;
     }
   }
+  
+  function cancelRegister() {
+    dispatch({
+      type: 'HIDE_REGISTER_FORM'
+    });
+  }
 
   return (
     <>
@@ -221,6 +227,13 @@ function RegisterComponent() {
         whiteSpace="break-spaces"
         onClick={handleSubmmit}
       ></Button>
+      <Button
+        title="Cancelar"
+        color="deepRed"
+        height="40px"
+        whiteSpace="break-spaces"
+        onClick={cancelRegister}
+      />
     </>
   );
 }

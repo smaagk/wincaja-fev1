@@ -22,7 +22,7 @@ const authReducer = (state = initialState, action) => {
 			};
 		case 'LOGOUT':
 			localStorage.clear();
-			window.location.href = '/tienda/home';
+			window.location.href = '/';
 			
 			return {
 				isAuthenticated: false,

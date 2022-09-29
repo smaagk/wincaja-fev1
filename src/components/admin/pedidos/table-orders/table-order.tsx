@@ -107,6 +107,8 @@ function Row(props: { row: any }) {
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
     const _almacen: string = useSelector((state: RootState) => state.almacen.almacen);
+    const isAdmin = useSelector((state: RootState) => state.auth.user?.role) === 'Admin';
+    console.log('isAdmin', isAdmin);
     const [openPayData, ]: any = useGetFetchData(`${REACT_APP_API2_URL}/transaction-detail/${row.idMetodoPago}`);
     const [products, productsDataLoading]: any = useGetFetchData(`${REACT_APP_API2_URL}/preordenes/${row.id}`);
     const [cliente, clienteDataLoading]: any = useGetFetchData(`${REACT_APP_API2_URL}/clientebyopenpayid/${row.cliente}`);
@@ -283,9 +285,8 @@ function Row(props: { row: any }) {
                                     </Table>
 
                                     <br />
-
-                                    <span> Selecciona el almacen para visualizar las cantidades disponibles</span>
-                                    <Almacenes />
+                                    { isAdmin ? (<><span> Selecciona el almacen para visualizar las cantidades disponibles</span><Almacenes /></>): (<></>) }
+                              
                                 </>
                             </>
                             <Table size="small" aria-label="purchases">
@@ -316,7 +317,7 @@ function Row(props: { row: any }) {
                             </Table>
 
                             <br />
-                            {row?.estatus === 2 ? (
+                            {row?.estatus === 2 && isAdmin ? (
                             <div className={classes.buttons}>
                                 <CustomButton
                                     title="Confirmar pedido"

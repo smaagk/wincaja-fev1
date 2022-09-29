@@ -1,11 +1,7 @@
 import List from '@material-ui/core/List'
 import { createStyles,makeStyles } from '@material-ui/core/styles'
 import { AccountCircle, ExitToApp,LocalMall, Store } from '@material-ui/icons'
-import IconBarChart from '@material-ui/icons/BarChart'
 import IconDashboard from '@material-ui/icons/Dashboard'
-import IconLibraryBooks from '@material-ui/icons/LibraryBooks'
-import IconPeople from '@material-ui/icons/People'
-import IconShoppingCart from '@material-ui/icons/ShoppingCart'
 import React from 'react'
 
 import AppMenuItem from './menu-item'
