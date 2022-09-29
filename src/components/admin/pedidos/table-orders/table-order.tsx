@@ -107,7 +107,7 @@ function Row(props: { row: any }) {
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
     const _almacen: string = useSelector((state: RootState) => state.almacen.almacen);
-    const isAdmin = useSelector((state: RootState) => state.auth.user?.role) === 'Admin';
+    const isAdmin = useSelector((state: RootState) => state.auth.user?.role) === 'admin';
     console.log('isAdmin', isAdmin);
     const [openPayData, ]: any = useGetFetchData(`${REACT_APP_API2_URL}/transaction-detail/${row.idMetodoPago}`);
     const [products, productsDataLoading]: any = useGetFetchData(`${REACT_APP_API2_URL}/preordenes/${row.id}`);
