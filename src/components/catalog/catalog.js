@@ -111,6 +111,7 @@ const Catalog = () => {
                                 <Route path="/tienda/producto/:articulo" render={({ match }) => <ProductDetailsComponent key={match.params.articulo || 'empty'} info={match} />} exact />
                                 <Route path="/tienda/carrito" component={BuyProcessComponent} exact />
                                 <Route path='/tienda/confirmacion' component={ConfirmationOrder} exact />
+                                <Route path='/tienda/success' component={ConfirmationOrder}  />
                                 <Route path='/tienda/login' component={AccessComponent} exact />
                                 <Route path='/tienda/cuenta' component={AccountComponent} exact />
                                 <Route path='/tienda/pedidos' component={Pedidos} exact />

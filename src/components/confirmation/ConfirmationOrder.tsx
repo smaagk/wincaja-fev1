@@ -1,6 +1,8 @@
 import { Card } from '@material-ui/core';
 import { CustomButton } from 'components/ui-components';
-import React from 'react';
+import { REACT_APP_API2_URL } from 'constants/app.constants';
+import useAPI from 'custom-hooks/useAPI';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import orderImage from '../../static/order.png';
@@ -9,10 +11,23 @@ import { confirmationStyles } from './confirmation-order.css';
 export default function ConfirmationOrder() {
     const styles = confirmationStyles();
     const history = useHistory();
+    const [checkoutSessionId, setCheckoutSessionId] = useState<any>(null);
+    const { responseData, error, isLoading } = useAPI(
+        `${REACT_APP_API2_URL}/continue-checkout-payment`,
+        'POST',
+        checkoutSessionId
+    );
+
+    useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const checkoutSessionId = urlParams.get('session_id');
+        console.log(checkoutSessionId);
+        setCheckoutSessionId({checkoutSessionId});
+    }, []);
 
     const handleReturnToShop = () => {
-        history.push('/tienda')
-    }
+        history.push('/tienda');
+    };
     return (
         <div className={styles.confirmationContainer}>
             <Card className={styles.cardConfirmation}>
@@ -24,14 +39,14 @@ export default function ConfirmationOrder() {
                 <div className={styles.message}>
                     <h1>¡Gracias por tu compra!</h1>
                     <h2>
-                        Una vez que nuestro equipo revise y confirme tu pedido, 
+                        Una vez que nuestro equipo revise y confirme tu pedido,
                         te enviaremos un correo con los detalles de tu pedido.
                     </h2>
                     <CustomButton
-                            title="Regresar a la tienda"
-                            onClick={handleReturnToShop}
-                            color="deepGreen"
-                        ></CustomButton>
+                        title="Regresar a la tienda"
+                        onClick={handleReturnToShop}
+                        color="deepGreen"
+                    ></CustomButton>
                 </div>
             </Card>
         </div>
