@@ -1,4 +1,6 @@
 import { Box, Card } from '@material-ui/core';
+import { REACT_APP_API2_URL } from 'constants/app.constants';
+import useAPI from 'custom-hooks/useAPI';
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 
@@ -12,6 +14,18 @@ const Basket: FC = () => {
   const dispatch = useDispatch();
   const basketStyles = useStyles();
   const store: any = useSelector((state: RootState) => state.cart);
+  const [cartData, setCartData] = useState<any>(store.cart);
+
+ const { responseData, error, isLoading } = useAPI(
+    `${REACT_APP_API2_URL}/pricesAndTotal`,
+    'POST',
+    cartData
+);
+
+  useEffect(() => {
+    setCartData(store.cart);
+  }, [store]);
+
   function handleNextStep() {
     dispatch({
       type: 'NEXT',

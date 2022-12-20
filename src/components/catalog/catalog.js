@@ -29,6 +29,8 @@ import TypeaHead from '../typeahead/typeahead';
 import CartBarComponent from '../ui-components/cart-counter/cart-counter.component';
 import { SearchInputComponent } from '../ui-components/search-input/search-input.component';
 import { catalogStyles } from './catalog.styles';
+import CartDetails from 'components/basket/CartDetails';
+import Cart from 'components/basket/cart';
 
 const Header = getHeader(styled);
 const DrawerSidebar = getDrawerSidebar(styled);
@@ -115,6 +117,7 @@ const Catalog = () => {
                                 <Route path='/tienda/login' component={AccessComponent} exact />
                                 <Route path='/tienda/cuenta' component={AccountComponent} exact />
                                 <Route path='/tienda/pedidos' component={Pedidos} exact />
+                                <Route path='/tienda/cart' component={Cart} exact />
 
                             </Switch>
                         </Content>
