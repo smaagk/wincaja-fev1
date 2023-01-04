@@ -6,7 +6,7 @@ import { useHistory } from 'react-router-dom';
 
 import useStyles from './typeahead.css';
 
-const { REACT_APP_API_URL } = process.env;
+const { VITE_API_URL } = import.meta.env;
 
 export default function TypeaHead() {
     const [isLoading, setLoading] = useState(false);
@@ -24,27 +24,26 @@ export default function TypeaHead() {
     };
 
     const handleChangeSearch = (query) => {
-        if (query && query[0].articulo) {
+        const getUrl = history.location.pathname;
+
+        console.log('query', getUrl);
+
+        if (getUrl !== '/admin/precios' && query && query[0].articulo) {
             history.push(`/tienda/producto/${query[0].articulo}`,{forceRefresh:true});
         }
-    }
 
-    function sortAlph( a, b ) {
+       if ( getUrl === '/admin/precios' && query && query[0]?.articulo) {
 
-        if ( a.last_nom < b.last_nom ){
-          return -1;
+            dispatch({
+                type: 'SETSEARCH',
+                payload: query[0].articulo
+            });
         }
-
-        if ( a.last_nom > b.last_nom ){
-          return 1;
-        }
-
-        return 0;
     }
 
     const handleSearch =  useCallback((query) => {
         setLoading(true);
-        fetch(`${REACT_APP_API_URL}/autocomplete?phrase=${query}`)
+        fetch(`${VITE_API_URL}/autocomplete?phrase=${query}`)
             .then((resp) => resp.json())
             .then((json) => {
                 setOptions(json.rows);

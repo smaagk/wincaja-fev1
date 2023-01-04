@@ -1,5 +1,5 @@
 import { makeStyles } from '@material-ui/core';
-import { REACT_APP_API2_URL } from 'constants/app.constants';
+import { VITE_API2_URL } from 'constants/app.constants';
 import useGetFetchData from 'custom-hooks/useGetFetchData';
 import React, { useEffect, useState } from 'react'
 
@@ -15,7 +15,7 @@ const useOrderStyles = makeStyles({
 function Pedidos() {
     const orderStyles = useOrderStyles();
     const [pedidosData, pedidosDataDataLoading]: any = useGetFetchData(
-        `${REACT_APP_API2_URL}/preordenes`
+        `${VITE_API2_URL}/preordenes`
     );
 
     const [orders, setOrders] = useState([]);

@@ -3,7 +3,7 @@ import 'slick-carousel/slick/slick-theme.css';
 
 import { Card, CardMedia, CircularProgress } from '@material-ui/core';
 import { Skeleton } from '@material-ui/lab';
-import { REACT_APP_API_URL } from 'constants/app.constants';
+import { VITE_API_URL } from 'constants/app.constants';
 import useGetFetchData from 'custom-hooks/useGetFetchData';
 import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
@@ -38,7 +38,7 @@ export function ProductImages(props: IProductImage) {
     const productImageStyles = useStyles();
     const [imageData, setImageData] = useState([]);
     const [productImagesData, productImagesDataLoading]: any = useGetFetchData(
-        `${REACT_APP_API_URL}/images/${props.articulo}`
+        `${VITE_API_URL}/images/${props.articulo}`
     );
     const settings = {
         dots: true,

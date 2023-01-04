@@ -17,7 +17,7 @@ import validateSchema, {
   IRegisterErrors,
 } from './validate-register';
 
-const { REACT_APP_API_URL, REACT_APP_API2_URL } = process.env;
+const { VITE_API_URL, VITE_API2_URL } = import.meta.env;
 
 
 function RegisterComponent() {
@@ -109,7 +109,7 @@ function RegisterComponent() {
       telefono: values.telefono
     })
 
-    setUrl(`${REACT_APP_API2_URL}/user`)
+    setUrl(`${VITE_API2_URL}/user`)
 
   }
 

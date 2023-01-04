@@ -1,4 +1,4 @@
-import { REACT_APP_API_URL } from 'constants/app.constants';
+import { VITE_API_URL } from 'constants/app.constants';
 import useGetFetchData from 'custom-hooks/useGetFetchData';
 import React, { useEffect, useState } from 'react';
 
@@ -6,7 +6,7 @@ import noimage from '../../../static/noimage.png';
 
 export function ProductImage({ idProduct }: any) {
     const [image, imageLoading]: any = useGetFetchData(
-        `${REACT_APP_API_URL}/image/${idProduct}`
+        `${VITE_API_URL}/image/${idProduct}`
     );
     const [imageData, setImageData] : any = useState();
 

@@ -6,7 +6,7 @@ export const creditCardConstants = {
     NOALMACEN: 'Por favor selecciona un almacen',
 };
 
-export const { REACT_APP_API_URL, REACT_APP_API2_URL } = process.env;
+export const { VITE_API_URL, VITE_API2_URL } = import.meta.env;
 
 export const ROLES = {
     CLIENT: 'cliente'

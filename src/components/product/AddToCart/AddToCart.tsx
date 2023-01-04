@@ -1,6 +1,6 @@
 import { Button, ButtonGroup, CircularProgress } from '@material-ui/core';
 import { count, info } from 'console';
-import { REACT_APP_API_URL } from 'constants/app.constants';
+import { VITE_API_URL } from 'constants/app.constants';
 import useGetFetchData from 'custom-hooks/useGetFetchData';
 import * as _ from 'lodash';
 import React, { useEffect, useState } from 'react';
@@ -23,7 +23,7 @@ export function AddToCart(props: InfoCart) {
 
     const [infoData, setInfoData]: any = useState({});
     const [productInfoData, productInfoDataLoading]: any = useGetFetchData(
-        `${REACT_APP_API_URL}/articulocliente/${props.articulo}`
+        `${VITE_API_URL}/articulocliente/${props.articulo}`
     );
 
     useEffect(() => {

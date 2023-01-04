@@ -34,7 +34,7 @@ const AccordionDetails = withStyles((theme) => ({
     padding: theme.spacing(2),
   },
 }))(MuiAccordionDetails);
-const { REACT_APP_API_URL } = process.env;
+const { VITE_API_URL } = import.meta.env;
 
 export default function CustomizedAccordions() {
   const dispatch = useDispatch();
@@ -87,7 +87,7 @@ export default function CustomizedAccordions() {
     addressCreated,
     addressCreatedLoading,
     addressCreatedError,
-  ]: any = useFetch(`${REACT_APP_API_URL}/direcciones`, 'POST', addresses);
+  ]: any = useFetch(`${VITE_API_URL}/direcciones`, 'POST', addresses);
 
   const [snackStatus, setSnackStatus]: [
     StatusAlert | null,

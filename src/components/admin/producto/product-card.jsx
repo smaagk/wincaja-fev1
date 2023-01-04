@@ -24,7 +24,7 @@ import Button from '../../ui-components/button';
 import ImageProductDialog from '../../ui-components/image-product/image-product-dialog/image-product-dialog';
 import useStyles from './prodruct-card-admin.css';
 
-const { REACT_APP_API_URL } = process.env;
+const { VITE_API_URL } = import.meta.env;
 
 function ProductAdminCard(props) {
     const store = useSelector((state) => state.cart);
@@ -34,11 +34,11 @@ function ProductAdminCard(props) {
     const textCardContentStyles = useN01TextInfoContentStyles();
     const dispatch = useDispatch();
     const [productsData, productsLoading] = useGetFetchData(
-        `${REACT_APP_API_URL}/articulos/${props.articulo}`
+        `${VITE_API_URL}/articulos/${props.articulo}`
     );
     const [getProductosCallback, setGetProductosCallback] = useState(true);
     const [productsData2, productsLoading2] = useGetFetchData(
-        `${REACT_APP_API_URL}/admindetallearticulo/${props.articulo}`,
+        `${VITE_API_URL}/admindetallearticulo/${props.articulo}`,
         getProductosCallback
     );
     const [dataProduct, setDataProduct] = useState(null);
@@ -48,7 +48,7 @@ function ProductAdminCard(props) {
 
     const [imageToDelete, setImageToDelete] = useState(null);
     const [deletedImage, deleteImageLoading] = useDeleteFetch(
-        `${REACT_APP_API_URL}/image`,
+        `${VITE_API_URL}/image`,
         imageToDelete
     );
 
@@ -60,7 +60,7 @@ function ProductAdminCard(props) {
         image_upload_loading,
         image_upload_error,
     ] = useUploadFile(
-        `${REACT_APP_API_URL}/upload-image`,
+        `${VITE_API_URL}/upload-image`,
         dataImage,
         productsData.articulo
     );
@@ -118,9 +118,9 @@ function ProductAdminCard(props) {
 
     function setImageInCard(index) {
         
-        if(productsData2.gallery) {
+        if(productsData2?.gallery) {
             const image =
-            productsData2.image !== undefined
+            productsData2?.image !== undefined
                 ? productsData2?.gallery[index]?.url
                 : noimage;
                 console.log(image)

@@ -1,5 +1,5 @@
 import { Divider, Paper } from '@material-ui/core';
-import { REACT_APP_API_URL } from 'constants/app.constants';
+import { VITE_API_URL } from 'constants/app.constants';
 import useGetFetchData from 'custom-hooks/useGetFetchData';
 import React, { useEffect, useState } from 'react';
 import GoogleButton from 'react-google-button';
@@ -23,7 +23,7 @@ function AccessComponent() {
     }
 
     // const [dataLogin, dataLoginLoading]: any = useGetFetchData(
-    //     `${REACT_APP_API_URL}/checkpassportlogin`
+    //     `${VITE_API_URL}/checkpassportlogin`
     // );
 
     // const [imageData, setImageData] : any = useState();

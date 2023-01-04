@@ -51,7 +51,7 @@ const useStyles = makeStyles({
     }
   }
 });
-const { REACT_APP_API_URL, REACT_APP_API2_URL } = process.env;
+const { VITE_API_URL, VITE_API2_URL } = import.meta.env;
 
 
 export default function Preordenes() {
@@ -65,17 +65,17 @@ export default function Preordenes() {
   const [selected, setSelected] = useState([]);
   const [productSelected] = useState({});
   const [preordenData, preordenLoading] = useGetFetchData(
-    `${REACT_APP_API2_URL}/preordenes`,
+    `${VITE_API2_URL}/preordenes`,
     params
   );
   // eslint-disable-next-line no-unused-vars
   const [] = useCustomFetch(
-    `${REACT_APP_API_URL}/articulo_online`,
+    `${VITE_API_URL}/articulo_online`,
     productSelected
   );
 
   useEffect(() => {
-    if (!preordenLoading && REACT_APP_API_URL !== null) {
+    if (!preordenLoading && VITE_API_URL !== null) {
       if (preordenData) {
         setPreordenes(preordenData.preOrdenesVentaEnLinea);
       }

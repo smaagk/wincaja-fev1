@@ -2,10 +2,11 @@
 import { Box, Button, ButtonGroup, Card, CardMedia } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import DeleteIcon from '@material-ui/icons/Delete';
-import { REACT_APP_API_URL } from 'constants/app.constants';
+import { VITE_API_URL } from 'constants/app.constants';
 import useGetFetchData from 'custom-hooks/useGetFetchData';
 import React, { FC, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from 'store';
 import { arrayBufferToBase64 } from 'utils/arrrayToBuffer';
 
 import noimage from '../../../static/noimage.png';
@@ -24,14 +25,18 @@ export type ItemI = {
 const Item: FC<ItemI> = (data: ItemI) => {
     const dispatch = useDispatch();
     const itemStyles = useStyles();
-    const [price, setPrice] = useState(formatCurrency(data.price));
+    //const [price, setPrice] = useState(formatCurrency(data.price));
+    const storeCart: any = useSelector((state: RootState) => state.cart);
+    // find the item in the cart
+    const itemInCart = storeCart.cart.find((item: { articulo: string | undefined; }) => item.articulo === data.articulo);
+    const [price, setPrice] = useState(formatCurrency(itemInCart ? itemInCart.price : data.price));
     const [counter, setCounter] = useState(data.quantity);
     const [totalProduct, setTotalProduct] = useState('');
     const [imgSrc, setImgSrc] = useState('');
 
 
     const [image, imageLoading]: any = useGetFetchData(
-        `${REACT_APP_API_URL}/image/${data.articulo}`
+        `${VITE_API_URL}/image/${data.articulo}`
     );
     const [imageData, setImageData] : any = useState();
 
@@ -45,6 +50,7 @@ const Item: FC<ItemI> = (data: ItemI) => {
 
     useEffect(() => {
         setTotalProduct(formatCurrency(counter * data.price));
+        setPrice(formatCurrency(itemInCart ? itemInCart.price : data.price));
     }, [counter]);
 
     const handleIncrement = () => {
@@ -52,6 +58,12 @@ const Item: FC<ItemI> = (data: ItemI) => {
         dispatch({
             type: 'ADDQUANTITY',
             payload: data,
+        });
+        const item = storeCart.cart.find((item: { articulo: string | undefined; }) => item.articulo === data.articulo);
+
+        dispatch({
+            type: 'SETTOTAL',
+            payload: storeCart.total + (item ? item.price : data.price),
         });
     };
 
@@ -61,12 +73,23 @@ const Item: FC<ItemI> = (data: ItemI) => {
             type: 'SUBQUANTITY',
             payload: data,
         });
+
+        const item = storeCart.cart.find((item: { articulo: string | undefined; }) => item.articulo === data.articulo);
+        dispatch({
+            type: 'SETTOTAL',
+            payload: storeCart.total - item.price,
+        });
     };
 
     const handleDelete = () => {
         dispatch({
             type: 'DELETEPRODUCT',
             payload: data,
+        });
+        const item = storeCart.cart.find((item: { articulo: string | undefined; }) => item.articulo === data.articulo);
+        dispatch({
+            type: 'SETTOTAL',
+            payload: storeCart.total - item.price * item.quantity,
         });
     };
     const displayCounter = counter > 0;

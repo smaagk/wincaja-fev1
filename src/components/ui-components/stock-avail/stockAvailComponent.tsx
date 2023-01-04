@@ -1,5 +1,5 @@
 //react functional component in typescript to tell stock quantity
-import { REACT_APP_API2_URL } from 'constants/app.constants';
+import { VITE_API2_URL } from 'constants/app.constants';
 import useGetFetchData from 'custom-hooks/useGetFetchData';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
@@ -16,7 +16,7 @@ export const StockAvailability = ({ idProduct } : any) => {
     almacen: _almacen,
   });
 
-  const [stock, stockDataLoading]: any = useGetFetchData(`${REACT_APP_API2_URL}/existencias/`, params);
+  const [stock, stockDataLoading]: any = useGetFetchData(`${VITE_API2_URL}/existencias/`, params);
   const [stockAvailability, setStockAvailability] = useState(0);
 
   useEffect(() => {
@@ -27,6 +27,8 @@ export const StockAvailability = ({ idProduct } : any) => {
     if (stockDataLoading !== true && stock.hasOwnProperty('total')) {
       setStockAvailability(Math.floor(stock.total));
     }
+
+    console.log(stock);
   }, [stock, stockDataLoading]);
 
   return (

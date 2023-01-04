@@ -39,7 +39,7 @@ const useStyles = makeStyles({
         display: 'flex',
     },
 });
-const { REACT_APP_API_URL } = process.env;
+const { VITE_API_URL } = import.meta.env;
 
 export default function Productos() {
     const classes = useStyles();
@@ -51,12 +51,12 @@ export default function Productos() {
     const [selected, setSelected] = useState([]);
     const [productSelected, setProductSelected] = useState({});
     const [productsData, productsLoading] = useGetFetchData(
-        `${REACT_APP_API_URL}/adminarticulos`,
+        `${VITE_API_URL}/adminarticulos`,
         params
     );
     // eslint-disable-next-line no-unused-vars
     const [productUpdated, productUpdatedLoading] = useCustomFetch(
-        `${REACT_APP_API_URL}/articulo_online`,
+        `${VITE_API_URL}/articulo_online`,
         productSelected
     );
 
@@ -68,7 +68,7 @@ export default function Productos() {
     }, [debouncedSearchTerm]);
 
     useEffect(() => {
-        if (!productsLoading && REACT_APP_API_URL !== null) {
+        if (!productsLoading && VITE_API_URL !== null) {
             if (productsData.success) {
                 setMetaPagination(productsData);
             }

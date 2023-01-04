@@ -1,12 +1,8 @@
 import List from '@material-ui/core/List'
 import { createStyles,makeStyles } from '@material-ui/core/styles'
 import { AccountCircle, ExitToApp,LocalMall, Store } from '@material-ui/icons'
-import IconBarChart from '@material-ui/icons/BarChart'
 import IconDashboard from '@material-ui/icons/Dashboard'
-import IconLibraryBooks from '@material-ui/icons/LibraryBooks'
-import IconPeople from '@material-ui/icons/People'
-import IconShoppingCart from '@material-ui/icons/ShoppingCart'
-import { REACT_APP_API_URL } from 'constants/app.constants'
+import { VITE_API_URL } from 'constants/app.constants'
 import useGetFetchData from 'custom-hooks/useGetFetchData'
 import * as _ from 'lodash';
 import React, { useEffect, useState } from 'react'
@@ -50,7 +46,7 @@ const AppMenu: React.FC = (props) => {
   const [params, setParams]: any = useState(null);
   const [categoriesName, setCategoriesName] = useState([]);
   let [categories, categoriesLoading]: any = useGetFetchData(
-    `${REACT_APP_API_URL}/familias`,
+    `${VITE_API_URL}/familias`,
     params
   );
 

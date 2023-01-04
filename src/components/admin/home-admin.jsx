@@ -7,6 +7,7 @@ import Home from '../home';
 import Productos from './productos/productos';
 import Producto from './producto/producto';
 import MetodosDePago from './metodos-pago/metodos-pago';
+import Precios from './precios/precios';
 import styled from 'styled-components';
 import Layout, {
   Root,
@@ -98,6 +99,9 @@ const HomeAdmin = () => {
                 <MenuItem component={Link} to="/admin/preordenes">
                   Preordenes
                 </MenuItem>
+                <MenuItem component={Link} to="/admin/precios">
+                  Precios
+                </MenuItem>
                 <MenuItem onClick={handleLogout}>
                   Cerrar sesión
                 </MenuItem>
@@ -111,6 +115,7 @@ const HomeAdmin = () => {
             <Route path="/admin/metodos" component={MetodosDePago} />
             <Route path="/admin/preordenes" component={Pedidos} />
             <Route path="/admin/preorden/:preorden" component={Preorden} />
+            <Route path="/admin/precios" component={Precios} />
           </Content>
         </>
       )}

@@ -11,6 +11,7 @@ import useGetFetchData from '../custom-hooks/useGetFetchData';
 import { CategoriesSearch } from './categories-search/CategoriesSearch';
 import ProductCard from './ui-components/product-card/product-card';
 import Almacenes from './almacen/select-almacen';
+import { Prices } from 'interfaces/prices.interfaces';
 
 const useStyles = makeStyles(() => ({
     container: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles(() => ({
     },
 }));
 
-const { REACT_APP_API_URL } = process.env;
+const { VITE_API_URL } = import.meta.env;
 
 function Home() {
     const classes = useStyles();
@@ -35,7 +36,7 @@ function Home() {
     const [count, setCount] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(20);
     const [productsData, productsLoading]: any = useGetFetchData(
-        `${REACT_APP_API_URL}/articulos`,
+        `${VITE_API_URL}/articulos`,
         params
     );
   
@@ -64,7 +65,7 @@ function Home() {
     } , [page, rowsPerPage]);
 
     useEffect(() => {
-        if (!productsLoading && REACT_APP_API_URL !== null) {
+        if (!productsLoading && VITE_API_URL !== null) {
             if (productsData.success) {
                 setDataProduct(mapProducts(productsData.rows));
                 setCount(productsData.meta.count);
@@ -86,16 +87,28 @@ function Home() {
 
     function mapProducts(products: any) {
         return products.map((product: any) => {
-            console.log(product);
                 return {
                     articulo: product.articulo,
                     name: product.nombre,
                     description: product.descripcion,
                     img: product.img?.location,
-                    price: !_.isEmpty(product.precio) ? product.precio[0].PrecioIVA : 0,
-                    existencia: product['existencia.ExActual']
+                    price: getTheFirstPrice(product.precio),
+                    existencia: product['existencia.ExActual'],
+                    prices: product.precio,
                 };
-        });
+        }).filter((product: any) => product.existencia > 0); 
+    }
+
+    function getTheFirstPrice(prices: Prices[]) {
+        console.log(prices);
+        if (!_.isEmpty(prices)) {
+            // find the price with the lowest CantidadAutomatico
+            console.log(prices);
+            const price = _.minBy(prices, (price: Prices) => price.CantidadAutomatico);
+            return price?.PrecioIVA;
+        }
+
+        return 0;
     }
 
     return (

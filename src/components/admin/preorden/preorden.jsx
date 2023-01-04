@@ -51,7 +51,7 @@ const useStyles = makeStyles({
     }
 });
 
-const { REACT_APP_API_URL } = process.env;
+const { VITE_API_URL } = import.meta.env;
 
 export default function Preorden(props) {
     const perorderID = props.match.params.preorden
@@ -66,17 +66,17 @@ export default function Preorden(props) {
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const [preordenParams, setPreordenParams] = useState({});
     const [preordenData, preordenLoading] = useGetFetchData(
-        `${REACT_APP_API_URL}/preorden/${perorderID}`,
+        `${VITE_API_URL}/preorden/${perorderID}`,
         params
     );
     // eslint-disable-next-line no-unused-vars
     const [preordenUpdated, preordenUpdatedLoading] = useCustomFetch(
-        `${REACT_APP_API_URL}/preordenestatus`,
+        `${VITE_API_URL}/preordenestatus`,
         preordenParams
     );
 
     useEffect(() => {
-        if (!preordenLoading && REACT_APP_API_URL !== null) {
+        if (!preordenLoading && VITE_API_URL !== null) {
             if (preordenData.success) {
                 setPreorden(preordenData.detalles);
             }

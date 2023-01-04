@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { ProductImage } from 'components/ui-components/product-image/product-image';
-import { REACT_APP_API_URL, REACT_APP_API2_URL } from 'constants/app.constants';
+import { VITE_API_URL, VITE_API2_URL } from 'constants/app.constants';
 import useGetFetchData from 'custom-hooks/useGetFetchData';
 import { articulosPedido } from 'interfaces/atriculos.interfaces';
 import { openpaytransaction } from 'interfaces/openpay.interface';
@@ -48,11 +48,11 @@ function Row(props: { row: any }) {
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
     const [openPayData, openPayDataLoading]: any = useGetFetchData(
-        `${REACT_APP_API_URL}/transactiondetails/${row.idOpenPayTransaction}`
+        `${VITE_API_URL}/transactiondetails/${row.idOpenPayTransaction}`
     );
 
     const [products, productsDataLoading]: any = useGetFetchData(
-        `${REACT_APP_API2_URL}/ordenes/${row.id}`
+        `${VITE_API2_URL}/ordenes/${row.id}`
     );
     const [openPayInfo, setOpenPayInfo]: [openpaytransaction, any] = useState({} as openpaytransaction);
     const [productsInfo, setProductsInfo]: [articulosPedido[], any] = useState([] as articulosPedido[]);

@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme: Theme) =>
     },
   })
 );
-const { REACT_APP_API_URL } = process.env;
+const { VITE_API_URL } = import.meta.env;
 
 
 type ImageType = {
@@ -36,7 +36,7 @@ const ImageProductComponent: FC<ImageType> = ({
     image_upload,
     image_upload_loading,
     image_upload_error,
-  ] = useUploadFile(`${REACT_APP_API_URL}/upload-image`, dataImage, articulo);
+  ] = useUploadFile(`${VITE_API_URL}/upload-image`, dataImage, articulo);
 
   useEffect(() => {
     if (imgUrl) {

@@ -18,7 +18,7 @@ const AddressStyles = makeStyles({
         margin: 'auto',
     },
 });
-const { REACT_APP_API_URL } = process.env;
+const { VITE_API_URL } = import.meta.env;
 
 function AddressesComponent() {
     const styles = AddressStyles();
@@ -32,12 +32,12 @@ function AddressesComponent() {
     );
     const [paramsAddress, setParamsAddress]: any = useState(null);
     let [_addresses, addressesLoading]: any = useGetFetchData(
-        `${REACT_APP_API_URL}/direcciones`,
+        `${VITE_API_URL}/direcciones`,
         paramsAddress
     );
     const [addressToDelete, setAddressToDelete] = useState({ alias: '' });
     const [deletedAddress, deleteAddressLoading]: any = useDeleteFetch(
-        `${REACT_APP_API_URL}/direcciones`,
+        `${VITE_API_URL}/direcciones`,
         addressToDelete
     );
 

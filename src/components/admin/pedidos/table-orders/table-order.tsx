@@ -12,7 +12,7 @@ import TableRow from '@material-ui/core/TableRow';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { ProductImage } from 'components/ui-components/product-image/product-image';
-import { REACT_APP_API2_URL } from 'constants/app.constants';
+import { VITE_API2_URL } from 'constants/app.constants';
 import useGetFetchData from 'custom-hooks/useGetFetchData';
 import { articulosPedido } from 'interfaces/atriculos.interfaces';
 import { openpaytransaction } from 'interfaces/openpay.interface';
@@ -109,26 +109,26 @@ function Row(props: { row: any }) {
     const _almacen: string = useSelector((state: RootState) => state.almacen.almacen);
     const isAdmin = useSelector((state: RootState) => state.auth.user?.role) === 'admin';
     console.log('isAdmin', isAdmin);
-    const [openPayData, ]: any = useGetFetchData(`${REACT_APP_API2_URL}/transaction-detail/${row.idMetodoPago}`);
-    const [products, productsDataLoading]: any = useGetFetchData(`${REACT_APP_API2_URL}/preordenes/${row.id}`);
-    const [cliente, clienteDataLoading]: any = useGetFetchData(`${REACT_APP_API2_URL}/clientebyopenpayid/${row.cliente}`);
-    const [direccion, direccionDataLoading]: any = useGetFetchData(`${REACT_APP_API2_URL}/direccion/${row.aliasDireccion}/${row.cliente}`);
+    const [openPayData, ]: any = useGetFetchData(`${VITE_API2_URL}/transaction-detail/${row.idMetodoPago}`);
+    const [products, productsDataLoading]: any = useGetFetchData(`${VITE_API2_URL}/preordenes/${row.id}`);
+    const [cliente, clienteDataLoading]: any = useGetFetchData(`${VITE_API2_URL}/clientebyopenpayid/${row.cliente}`);
+    const [direccion, direccionDataLoading]: any = useGetFetchData(`${VITE_API2_URL}/direccion/${row.aliasDireccion}/${row.cliente}`);
 
     const [preordenParams, setPreordenParams] = useState({});
     const [preordenUpdated, preordenUpdatedLoading] = useCustomFetch(
-        `${REACT_APP_API2_URL}/approve-payment`,
+        `${VITE_API2_URL}/approve-payment`,
         preordenParams
     );
 
     const [preordenCashParams, setPreordenCashParams] = useState({});
     const [preordenCashUpdated, preordenCashUpdatedLoading] = useCustomFetch(
-        `${REACT_APP_API2_URL}/approve-payment-cash`,
+        `${VITE_API2_URL}/approve-payment-cash`,
         preordenCashParams
     );
 
     const [cancelParams, setCancelParams] = useState({});
     const [preordenCancelled, preordenCancelledLoading] = useCustomFetch(
-        `${REACT_APP_API2_URL}/cancel-payment`,
+        `${VITE_API2_URL}/cancel-payment`,
         cancelParams
     );
 
@@ -307,7 +307,7 @@ function Row(props: { row: any }) {
                                             </TableCell>
                                             <TableCell><ProductImage idProduct={productsRow.id} /></TableCell>
                                             <TableCell align="right">{productsRow.Cantidad}</TableCell>
-                                            <TableCell align="right"><StockAvailability idProduct={productsRow.id}/></TableCell>
+                                            <TableCell align="right"><StockAvailability idProduct={productsRow.idArticulo}/></TableCell>
                                             <TableCell align="right">
                                                 $ {productsRow.PrecioVenta}
                                             </TableCell>

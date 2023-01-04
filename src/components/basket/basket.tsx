@@ -1,4 +1,6 @@
 import { Box, Card } from '@material-ui/core';
+import { VITE_API2_URL } from 'constants/app.constants';
+import useCustomFetch from 'custom-hooks/useCustomFetch';
 import React, { FC, useEffect, useState } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 
@@ -12,6 +14,17 @@ const Basket: FC = () => {
   const dispatch = useDispatch();
   const basketStyles = useStyles();
   const store: any = useSelector((state: RootState) => state.cart);
+  const [params, setParams] = useState(store.cart);
+  const [prices, pricesLoading, pricesError]: any = useCustomFetch(
+    `${VITE_API2_URL}/pricesAndTotal`,
+    params
+);
+
+  useEffect(() => {
+    setParams(store.cart);
+  }, [store]);
+
+      
   function handleNextStep() {
     dispatch({
       type: 'NEXT',
@@ -36,11 +49,11 @@ const Basket: FC = () => {
       </Box>
       <Box className={basketStyles.total} id="total">
         <span className={basketStyles.subtotal}>
-          Subtotal de articulos: {formatCurrency(store.total)}
+          Subtotal de articulos: {formatCurrency(prices?.total)}
         </span>
         <br />
         <span className={basketStyles.subtotal}>
-          Total: {formatCurrency(store.total)}
+          Total: {formatCurrency(prices?.total)}
         </span>
         <br />
         <Button

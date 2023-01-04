@@ -60,11 +60,21 @@ function ProductDetailsComponent(props: any) {
                 type: 'ADDPRODUCTQUANTITY',
                 payload: { product: _dataProduct, qty: qty },
             });
+
+            dispatch({
+                type: 'SETTOTAL',
+                payload: { total: store.total + qty * _dataProduct.price },
+            });
         } else {
             console.log('El producto no esta en el carrito');
             dispatch({
                 type: 'ADDQUANTITYNUMBER',
                 payload: { product: _dataProduct, qty: qty },
+            });
+
+            dispatch({
+                type: 'SETTOTAL',
+                payload: { total: store.total + qty * _dataProduct.price },
             });
         }
 

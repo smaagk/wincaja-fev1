@@ -35,7 +35,7 @@ const useStyles = makeStyles({
   }
 });
 
-const { REACT_APP_API_URL } = process.env;
+const { VITE_API_URL } = import.meta.env;
 
 export default function MetodosDePago() {
   const classes = useStyles();
@@ -44,17 +44,17 @@ export default function MetodosDePago() {
   const [selected, setSelected] = useState([]);
   const [metodoSelected, setMetodosSelected] = useState({});
   const [metodosPago, metodosLoading] = useGetFetchData(
-    `${REACT_APP_API_URL}/metodospago`,
+    `${VITE_API_URL}/metodospago`,
     params
   );
 
   const [metodoUpdated,metodoUpdatedLoading] = useCustomFetch(
-    `${REACT_APP_API_URL}/metodospago`,
+    `${VITE_API_URL}/metodospago`,
     metodoSelected
   );
 
   useEffect(() => {
-    if (!metodosLoading && REACT_APP_API_URL !== null) {
+    if (!metodosLoading && VITE_API_URL !== null) {
       setMetodosDePago(metodosPago);
       setMethodEnabled(metodosPago);
     }

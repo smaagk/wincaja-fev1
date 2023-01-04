@@ -49,6 +49,7 @@ function ProductCard(props) {
             name: props.data.name,
             description: props.data.description,
             price: props.data.price,
+            prices: props.data.prices,
         });
 
         const image = props.data.img ? props.data.img : noimage;
@@ -69,6 +70,10 @@ function ProductCard(props) {
             });
         }
 
+        dispatch({
+            type: 'SETTOTAL',
+            payload: store.total + dataProduct.price,
+        });
         enqueueSnackbar('Producto añadido al carrrito', successSnackbar);
     }
 

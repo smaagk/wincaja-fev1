@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { RootState } from 'store';
 
-const { REACT_APP_API_URL } = process.env;
+const { VITE_API_URL } = import.meta.env;
 interface Productos {
     name: string;
 }
@@ -30,13 +30,13 @@ export function SearchInputComponent(props: ISearchInput) {
     const debouncedSearchTerm = useDebounce(searchValue, 3000);
     const [paramsAutocomplete, setParamsAutocompleteParams] = useState({});
     const [autoCompleteData, autoCompleteDataLoading]: any = useGetFetchData(
-        `${REACT_APP_API_URL}/autocomplete`,
+        `${VITE_API_URL}/autocomplete`,
         paramsAutocomplete
     );
     const [dataAutcomplete, setDataAutcomplete] = useState([]);
 
     useEffect(() => {
-        if (!autoCompleteDataLoading && REACT_APP_API_URL !== null) {
+        if (!autoCompleteDataLoading && VITE_API_URL !== null) {
             if (autoCompleteData.success && autoCompleteData.rows.length > 0) {
                 setOptions(mapAutocompleteProducts(autoCompleteData.rows));
                 console.log(mapAutocompleteProducts(autoCompleteData.rows));

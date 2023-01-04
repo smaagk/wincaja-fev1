@@ -45,12 +45,12 @@ const cardDataInitialState = {
     },
 };
 const {
-    REACT_APP_API_URL,
-    REACT_APP_API2_URL,
-    REACT_APP_MERCHANT_ID,
-    REACT_APP_APIOPENPAY,
-    REACT_APP_PKOPENPAY
-} = process.env;
+    VITE_API_URL,
+    VITE_API2_URL,
+    VITE_MERCHANT_ID,
+    VITE_APIOPENPAY,
+    VITE_PKOPENPAY
+} = import.meta.env;
 
 export const PaymentCardComponent = React.memo(function PaymentCard() {
     const dispatch = useDispatch();
@@ -67,7 +67,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
     const [cardDataValid, setCardDataValid] = useState(false);
     const [validDate, setValidDate] = useState({ month: '', year: '' });
     const [apiOpenPayURL, setApiOpenPayURL] = useState(null);
-    const apiOpenPay = `${REACT_APP_APIOPENPAY}${REACT_APP_MERCHANT_ID}/tokens`;
+    const apiOpenPay = `${VITE_APIOPENPAY}${VITE_MERCHANT_ID}/tokens`;
     const [cardDataToken, setCardDataToken] = useState(null);
     const [tokenResponse, tokenLoading, tokenError] = useFetchOpenPay(
         apiOpenPayURL,
@@ -76,7 +76,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
 
     const [shoppingCartInfo, setShoppingCartInfo] = useState(null);
     const [payment, paymentLoading, paymentError] = useCustomFetch(
-        `${REACT_APP_API2_URL}/payment-line`,
+        `${VITE_API2_URL}/payment-line`,
         shoppingCartInfo
     );
     const [startPayment, setStartPayment] = useState(false);
@@ -86,7 +86,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
         preordenCreated,
         preordenCreatedLoading,
         preordenCreatedError,
-    ] = useFetch(`${REACT_APP_API_URL}/preorden`, 'POST', preorden);
+    ] = useFetch(`${VITE_API_URL}/preorden`, 'POST', preorden);
 
     const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
@@ -152,7 +152,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
 
     //Se inicializa las credenciales de open pay al iniciar el componente
     useEffect(() => {
-        window.OpenPay.setId(REACT_APP_MERCHANT_ID);
+        window.OpenPay.setId(VITE_MERCHANT_ID);
         window.OpenPay.setApiKey('pk_9ba749f326ef4154a0dacb06dae26370');
         window.OpenPay.setSandboxMode(true);
         setDeviceDataId(window.OpenPay.deviceData.setup('paymentForm'));

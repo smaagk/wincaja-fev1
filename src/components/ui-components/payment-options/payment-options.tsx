@@ -1,5 +1,5 @@
 import { Divider, makeStyles } from '@material-ui/core';
-import { REACT_APP_API_URL } from 'constants/app.constants';
+import { VITE_API_URL } from 'constants/app.constants';
 import useFetchData from 'custom-hooks/useFetchData';
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
@@ -43,7 +43,7 @@ function PaymentOptions() {
     const dispatch = useDispatch();
 
     const [paymentOptions, ]: any = useFetchData(
-        `${REACT_APP_API_URL}/metodospago`
+        `${VITE_API_URL}/metodospago`
     );
 
     useEffect(() => {

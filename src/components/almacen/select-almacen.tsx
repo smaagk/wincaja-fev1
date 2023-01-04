@@ -6,7 +6,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { FunctionComponent, useEffect, useState } from 'react';
 import useGetFetchData from 'custom-hooks/useGetFetchData';
-import { REACT_APP_API2_URL } from 'constants/app.constants';
+import { VITE_API2_URL } from 'constants/app.constants';
 import Button from '../ui-components/button';
 
 import * as _ from 'lodash';
@@ -40,7 +40,7 @@ const Almacen: FunctionComponent = () => {
     const [almacenes, setAlamacenes] = useState([]);
     const [paramsAlmacen, setParamsAlmacen]: any = useState(null);
     let [_almacenes, almacenLoading]: any = useGetFetchData(
-        `${REACT_APP_API2_URL}/almacenes`
+        `${VITE_API2_URL}/almacenes`
     );
 
     useEffect(() => {
