@@ -21,6 +21,7 @@ import PaymentOption from '../ui-components/payment-options/payment-options';
 import { useStyles } from './payment-styles';
 import { validateData } from './payment-validations';
 import ValidationAdornment from './validation-adornment';
+import StripeCheckoutButton from './stripe-checkout/stripe-checkout-button';
 
 const cardDataInitialState = {
     cvc: {
@@ -267,7 +268,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
             setPreorden(preorder);
         }
     }
-
+    
     return (
         <div>
             {paymentLoadingProgress ? (
@@ -275,7 +276,8 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
             ) : (
                 <>
                     <PaymentOption />
-                    {metodoPago === 'Linea' ? (
+                    {metodoPago === 'Linea' || metodoPago === undefined ? (
+                        <><StripeCheckoutButton></StripeCheckoutButton>{/*
                         <Card className={cx(styles.root, shadowStyles.root)}>
                             <div className={styles.media}>
                                 <Cards
@@ -395,7 +397,7 @@ export const PaymentCardComponent = React.memo(function PaymentCard() {
                                     ></Button>
                                 </form>
                             </div>
-                        </Card>
+                                        </Card>*/}</>
                     ) : (
                         <Button
                             className={buttonStyles}

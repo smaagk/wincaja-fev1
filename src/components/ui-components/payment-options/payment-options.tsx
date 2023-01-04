@@ -83,6 +83,7 @@ function PaymentOptions() {
                 {paymentOptions && paymentOptions.map((payment: PaymentOptionsProps) => {
                     return payment.habilitado ? (
                         <PaymentOptionLabel
+                            key={payment.id}
                             title={payment.descripcion}
                             type={payment.descripcion}
                             onClick={() => handleChange(payment.descripcion)}
